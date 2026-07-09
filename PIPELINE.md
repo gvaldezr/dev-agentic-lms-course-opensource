@@ -29,6 +29,7 @@ Argumentos relevantes:
 | `--skip-readings` | Omite la generación de lecturas (OpenAlex + LLM). |
 | `--skip-presentations` | Omite la generación de presentaciones HTML5 por ADA. |
 | `--skip-questions` | Omite la generación del banco de preguntas y del quiz de 20 ítems. |
+| `--skip-checklists` | Omite la generación de listas de cotejo por entregable ADA. |
 
 La configuración se carga desde variables de entorno (`.env`) mediante
 [src/course_pipeline/config.py](src/course_pipeline/config.py): proveedor y
@@ -56,7 +57,7 @@ Entrada DOCX/PDF
       │   (temas + fuentes académicas)
       ▼
 5. Plan operativo                planning.py
-      │   (15 semanas, 3 periodos, sesiones 90/45)
+      │   (14 semanas, 5 ADAs de proceso, sesiones 90/45)
       ▼
 6. Estructura ADA                ada_structure.py
       │   (periodos → ADAs → sesiones; entregables, evidencias)
@@ -134,9 +135,9 @@ Este resultado se fusiona en el *payload* de salida.
 **Módulo:** [src/course_pipeline/planning.py](src/course_pipeline/planning.py)
 
 Genera la malla temporal del curso de forma determinista:
-**15 semanas, 3 periodos, 2 ADAs por periodo, 2 sesiones por semana, con patrón
-de minutos por sesión `[90, 45]`**. Calcula totales de sesiones, minutos y
-horas, y reparte semanas y sesiones por periodo.
+**14 semanas, 5 ADAs de proceso en total, sin fase integradora, 2 sesiones por
+semana, con patrón de minutos por sesión `[90, 45]`**. Calcula totales de
+sesiones, minutos y horas, y reparte semanas y sesiones en los ADAs.
 
 **Salida:** `planeacion_operativa` en el *payload*.
 

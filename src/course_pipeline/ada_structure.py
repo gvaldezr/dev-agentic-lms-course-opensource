@@ -23,6 +23,110 @@ def _session_block_durations(total_min: int) -> tuple[int, int, int]:
     return edge, desarrollo, edge
 
 
+def _split_minutes(total: int, count: int) -> list[int]:
+    if count <= 0:
+        return []
+    base = total // count
+    rem = total % count
+    chunks = [base + (1 if idx < rem else 0) for idx in range(count)]
+    return [max(1, item) for item in chunks]
+
+
+def _build_block_activities(
+    block: str,
+    minutes: int,
+    lesson_title: str,
+    activity_text: str,
+    objective_text: str,
+) -> list[str]:
+    if block == "inicio":
+        templates = [
+            "El docente realiza pase de lista y recupera el proposito de la sesion.",
+            f"El docente presenta el tema '{lesson_title}' y vincula el contenido con el resultado de aprendizaje del ADA.",
+            "El grupo activa conocimientos previos con preguntas detonadoras y ejemplos cercanos.",
+            f"Se explican los criterios de trabajo y el objetivo especifico: {objective_text}",
+        ]
+    elif block == "desarrollo":
+        templates = [
+            f"El docente modela conceptos clave del tema '{lesson_title}' con apoyo de ejemplos aplicados.",
+            f"El alumnado desarrolla la actividad central: {activity_text}",
+            "Se organiza trabajo colaborativo para analizar, discutir y resolver el reto de la sesion.",
+            "El docente acompana el proceso, orienta decisiones y retroalimenta avances parciales.",
+            "Cada equipo o estudiante integra hallazgos en un producto de trabajo verificable.",
+        ]
+    else:
+        templates = [
+            "El grupo comparte conclusiones y evidencia avances con base en los criterios definidos.",
+            "El docente retroalimenta resultados y precisa mejoras para la siguiente sesion.",
+            "Se registra una breve reflexion individual sobre el aprendizaje logrado.",
+        ]
+
+    chunk_minutes = _split_minutes(minutes, len(templates))
+    return [f"{template} ({mins} minutos)" for template, mins in zip(templates, chunk_minutes)]
+
+
+def _infer_session_specific_objective(
+    lesson_title: str,
+    session_offset: int,
+    total_sessions: int,
+) -> str:
+    if session_offset == 0:
+        return (
+            f"Identificar los elementos fundamentales de {lesson_title} mediante analisis guiado "
+            "para establecer la base conceptual del ADA."
+        )
+    if session_offset == total_sessions - 1:
+        return (
+            f"Integrar aprendizajes sobre {lesson_title} en una evidencia de desempeno "
+            "que demuestre el logro del resultado de aprendizaje."
+        )
+    return (
+        f"Aplicar los conceptos de {lesson_title} en actividades colaborativas y de analisis "
+        "para fortalecer el avance del entregable del ADA."
+    )
+
+
+def _build_session_summary(
+    lesson_title: str,
+    activity_text: str,
+    foundations: list[str],
+) -> list[str]:
+    summary = [
+        f"Aspectos esenciales de {lesson_title}.",
+        f"Aplicacion del contenido en la actividad: {activity_text}",
+    ]
+    summary.extend(f"{item}." if not str(item).strip().endswith(".") else str(item) for item in foundations[:4])
+    return summary
+
+
+def _build_duration_label(session_numbers: list[int]) -> str:
+    if not session_numbers:
+        return "0 sesiones"
+
+    mins = [_session_total_minutes(number) for number in session_numbers]
+    n90 = sum(1 for m in mins if m == 90)
+    n45 = sum(1 for m in mins if m == 45)
+    total = len(mins)
+
+    parts: list[str] = []
+    if n90:
+        parts.append(f"{n90} sesion{'es' if n90 != 1 else ''} de 90 minutos")
+    if n45:
+        parts.append(f"{n45} sesion{'es' if n45 != 1 else ''} de 45 minutos")
+
+    return f"{total} sesiones ({' y '.join(parts)})"
+
+
+def _extract_activity_number(ada_name: str) -> int | None:
+    match = re.search(r"(\d+)", ada_name or "")
+    if match:
+        try:
+            return int(match.group(1))
+        except ValueError:
+            return None
+    return None
+
+
 def _build_evidencias_aprendizaje(
     lesson_title: str,
     lesson_activity: str,
@@ -121,6 +225,7 @@ def _activity_focus(tipo_actividad: str) -> dict[str, str]:
 def _build_session_instruction(
     lesson_title: str,
     activity_text: str,
+    foundations: list[str],
     session_number: int,
     session_offset: int,
     total_sessions: int,
@@ -130,6 +235,11 @@ def _build_session_instruction(
     session_total_min = _session_total_minutes(session_number)
     inicio_min, desarrollo_min, cierre_min = _session_block_durations(session_total_min)
     focus = _activity_focus(tipo_actividad=tipo_actividad)
+    objective_text = _infer_session_specific_objective(
+        lesson_title=lesson_title,
+        session_offset=session_offset,
+        total_sessions=total_sessions,
+    )
 
     if session_offset == 0:
         inicio_instruction = (
@@ -206,6 +316,12 @@ def _build_session_instruction(
         "hito": "cierre" if session_offset == total_sessions - 1 else "avance",
         "tipo_actividad": tipo_actividad,
         "duracion_min": session_total_min,
+        "objetivo_especifico": objective_text,
+        "resumen_datos_esenciales": _build_session_summary(
+            lesson_title=lesson_title,
+            activity_text=activity_text,
+            foundations=foundations,
+        ),
         "inicio": {
             "duracion_min": inicio_min,
             "instrucciones": inicio_instruction,
@@ -218,6 +334,27 @@ def _build_session_instruction(
             "duracion_min": cierre_min,
             "instrucciones": cierre_instruction,
         },
+        "inicio_actividades": _build_block_activities(
+            block="inicio",
+            minutes=inicio_min,
+            lesson_title=lesson_title,
+            activity_text=activity_text,
+            objective_text=objective_text,
+        ),
+        "desarrollo_actividades": _build_block_activities(
+            block="desarrollo",
+            minutes=desarrollo_min,
+            lesson_title=lesson_title,
+            activity_text=activity_text,
+            objective_text=objective_text,
+        ),
+        "cierre_actividades": _build_block_activities(
+            block="cierre",
+            minutes=cierre_min,
+            lesson_title=lesson_title,
+            activity_text=activity_text,
+            objective_text=objective_text,
+        ),
     }
 
 
@@ -272,11 +409,11 @@ def _build_ada_payload(
     if multi:
         titulos = ", ".join(f"'{t}'" for t, _x, _a in lessons)
         objetivo = (
-            f"Desarrollar las competencias asociadas a {titulos} mediante actividades guiadas y evaluables."
+            f"Desarrollar las competencias asociadas a {titulos} mediante analisis de casos, trabajo colaborativo y elaboracion de evidencias evaluables."
         )
     else:
         objetivo = (
-            f"Desarrollar la competencia asociada a '{primary_title}' mediante actividades guiadas y evaluables."
+            f"Desarrollar la competencia asociada a '{primary_title}' mediante actividades guiadas, investigacion aplicada y produccion de evidencias evaluables."
         )
 
     session_numbers = list(range(ada_meta["sesion_inicio"], ada_meta["sesion_fin"] + 1))
@@ -289,6 +426,7 @@ def _build_ada_payload(
         sesion = _build_session_instruction(
             lesson_title=s_title,
             activity_text=s_activity,
+            foundations=fundamentos,
             session_number=session_number,
             session_offset=offset,
             total_sessions=total_sessions,
@@ -297,18 +435,32 @@ def _build_ada_payload(
         sesion["tema"] = s_title
         sesiones.append(sesion)
 
+    activity_number = _extract_activity_number(str(ada_meta.get("nombre") or ""))
+    duration_label = _build_duration_label(session_numbers)
+
     return {
         "nombre": ada_meta["nombre"],
+        "actividad_numero": activity_number,
+        "titulo_actividad": primary_title,
+        "duracion": duration_label,
+        "puntaje": 10,
         "tipo_actividad": tipo_actividad,
         "objetivo": objetivo,
         "resultado_aprendizaje": combined_activity,
+        "descripcion_actividad": (
+            "Desarrollo progresivo de competencias mediante actividades de inicio, desarrollo y cierre "
+            "en sesiones de 90 y 45 minutos, orientadas a la elaboracion del entregable del ADA."
+        ),
         "contenidos_a_desarrollar": contenidos,
         "fundamentos_tematicos_requeridos": fundamentos,
         "estrategias_ensenanza_aprendizaje": [
-            "Aprendizaje basado en problemas",
+            "Aprendizaje basado en proyectos",
             "Aprendizaje colaborativo",
-            "Andamiaje con retroalimentacion formativa",
-            "Aplicacion de principios DUA",
+            "Investigacion documental",
+            "Analisis de casos",
+            "Discusion guiada",
+            "Elaboracion de organizadores graficos",
+            "Uso de herramientas digitales para la creacion de contenidos",
         ],
         "evidencias_aprendizaje": _build_evidencias_aprendizaje(
             lesson_title=primary_title,
@@ -408,17 +560,20 @@ def build_ada_course_structure(course: CourseStructure, operational_plan: dict[s
                 tipo_actividad="producto",
             )
 
-        periodos_payload.append(
-            {
-                "periodo": period.get("periodo"),
-                "semanas": period.get("semanas"),
-                "adas": adas_payload,
-                "fase_proyecto_integrador": {
-                    **(fase_meta if isinstance(fase_meta, dict) else {}),
-                    "ada_integradora_producto": fase_payload,
-                },
+        periodo_payload: dict[str, Any] = {
+            "periodo": period.get("periodo"),
+            "semanas": period.get("semanas"),
+            "adas": adas_payload,
+        }
+        if isinstance(fase_meta, dict):
+            periodo_payload["fase_proyecto_integrador"] = {
+                **fase_meta,
+                "ada_integradora_producto": fase_payload,
             }
-        )
+        else:
+            periodo_payload["fase_proyecto_integrador"] = None
+
+        periodos_payload.append(periodo_payload)
 
     return {
         "periodos": periodos_payload,

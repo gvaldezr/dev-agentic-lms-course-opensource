@@ -23,6 +23,11 @@ Tambien se genera una carpeta de apoyo para montaje manual:
 
 - `manual_build_pack_<slug>_<timestamp>/`
 
+Adicionalmente, el pipeline publica las presentaciones en `docs/presentaciones/<slug>/<timestamp>/...`
+para que GitHub Pages las sirva como URL publica y puedan embederse via `iframe` en Moodle.
+
+Requisito: habilita GitHub Pages en el repositorio (Source: `GitHub Actions`).
+
 ## 2) Importar al banco de preguntas de Moodle
 
 1. Entra al curso en Moodle con un rol que pueda administrar preguntas.
@@ -86,6 +91,11 @@ Dentro de `manual_build_pack_<slug>_<timestamp>/`:
 - `checklist_publicacion.md`: lista operativa para publicar sin omisiones.
 - `adas/<n>_<ada_slug>/contenido.html`: contenido listo para recurso `Pagina` o `Libro`.
 - `adas/<n>_<ada_slug>/entregable.txt`: texto base para la actividad `Tarea`.
+
+Cuando existe presentacion para una ADA, `contenido.html` incluye:
+
+- `iframe` apuntando a la URL publica de GitHub Pages.
+- Enlace alterno para abrir la presentacion en nueva pestana.
 
 Flujo recomendado:
 

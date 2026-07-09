@@ -8,8 +8,8 @@ Pipeline para transformar un programa de asignatura (`.docx` o `.pdf`) en:
 
 ## Estado actual del proyecto
 
-- Planeacion operativa: 15 semanas, 2 sesiones por semana, patron de duracion `[90, 45]` minutos.
-- Estructura didactica: 3 periodos, ADAs de proceso y fase integradora de producto.
+- Planeacion operativa: 14 semanas, 2 sesiones por semana, patron de duracion `[90, 45]` minutos.
+- Estructura didactica: 5 ADAs de proceso (sin fase integradora).
 - Lecturas por eje tematico (OpenAlex + LLM) y presentaciones HTML5 por ADA.
 - Banco de preguntas de aplicacion (opcion multiple con 4 opciones y distractores de alto nivel).
 - Quiz estratificado de 20 items a partir del banco.
@@ -21,7 +21,7 @@ Pipeline para transformar un programa de asignatura (`.docx` o `.pdf`) en:
 - `src/course_pipeline/schemas.py`: modelos y validacion.
 - `src/course_pipeline/docx_parser.py`: extraccion desde DOCX/PDF (`pypdf` para PDF).
 - `src/course_pipeline/instructional_generator.py`: estructura modular via LLM.
-- `src/course_pipeline/planning.py`: reglas operativas (15 semanas, sesiones 90/45).
+- `src/course_pipeline/planning.py`: reglas operativas (14 semanas, sesiones 90/45).
 - `src/course_pipeline/ada_structure.py`: construccion de estructura centrada en ADAs.
 - `src/course_pipeline/session_objectives.py`: objetivos de aprendizaje por sesion.
 - `src/course_pipeline/reading_generator.py`: lecturas de fundamentacion por eje.
@@ -67,6 +67,7 @@ python scripts/run_pipeline.py \
 - `--skip-readings`: omite lecturas de fundamentacion.
 - `--skip-presentations`: omite presentaciones HTML.
 - `--skip-questions`: omite banco de preguntas y quiz.
+- `--skip-checklists`: omite listas de cotejo por entregable ADA.
 
 ## Salidas
 
@@ -95,6 +96,14 @@ El `manual_build_pack` incluye, entre otros:
 - `checklist_publicacion.md` (pasos operativos)
 - `adas/*/contenido.html` (contenido listo para recurso Pagina/Libro)
 - `adas/*/entregable.txt` (base para actividad Tarea)
+
+Si hay presentaciones generadas, el pipeline tambien las publica en:
+
+- `docs/presentaciones/<slug>/<timestamp>/<ada>/index.html`
+
+Estas rutas se despliegan con GitHub Pages mediante
+`.github/workflows/deploy-pages.yml`, y `contenido.html` embebe la URL publica
+en un `iframe` para importacion en Moodle.
 
 ## Visualizacion SPA
 

@@ -8,10 +8,11 @@ from pathlib import Path
 
 from .config import Settings
 from .ada_structure import build_ada_course_structure
+from .checklist_generator import attach_checklists_to_ada_structure
 from .docx_parser import DocxParsingError, parse_course_file
 from .image_client import ImageGenerationError, build_image_client
 from .instructional_generator import InstructionalGenerationError, InstructionalGenerator
-from .manual_build_pack import export_manual_build_pack
+from .manual_build_pack import export_manual_build_pack, publish_presentations_to_github_pages
 from .moodle_xml_exporter import MoodleXmlExporter
 from .openalex_enrichment import build_openalex_payload
 from .planning import build_operational_plan
@@ -37,6 +38,7 @@ class CoursePipeline:
         skip_readings: bool = False,
         skip_presentations: bool = False,
         skip_questions: bool = False,
+        skip_checklists: bool = False,
     ) -> dict:
         self.settings.ensure_output_dirs()
         warnings: list[str] = []
@@ -84,9 +86,10 @@ class CoursePipeline:
             )
         )
         output_payload["planeacion_operativa"] = build_operational_plan(
-            total_weeks=15,
-            periods=3,
-            adas_per_period=2,
+            total_weeks=14,
+            periods=1,
+            total_adas=5,
+            include_integrator_phase=False,
             session_minutes=[90, 45],
             template_context=parsed.planning_context,
         )
@@ -102,6 +105,20 @@ class CoursePipeline:
             course_name=course.curso,
         )
         warnings.extend(session_warnings)
+
+        if not skip_checklists:
+            checklists_count = attach_checklists_to_ada_structure(
+                output_payload["estructura_curso_adas"]
+            )
+            output_payload["listas_cotejo_entregables"] = {
+                "adas_procesadas": checklists_count,
+                "descripcion": "Listas de cotejo generadas automaticamente por cada entregable ADA.",
+            }
+        else:
+            output_payload["listas_cotejo_entregables"] = {
+                "adas_procesadas": 0,
+                "descripcion": "Generacion de listas de cotejo desactivada por parametro --skip-checklists.",
+            }
 
         if parsed.program_metadata:
             output_payload["programa_asignatura"] = parsed.program_metadata
@@ -119,6 +136,14 @@ class CoursePipeline:
                     ada_structure=output_payload["estructura_curso_adas"],
                 )
                 warnings.extend(presentation_warnings)
+
+        pages_publish = publish_presentations_to_github_pages(
+            ada_structure=output_payload.get("estructura_curso_adas"),
+            slug=slug,
+            timestamp=timestamp,
+            repo_root=Path(__file__).resolve().parents[2],
+        )
+        output_payload["github_pages_presentaciones"] = pages_publish
 
         question_bank: list[dict] = []
         quiz_items: list[dict] = []
@@ -171,6 +196,7 @@ class CoursePipeline:
             "xml_output": str(xml_output_path),
             "quiz_output": quiz_output_path,
             "manual_pack_output": str(manual_pack_path),
+            "github_pages_presentaciones": pages_publish,
             "images_dir": str(images_dir),
             "warnings": warnings,
         }

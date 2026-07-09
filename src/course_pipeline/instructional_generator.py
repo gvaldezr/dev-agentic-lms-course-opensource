@@ -144,8 +144,8 @@ class InstructionalGenerator:
             planning_text = (
                 "\n\nContexto de planeacion detectado en plantilla:\n"
                 f"- {json.dumps(parsed_input.planning_context, ensure_ascii=False)}\n"
-                "- Debes alinear la propuesta a 16 semanas, 3 periodos, 2 ADAS por periodo "
-                "y una fase de proyecto integrador final por periodo."
+                "- Debes alinear la propuesta a 14 semanas, con 5 ADAs de proceso en total, "
+                "sin fase de ADA integradora."
             )
 
         return (

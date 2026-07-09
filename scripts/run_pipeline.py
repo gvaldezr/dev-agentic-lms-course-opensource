@@ -38,6 +38,11 @@ def parse_args() -> argparse.Namespace:
         action="store_true",
         help="Omite la generacion del banco de preguntas y el quiz",
     )
+    parser.add_argument(
+        "--skip-checklists",
+        action="store_true",
+        help="Omite la generacion de listas de cotejo por entregable ADA",
+    )
     args = parser.parse_args()
     args.input_file = args.input_file or args.docx or args.pdf
     if not args.input_file:
@@ -64,6 +69,7 @@ def main() -> int:
             skip_readings=args.skip_readings,
             skip_presentations=args.skip_presentations,
             skip_questions=args.skip_questions,
+            skip_checklists=args.skip_checklists,
         )
     except (DocxParsingError, InstructionalGenerationError) as exc:
         logging.error("Pipeline fallo: %s", exc)

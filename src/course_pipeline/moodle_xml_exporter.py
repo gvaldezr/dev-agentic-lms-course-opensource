@@ -105,16 +105,43 @@ class MoodleXmlExporter:
         question_text = etree.SubElement(question, "questiontext", format="html")
         text = etree.SubElement(question_text, "text")
 
-        html_parts: list[str] = [f"<h4>{self._escape(tema)}</h4>"]
-        objetivo = sesion.get("objetivo")
+        duracion = sesion.get("duracion_min")
+        html_parts: list[str] = [
+            f"<h4>SESION {self._escape(str(numero or ''))}"
+            f" ({self._escape(str(duracion or ''))} minutos) - {self._escape(tema)}</h4>"
+        ]
+        objetivo = sesion.get("objetivo_especifico") or sesion.get("objetivo")
         if objetivo:
-            html_parts.append(f"<p><strong>Objetivo:</strong> {self._escape(objetivo)}</p>")
-        for etiqueta, clave in (("Inicio", "inicio"), ("Desarrollo", "desarrollo"), ("Cierre", "cierre")):
-            valor = sesion.get(clave)
-            if valor:
-                html_parts.append(
-                    f"<p><strong>{etiqueta}:</strong> {self._escape(self._phase_text(valor))}</p>"
-                )
+            html_parts.append(f"<p><strong>Objetivo especifico:</strong> {self._escape(str(objetivo))}</p>")
+
+        resumen = sesion.get("resumen_datos_esenciales") or []
+        if resumen:
+            html_parts.append("<p><strong>Resumen de los datos esenciales de los temas a tratar</strong></p><ul>")
+            for item in resumen:
+                html_parts.append(f"<li>{self._escape(str(item))}</li>")
+            html_parts.append("</ul>")
+
+        for etiqueta, clave, detalle_clave in (
+            ("INICIO", "inicio", "inicio_actividades"),
+            ("DESARROLLO", "desarrollo", "desarrollo_actividades"),
+            ("CIERRE", "cierre", "cierre_actividades"),
+        ):
+            fase = sesion.get(clave)
+            fase_min = ""
+            if isinstance(fase, dict):
+                fase_min = str(fase.get("duracion_min") or "")
+            html_parts.append(
+                f"<p><strong>{etiqueta} ({self._escape(fase_min)} minutos)</strong></p>"
+            )
+
+            detalle = sesion.get(detalle_clave) or []
+            if detalle:
+                html_parts.append("<ol>")
+                for item in detalle:
+                    html_parts.append(f"<li>{self._escape(str(item))}</li>")
+                html_parts.append("</ol>")
+            elif fase:
+                html_parts.append(f"<p>{self._escape(self._phase_text(fase))}</p>")
 
         text.text = etree.CDATA("".join(html_parts))
 
@@ -130,6 +157,7 @@ class MoodleXmlExporter:
         """Pagina de contenido con la presentacion HTML5 incrustada (iframe srcdoc)."""
         presentacion = ada.get("presentacion") or {}
         html = presentacion.get("html")
+        public_url = str(ada.get("presentacion_public_url") or "").strip()
         if not html:
             return
 
@@ -146,15 +174,25 @@ class MoodleXmlExporter:
         question_text = etree.SubElement(question, "questiontext", format="html")
         text = etree.SubElement(question_text, "text")
 
-        # srcdoc lleva el documento HTML completo escapando comillas y ampersands.
-        srcdoc = html.replace("&", "&amp;").replace('"', "&quot;")
-        iframe = (
-            f'<iframe srcdoc="{srcdoc}" '
-            'style="width:100%;height:480px;border:1px solid #c9a24a;'
-            'border-radius:8px;background:#0b1e3f;" '
-            'sandbox="allow-scripts allow-same-origin" '
-            'loading="lazy" title="Presentacion interactiva"></iframe>'
-        )
+        if public_url:
+            safe_url = self._escape(public_url)
+            iframe = (
+                f'<iframe src="{safe_url}" '
+                'style="width:100%;height:520px;border:1px solid #c9a24a;'
+                'border-radius:8px;background:#0b1e3f;" '
+                'loading="lazy" referrerpolicy="no-referrer" '
+                'title="Presentacion interactiva"></iframe>'
+            )
+        else:
+            # Fallback a srcdoc solo cuando no existe URL publica.
+            srcdoc = html.replace("&", "&amp;").replace('"', "&quot;")
+            iframe = (
+                f'<iframe srcdoc="{srcdoc}" '
+                'style="width:100%;height:480px;border:1px solid #c9a24a;'
+                'border-radius:8px;background:#0b1e3f;" '
+                'sandbox="allow-scripts allow-same-origin" '
+                'loading="lazy" title="Presentacion interactiva"></iframe>'
+            )
 
         html_parts: list[str] = [f"<h4>{self._escape(titulo)}</h4>"]
         if subtitulo:
@@ -163,6 +201,11 @@ class MoodleXmlExporter:
             html_parts.append(
                 f"<p><strong>{self._escape(str(num))} diapositivas</strong> "
                 "&middot; usa las flechas \u2190 \u2192 o los botones para navegar.</p>"
+            )
+        if public_url:
+            html_parts.append(
+                f"<p><a href=\"{self._escape(public_url)}\" target=\"_blank\" rel=\"noopener\">"
+                "Abrir presentacion en nueva pestana</a></p>"
             )
         html_parts.append(f"<p>{iframe}</p>")
 
@@ -188,6 +231,21 @@ class MoodleXmlExporter:
         text = etree.SubElement(question_text, "text")
 
         html_parts: list[str] = []
+        wrap_style = (
+            "font-family:'Segoe UI',system-ui,sans-serif;max-width:900px;margin:0 auto;"
+            "color:#333;line-height:1.55;background:#f8f9fa;padding:16px;border-radius:10px;"
+            "border:1px solid #d8dde6;"
+        )
+        head_style = (
+            "background:#002f6c;color:#fff;padding:14px 16px;border-radius:8px;"
+            "border-bottom:4px solid #D4AF37;margin-bottom:12px;"
+        )
+        body_style = "background:#fff;border:1px solid #e1e6ef;border-radius:8px;padding:12px 14px;"
+
+        html_parts.append(f'<div style="{wrap_style}">')
+        html_parts.append(f'<div style="{head_style}"><h3 style="margin:0;">Entregable por ADA</h3>')
+        html_parts.append(f'<p style="margin:6px 0 0 0;opacity:.95;">{self._escape(ada_name)}</p></div>')
+        html_parts.append(f'<div style="{body_style}">')
         objetivo = ada.get("objetivo")
         if objetivo:
             html_parts.append(f"<p><strong>Objetivo:</strong> {self._escape(objetivo)}</p>")
@@ -207,6 +265,35 @@ class MoodleXmlExporter:
             html_parts.append(
                 f"<p><strong>Instrumento de evaluacion:</strong> {self._escape(instrumento)}</p>"
             )
+
+        lista = ada.get("lista_cotejo_entregable") or {}
+        criterios = lista.get("criterios") or []
+        if criterios:
+            html_parts.append(
+                "<h4 style=\"margin:14px 0 8px;color:#002f6c;border-bottom:2px solid #D4AF37;padding-bottom:4px;\">"
+                "Lista de cotejo</h4>"
+            )
+            html_parts.append(
+                "<table style=\"width:100%;border-collapse:collapse;font-size:.94rem;\">"
+                "<thead><tr style=\"background:#343a40;color:#fff;\">"
+                "<th style=\"padding:8px;border:1px solid #d9dee8;text-align:left;\">Criterio</th>"
+                "<th style=\"padding:8px;border:1px solid #d9dee8;width:70px;text-align:center;\">Valor</th>"
+                "</tr></thead><tbody>"
+            )
+            for c in criterios:
+                crit = self._escape(str(c.get("criterio") or "").strip())
+                if not crit:
+                    continue
+                val = self._escape(str(c.get("valor") or "1"))
+                html_parts.append(
+                    "<tr>"
+                    f"<td style=\"padding:8px;border:1px solid #e4e8ef;\">{crit}</td>"
+                    f"<td style=\"padding:8px;border:1px solid #e4e8ef;text-align:center;\">{val}</td>"
+                    "</tr>"
+                )
+            html_parts.append("</tbody></table>")
+
+        html_parts.append("</div></div>")
 
         text.text = etree.CDATA("".join(html_parts) or "<p>Entrega tu producto de la ADA.</p>")
 
