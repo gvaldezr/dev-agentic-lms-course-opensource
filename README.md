@@ -43,20 +43,20 @@ source .venv/bin/activate
 pip install -r requirements.txt
 ```
 
-2. Configurar variables:
+1. Configurar variables:
 
 ```bash
 cp .env.example .env
 # Ajustar LLM_PROVIDER, LLM_MODEL, LLM_API_KEY y demas parametros
 ```
 
-3. Ejecutar pipeline (sin imagenes, recomendado para pruebas rapidas):
+1. Ejecutar pipeline (sin imagenes, recomendado para pruebas rapidas):
 
 ```bash
 python scripts/run_pipeline.py \
-	--pdf "input/Comunidades virtuales_Asig3.pdf" \
-	--course-name "Comunidades virtuales" \
-	--skip-images
+  --pdf "input/Comunidades virtuales_Asig3.pdf" \
+  --course-name "Comunidades virtuales" \
+  --skip-images
 ```
 
 ## Argumentos CLI relevantes
@@ -126,3 +126,16 @@ La vista `Banco de preguntas / Quiz` permite:
 ## Importacion en Moodle
 
 Consulta la guia paso a paso en `MOODLE_IMPORT.md`.
+
+## Seguridad de secretos
+
+El repositorio incluye un workflow de escaneo de secretos con Gitleaks en
+`.github/workflows/secret-scan.yml` que se ejecuta en cada `push` a `main` y en
+`pull_request`.
+
+Para validar localmente antes de subir cambios:
+
+```bash
+docker run --rm -v "$(pwd):/repo" zricethezav/gitleaks:latest detect \
+  --source=/repo --verbose
+```
