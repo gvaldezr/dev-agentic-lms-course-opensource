@@ -1,0 +1,430 @@
+from __future__ import annotations
+
+import re
+from math import ceil
+from typing import Any
+
+from .schemas import CourseStructure
+
+# Tiempo efectivo semanal: 1 sesion de 90 min + 1 sesion de 45 min.
+SESSION_MINUTES_PATTERN = [90, 45]
+
+
+def _session_total_minutes(session_number: int) -> int:
+    """Minutos de la sesion segun su posicion dentro de la semana (patron 90/45)."""
+    index = (session_number - 1) % len(SESSION_MINUTES_PATTERN)
+    return SESSION_MINUTES_PATTERN[index]
+
+
+def _session_block_durations(total_min: int) -> tuple[int, int, int]:
+    """Reparte los minutos de la sesion en inicio / desarrollo / cierre."""
+    edge = int(round((total_min / 6) / 5) * 5) or 5
+    desarrollo = total_min - 2 * edge
+    return edge, desarrollo, edge
+
+
+def _build_evidencias_aprendizaje(
+    lesson_title: str,
+    lesson_activity: str,
+    tipo_actividad: str,
+    instrumento: str,
+) -> list[str]:
+    """Genera evidencias de aprendizaje con un producto especifico a revisar,
+    derivado del objetivo / resultado de aprendizaje del ADA."""
+    resultado = re.sub(r"\s+", " ", (lesson_activity or "").strip()).rstrip(".")
+    titulo = re.sub(r"\s+", " ", (lesson_title or "").strip()).rstrip(".")
+    instrumento_l = (instrumento or "instrumento de evaluacion").lower()
+
+    if not resultado:
+        resultado = (
+            f"el desempeno esperado en «{titulo}»" if titulo
+            else "el resultado de aprendizaje del ADA"
+        )
+
+    if tipo_actividad == "producto":
+        return [
+            f"Producto integrador final que evidencia: {resultado} (evaluado con {instrumento_l}).",
+            f"Documento o artefacto entregable de «{titulo}» con criterios de calidad cumplidos.",
+            "Presentacion o defensa del producto integrador con retroalimentacion registrada.",
+        ]
+
+    return [
+        f"Producto especifico que evidencia: {resultado} (evaluado con {instrumento_l}).",
+        f"Avance o borrador del producto de «{titulo}» con registro de retroalimentacion formativa.",
+        "Registro de participacion y autoevaluacion del avance hacia el resultado de aprendizaje.",
+    ]
+
+
+def _infer_thematic_foundations(
+    lesson_title: str,
+    lesson_activity: str,
+    contenidos: list[str],
+) -> list[str]:
+    text = " ".join([lesson_title, lesson_activity, *contenidos]).lower()
+
+    rules: list[tuple[list[str], str]] = [
+        (["community manager", "cm"], "Rol estrategico del Community Manager"),
+        (["marca", "tono", "identidad"], "Comunicacion e identidad de marca"),
+        (["audiencia", "comunidad", "seguidores"], "Gestion y dinamizacion de comunidades digitales"),
+        (["target", "buyer persona", "segment"], "Segmentacion y perfilamiento de audiencias"),
+        (["diagnost", "necesidad", "pain point"], "Diagnostico de necesidades del publico"),
+        (["monitor", "escucha", "comentario"], "Monitorizacion y escucha activa digital"),
+        (["contenido", "publicacion", "estrategia"], "Estrategia de contenidos en redes sociales"),
+        (["conflicto", "crisis", "respuesta"], "Manejo de conflictos y atencion en entornos digitales"),
+        (["evaluacion", "rubrica", "cotejo"], "Evaluacion de desempeno en actividades de comunicacion digital"),
+    ]
+
+    inferred: list[str] = []
+    for keywords, label in rules:
+        if any(keyword in text for keyword in keywords):
+            inferred.append(label)
+
+    if not inferred:
+        inferred.append(f"Fundamentos conceptuales de {lesson_title}")
+
+    # Preserve order while removing duplicates.
+    return list(dict.fromkeys(inferred))
+
+
+def _middle_session_stage(session_offset: int, total_sessions: int) -> str:
+    intermediate_count = max(1, total_sessions - 2)
+    intermediate_pos = max(0, session_offset - 1)
+
+    if intermediate_count == 1:
+        return "aplicacion"
+
+    ratio = intermediate_pos / (intermediate_count - 1)
+    if ratio <= 0.34:
+        return "apropiacion"
+    if ratio <= 0.74:
+        return "aplicacion"
+    return "validacion"
+
+
+def _activity_focus(tipo_actividad: str) -> dict[str, str]:
+    if tipo_actividad == "producto":
+        return {
+            "artifact": "producto final",
+            "evaluation": "rubrica analitica",
+            "verb": "materializar",
+            "collab": "coedicion",
+        }
+
+    return {
+        "artifact": "proceso de trabajo",
+        "evaluation": "lista de cotejo",
+        "verb": "fortalecer",
+        "collab": "coordinacion",
+    }
+
+
+def _build_session_instruction(
+    lesson_title: str,
+    activity_text: str,
+    session_number: int,
+    session_offset: int,
+    total_sessions: int,
+    tipo_actividad: str,
+) -> dict[str, Any]:
+    week_number = ceil(session_number / 2)
+    session_total_min = _session_total_minutes(session_number)
+    inicio_min, desarrollo_min, cierre_min = _session_block_durations(session_total_min)
+    focus = _activity_focus(tipo_actividad=tipo_actividad)
+
+    if session_offset == 0:
+        inicio_instruction = (
+            f"Presentar el ADA y su objetivo para '{lesson_title}', activar conocimientos previos "
+            f"y compartir los criterios de evaluacion e instrumento a usar ({focus['evaluation']})."
+        )
+        desarrollo_instruction = (
+            f"Iniciar la actividad base: {activity_text}. Guiar la comprension de consignas, "
+            f"asignar roles para la {focus['collab']} y modelar un ejemplo de desempeno esperado."
+        )
+        cierre_instruction = (
+            "Recoger evidencias diagnosticas, registrar acuerdos de trabajo y definir entregables "
+            "de avance para la siguiente sesion."
+        )
+    elif session_offset == total_sessions - 1:
+        inicio_instruction = (
+            "Recapitular hallazgos de sesiones anteriores y aclarar criterios finales de calidad "
+            "para el cierre del ADA."
+        )
+        desarrollo_instruction = (
+            f"Consolidar el {focus['artifact']}, realizar revision cruzada entre pares y ajustar en funcion "
+            "de la retroalimentacion recibida."
+        )
+        cierre_instruction = (
+            "Realizar cierre reflexivo del ADA, entrega formal de evidencias y retroalimentacion "
+            f"sumativa segun el instrumento definido ({focus['evaluation']})."
+        )
+    else:
+        stage = _middle_session_stage(session_offset=session_offset, total_sessions=total_sessions)
+
+        if stage == "apropiacion":
+            inicio_instruction = (
+                "Revisar avances iniciales, aclarar dudas de comprension conceptual y acordar metas "
+                f"puntuales para {focus['verb']} la base del ADA."
+            )
+            desarrollo_instruction = (
+                "Desarrollar practica guiada con ejemplos comparativos, retroalimentacion inmediata "
+                f"y ajustes de desempeno centrados en criterios de {focus['artifact']}."
+            )
+            cierre_instruction = (
+                "Documentar aprendizajes emergentes y definir tareas de profundizacion para transitar "
+                "a una aplicacion mas autonoma."
+            )
+        elif stage == "aplicacion":
+            inicio_instruction = (
+                "Retomar metas de mejora de la sesion anterior y explicitar el reto aplicado de la "
+                "jornada con indicadores de logro."
+            )
+            desarrollo_instruction = (
+                "Ejecutar trabajo colaborativo orientado a resolver la actividad central, incorporando "
+                f"iteraciones del {focus['artifact']} y soporte docente focalizado."
+            )
+            cierre_instruction = (
+                "Consolidar evidencias parciales, autoevaluar avances y acordar ajustes concretos antes "
+                "de la fase de validacion."
+            )
+        else:
+            inicio_instruction = (
+                "Socializar avances entre equipos, contrastar resultados con los criterios definidos "
+                "y priorizar mejoras criticas previas al cierre."
+            )
+            desarrollo_instruction = (
+                "Realizar validacion entre pares con coevaluacion estructurada, integrar observaciones y "
+                f"preparar version prefinal del {focus['artifact']}."
+            )
+            cierre_instruction = (
+                "Registrar acuerdos finales de mejora, dejar trazabilidad de cambios y organizar la "
+                "entrega para la sesion de cierre."
+            )
+
+    return {
+        "sesion": session_number,
+        "semana": week_number,
+        "hito": "cierre" if session_offset == total_sessions - 1 else "avance",
+        "tipo_actividad": tipo_actividad,
+        "duracion_min": session_total_min,
+        "inicio": {
+            "duracion_min": inicio_min,
+            "instrucciones": inicio_instruction,
+        },
+        "desarrollo": {
+            "duracion_min": desarrollo_min,
+            "instrucciones": desarrollo_instruction,
+        },
+        "cierre": {
+            "duracion_min": cierre_min,
+            "instrucciones": cierre_instruction,
+        },
+    }
+
+
+def _assign_lessons_to_sessions(num_lessons: int, total_sessions: int) -> list[int]:
+    """Reparte de forma equilibrada los subtemas del ADA a lo largo de sus sesiones,
+    devolviendo para cada sesion el indice del subtema que aborda."""
+    if num_lessons <= 0:
+        return [0] * max(1, total_sessions)
+    return [min(num_lessons - 1, (offset * num_lessons) // max(1, total_sessions)) for offset in range(total_sessions)]
+
+
+def _build_ada_payload(
+    ada_meta: dict[str, Any],
+    lessons: list[tuple[str, str, str]],
+    tipo_actividad: str,
+) -> dict[str, Any]:
+    if not lessons:
+        lessons = [("", "", "")]
+
+    primary_title, primary_text, primary_activity = lessons[0]
+    multi = len(lessons) > 1
+
+    if multi:
+        contenidos: list[str] = []
+        for lesson_title, lesson_text, _activity in lessons:
+            paragraphs = [part.strip() for part in lesson_text.split("\n") if part.strip()]
+            snippet = paragraphs[0] if paragraphs else lesson_text
+            contenidos.append(f"{lesson_title}: {snippet}".strip(": ").strip())
+    else:
+        paragraphs = [part.strip() for part in primary_text.split("\n") if part.strip()]
+        contenidos = paragraphs[:3] if paragraphs else [primary_text]
+
+    instrumento = "Lista de cotejo" if tipo_actividad == "proceso" else "Rubrica analitica"
+    total_sessions = max(1, ada_meta["duracion_sesiones"])
+
+    fundamentos: list[str] = []
+    for lesson_title, lesson_text, lesson_activity in lessons:
+        paras = [part.strip() for part in lesson_text.split("\n") if part.strip()][:3]
+        fundamentos.extend(
+            _infer_thematic_foundations(
+                lesson_title=lesson_title,
+                lesson_activity=lesson_activity,
+                contenidos=paras,
+            )
+        )
+    fundamentos = list(dict.fromkeys(fundamentos))
+
+    combined_activity = " ".join(
+        dict.fromkeys(act.strip() for _t, _x, act in lessons if act and act.strip())
+    ) or primary_activity
+
+    if multi:
+        titulos = ", ".join(f"'{t}'" for t, _x, _a in lessons)
+        objetivo = (
+            f"Desarrollar las competencias asociadas a {titulos} mediante actividades guiadas y evaluables."
+        )
+    else:
+        objetivo = (
+            f"Desarrollar la competencia asociada a '{primary_title}' mediante actividades guiadas y evaluables."
+        )
+
+    session_numbers = list(range(ada_meta["sesion_inicio"], ada_meta["sesion_fin"] + 1))
+    total_sessions = max(1, len(session_numbers))
+    lesson_for_session = _assign_lessons_to_sessions(len(lessons), total_sessions)
+
+    sesiones = []
+    for offset, session_number in enumerate(session_numbers):
+        s_title, _s_text, s_activity = lessons[lesson_for_session[offset]]
+        sesion = _build_session_instruction(
+            lesson_title=s_title,
+            activity_text=s_activity,
+            session_number=session_number,
+            session_offset=offset,
+            total_sessions=total_sessions,
+            tipo_actividad=tipo_actividad,
+        )
+        sesion["tema"] = s_title
+        sesiones.append(sesion)
+
+    return {
+        "nombre": ada_meta["nombre"],
+        "tipo_actividad": tipo_actividad,
+        "objetivo": objetivo,
+        "resultado_aprendizaje": combined_activity,
+        "contenidos_a_desarrollar": contenidos,
+        "fundamentos_tematicos_requeridos": fundamentos,
+        "estrategias_ensenanza_aprendizaje": [
+            "Aprendizaje basado en problemas",
+            "Aprendizaje colaborativo",
+            "Andamiaje con retroalimentacion formativa",
+            "Aplicacion de principios DUA",
+        ],
+        "evidencias_aprendizaje": _build_evidencias_aprendizaje(
+            lesson_title=primary_title,
+            lesson_activity=combined_activity,
+            tipo_actividad=tipo_actividad,
+            instrumento=instrumento,
+        ),
+        "instrumento_evaluacion": instrumento,
+        "sesion_inicio": ada_meta["sesion_inicio"],
+        "sesion_fin": ada_meta["sesion_fin"],
+        "duracion_sesiones": ada_meta["duracion_sesiones"],
+        "sesiones_desarrolladas": sesiones,
+    }
+
+
+def _partition_lessons(
+    lessons: list[tuple[str, str, str]],
+    num_slots: int,
+) -> list[list[tuple[str, str, str]]]:
+    """Reparte de forma contigua y equilibrada todas las lecciones (subtemas) entre
+    los `num_slots` ADAs disponibles, garantizando que cada subtema quede asignado."""
+    n = len(lessons)
+    if num_slots <= 0 or n == 0:
+        return []
+
+    base, remainder = divmod(n, num_slots)
+    groups: list[list[tuple[str, str, str]]] = []
+    cursor = 0
+    for slot in range(num_slots):
+        size = base + (1 if slot < remainder else 0)
+        chunk = lessons[cursor:cursor + size]
+        if not chunk:
+            # Hay mas ADAs que subtemas: reutiliza ciclicamente para no dejar ADAs vacias.
+            chunk = [lessons[slot % n]]
+        else:
+            cursor += size
+        groups.append(chunk)
+    return groups
+
+
+def build_ada_course_structure(course: CourseStructure, operational_plan: dict[str, Any]) -> dict[str, Any]:
+    flat_lessons: list[tuple[str, str, str]] = []
+    for module in course.modulos:
+        for lesson in module.lecciones:
+            flat_lessons.append((lesson.titulo, lesson.texto, lesson.actividad))
+
+    if not flat_lessons:
+        return {"periodos": []}
+
+    periodizacion = list(operational_plan.get("periodizacion", []))
+
+    # Conteo de "slots" (ADAs de proceso + fase integradora por periodo) en el
+    # mismo orden en que se consumiran, para repartir TODOS los subtemas entre ellos.
+    total_slots = 0
+    for period in periodizacion:
+        total_slots += len(period.get("adas", []))
+        if isinstance(period.get("fase_proyecto_integrador"), dict):
+            total_slots += 1
+
+    lesson_groups = _partition_lessons(flat_lessons, total_slots)
+    group_iter = iter(lesson_groups)
+
+    def _next_group() -> list[tuple[str, str, str]]:
+        try:
+            return next(group_iter)
+        except StopIteration:
+            return [flat_lessons[0]]
+
+    periodos_payload: list[dict[str, Any]] = []
+
+    for period in periodizacion:
+        adas_payload: list[dict[str, Any]] = []
+
+        for ada_meta in period.get("adas", []):
+            adas_payload.append(
+                _build_ada_payload(
+                    ada_meta=ada_meta,
+                    lessons=_next_group(),
+                    tipo_actividad="proceso",
+                )
+            )
+
+        fase_meta = period.get("fase_proyecto_integrador")
+        fase_payload = None
+        if isinstance(fase_meta, dict):
+            phase_name = str(fase_meta.get("nombre") or f"ADA integradora periodo {period.get('periodo', '')}").strip()
+            phase_ada_meta = {
+                "nombre": phase_name,
+                "sesion_inicio": int(fase_meta.get("sesion_inicio", 0) or 0),
+                "sesion_fin": int(fase_meta.get("sesion_fin", 0) or 0),
+                "duracion_sesiones": int(fase_meta.get("duracion_sesiones", 1) or 1),
+            }
+
+            fase_payload = _build_ada_payload(
+                ada_meta=phase_ada_meta,
+                lessons=_next_group(),
+                tipo_actividad="producto",
+            )
+
+        periodos_payload.append(
+            {
+                "periodo": period.get("periodo"),
+                "semanas": period.get("semanas"),
+                "adas": adas_payload,
+                "fase_proyecto_integrador": {
+                    **(fase_meta if isinstance(fase_meta, dict) else {}),
+                    "ada_integradora_producto": fase_payload,
+                },
+            }
+        )
+
+    return {
+        "periodos": periodos_payload,
+        "criterios_generales": {
+            "duracion_sesion_min": list(SESSION_MINUTES_PATTERN),
+            "estructura_sesion": ["inicio", "desarrollo", "cierre"],
+            "frecuencia_semanal": 2,
+        },
+    }

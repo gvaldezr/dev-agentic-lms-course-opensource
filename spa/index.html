@@ -1,0 +1,1447 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Planeación Didáctica · UADY</title>
+<style>
+  :root{
+    --navy:#0b1e3f;
+    --navy2:#102a56;
+    --gold:#c9a24a;
+    --gold-soft:#e7d6a8;
+    --ink:#1a1a1a;
+    --line:#1f3b6e;
+    --bg:#eef1f6;
+    --cell:#ffffff;
+    --muted:#5a6a85;
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{
+    background:var(--bg);
+    color:var(--ink);
+    font-family:Arial, "Helvetica Neue", Helvetica, sans-serif;
+    font-size:13px;
+    line-height:1.4;
+  }
+
+  /* ---------- Top toolbar (no print) ---------- */
+  .toolbar{
+    position:sticky;top:0;z-index:50;
+    background:var(--navy);
+    color:#fff;
+    display:flex;flex-wrap:wrap;gap:12px;align-items:center;
+    padding:10px 18px;
+    border-bottom:3px solid var(--gold);
+    box-shadow:0 2px 8px rgba(0,0,0,.2);
+  }
+  .toolbar h1{font-size:15px;margin:0;font-weight:700;letter-spacing:.5px;}
+  .toolbar .spacer{flex:1;}
+  .toolbar label{font-size:12px;opacity:.9;}
+  .toolbar select,.toolbar button,.toolbar input[type=file]::file-selector-button{
+    font-family:inherit;font-size:12px;
+    border:1px solid var(--gold);
+    background:#fff;color:var(--navy);
+    border-radius:5px;padding:6px 10px;cursor:pointer;
+  }
+  .toolbar select{min-width:240px;}
+  .toolbar button{background:var(--gold);color:var(--navy);font-weight:700;}
+  .toolbar button:hover{filter:brightness(1.05);}
+  .toolbar button.ghost{background:transparent;color:#fff;}
+  .toolbar input[type=file]{font-size:12px;color:#fff;max-width:230px;}
+  .status{font-size:11px;opacity:.85;}
+
+  /* ---------- Page sheet ---------- */
+  .sheet{
+    max-width:900px;
+    margin:22px auto 60px;
+    background:#fff;
+    padding:0 0 40px;
+    box-shadow:0 4px 18px rgba(0,0,0,.18);
+  }
+  .banner img{width:100%;display:block;}
+  .footer-line img{width:100%;display:block;margin-top:30px;}
+
+  .doc-title{
+    text-align:center;
+    padding:14px 30px 4px;
+  }
+  .doc-title .u1{font-size:16px;font-weight:700;color:var(--navy);letter-spacing:.5px;}
+  .doc-title .u2{font-size:18px;font-weight:700;color:var(--navy);margin-top:4px;}
+  .doc-title .u3{font-size:13px;font-weight:700;color:var(--gold);letter-spacing:2px;text-transform:uppercase;margin-top:2px;}
+  .doc-title .course{font-size:15px;font-weight:700;color:var(--ink);margin-top:8px;}
+
+  .content{padding:6px 32px;}
+
+  .section{margin-top:22px;page-break-inside:avoid;}
+  .section-head{
+    background:var(--navy);
+    color:#fff;
+    font-weight:700;
+    padding:7px 12px;
+    border-left:6px solid var(--gold);
+    font-size:13.5px;
+    display:flex;gap:8px;align-items:center;
+  }
+  .section-head .n{
+    background:var(--gold);color:var(--navy);
+    border-radius:50%;width:20px;height:20px;
+    display:inline-flex;align-items:center;justify-content:center;
+    font-size:12px;font-weight:800;flex:none;
+  }
+  .subhead{
+    background:var(--navy2);color:#fff;font-weight:700;
+    padding:5px 10px;margin-top:14px;font-size:12.5px;
+    border-left:4px solid var(--gold);
+  }
+  .unit-head{
+    background:var(--gold);color:var(--navy);font-weight:800;
+    padding:8px 12px;margin-top:24px;font-size:14px;letter-spacing:.5px;
+    border-radius:3px 3px 0 0;
+  }
+
+  /* ---------- Tables ---------- */
+  table.t{border-collapse:collapse;width:100%;margin-top:8px;}
+  table.t th,table.t td{
+    border:1px solid var(--line);
+    padding:6px 8px;vertical-align:top;
+    font-size:12px;
+  }
+  table.t th{
+    background:var(--navy);color:#fff;font-weight:700;text-align:left;
+  }
+  table.t td.lbl{
+    background:#eaf0fb;font-weight:700;color:var(--navy);width:32%;
+  }
+  table.t tr.total td{background:var(--gold-soft);font-weight:800;}
+  ul.clean{margin:4px 0 4px 18px;padding:0;}
+  ul.clean li{margin:2px 0;}
+
+  .pill{
+    display:inline-block;background:var(--gold);color:var(--navy);
+    font-weight:700;font-size:11px;border-radius:10px;padding:1px 9px;
+    text-transform:uppercase;letter-spacing:.5px;
+  }
+  .pill.proc{background:#cde0ff;color:var(--navy);}
+  .pill.prod{background:var(--gold);color:var(--navy);}
+
+  /* ---------- Sessions (guion) ---------- */
+  .session{
+    border:1px solid var(--line);border-top:3px solid var(--gold);
+    margin-top:12px;border-radius:3px;overflow:hidden;page-break-inside:avoid;
+  }
+  .session .s-head{
+    background:#eaf0fb;padding:6px 10px;font-weight:800;color:var(--navy);
+    display:flex;justify-content:space-between;align-items:center;gap:10px;
+  }
+  .session .s-meta{font-size:11px;font-weight:600;color:#34507f;}
+  .session .s-body{padding:8px 10px;}
+  .phase{margin-top:8px;}
+  .phase .p-tag{
+    display:inline-block;min-width:96px;font-weight:800;font-size:11px;
+    color:#fff;padding:2px 8px;border-radius:3px;text-transform:uppercase;
+  }
+  .phase.inicio .p-tag{background:#3a6ea5;}
+  .phase.desarrollo .p-tag{background:var(--navy);}
+  .phase.cierre .p-tag{background:var(--gold);color:var(--navy);}
+  .phase .min{font-size:11px;color:#34507f;font-weight:700;margin-left:6px;}
+  .phase .p-text{margin-top:3px;}
+
+  .refs{font-size:11px;}
+  .refs li{margin:3px 0;text-indent:-16px;margin-left:16px;}
+
+  /* ---------- Editable fields ---------- */
+  .edit{
+    width:100%;border:1px dashed transparent;background:#fffef4;
+    font-family:inherit;font-size:12px;color:var(--ink);
+    padding:3px 5px;border-radius:3px;resize:none;line-height:1.35;
+    transition:border-color .15s,background .15s;
+  }
+  .edit:hover{border-color:var(--gold-soft);}
+  .edit:focus{outline:none;border-color:var(--gold);background:#fff;}
+  textarea.edit{overflow:hidden;}
+  .edit-hint{
+    font-size:10px;color:#b58900;font-style:italic;display:block;margin-bottom:2px;
+  }
+
+  .empty-state{
+    text-align:center;color:#5a6a85;padding:80px 20px;
+  }
+  .empty-state h2{color:var(--navy);}
+
+  /* ---------- Moodle build view ---------- */
+  .mdl-intro{
+    background:#eaf0fb;border:1px solid var(--line);border-left:6px solid var(--gold);
+    padding:10px 14px;margin-top:14px;border-radius:3px;font-size:12px;
+  }
+  .mdl-intro b{color:var(--navy);}
+  .mdl-legend{margin:8px 0 0 0;padding:0;list-style:none;}
+  .mdl-legend li{margin:4px 0;display:flex;gap:8px;align-items:flex-start;}
+  .chip{
+    display:inline-flex;align-items:center;gap:5px;flex:none;
+    font-size:10.5px;font-weight:800;letter-spacing:.3px;text-transform:uppercase;
+    border-radius:10px;padding:2px 9px;white-space:nowrap;
+  }
+  .chip.section{background:var(--navy);color:#fff;}
+  .chip.page{background:#cde0ff;color:var(--navy);}
+  .chip.task{background:var(--gold);color:var(--navy);}
+  .chip.reading{background:#dff3e4;color:#1c5a32;}
+  td.mdltype{white-space:nowrap;width:120px;}
+  .ref-card{
+    border:1px solid var(--line);border-top:3px solid var(--gold);
+    border-radius:3px;margin-top:12px;overflow:hidden;page-break-inside:avoid;
+  }
+  .ref-card .rc-head{
+    background:#eaf0fb;color:var(--navy);font-weight:800;
+    padding:6px 10px;display:flex;justify-content:space-between;align-items:center;gap:10px;
+  }
+  .ref-card .rc-sub{font-size:11px;font-weight:600;color:#34507f;}
+  .ref-card .rc-body{padding:8px 12px;}
+  .ref-found{font-weight:700;color:var(--navy2);margin-top:6px;font-size:12px;}
+  .ref-publico{font-size:11px;color:var(--muted);font-style:italic;margin:2px 0 4px;}
+  ul.apalist{list-style:none;margin:4px 0 6px;padding:0;font-size:11.5px;}
+  ul.apalist li{margin:5px 0;padding-left:18px;text-indent:-18px;}
+  ul.apalist a{color:var(--line);text-decoration:none;font-weight:700;}
+  ul.apalist a:hover{text-decoration:underline;}
+  .ref-none{color:var(--muted);font-style:italic;font-size:11.5px;margin-top:6px;}
+  .period-head{
+    background:var(--navy);color:#fff;font-weight:800;letter-spacing:.4px;
+    padding:7px 12px;margin-top:18px;border-radius:3px;text-transform:uppercase;font-size:12.5px;
+  }
+  .ada-block{
+    border:1px solid var(--line);border-radius:3px;margin-top:12px;padding:0 12px 12px;
+    page-break-inside:avoid;
+  }
+  .ada-head{
+    display:flex;align-items:center;gap:10px;margin:0 -12px 8px;padding:7px 12px;
+    background:#eaf0fb;border-bottom:2px solid var(--gold);
+  }
+  .ada-name{font-weight:800;color:var(--navy);flex:1;}
+  .ada-obj{font-size:11.5px;color:#34507f;margin-bottom:4px;}
+  .task-block{
+    border:1px solid var(--line);border-left:4px solid var(--gold);background:#fffdf6;
+    border-radius:3px;padding:8px 12px;margin-top:6px;
+  }
+  .task-block .t-title{font-weight:800;color:var(--navy);display:flex;gap:8px;align-items:center;}
+  .task-block .t-desc{font-size:11.5px;margin-top:5px;line-height:1.45;}
+  .task-block .t-instr{font-size:11px;color:var(--muted);margin-top:5px;}
+  .lectura-words{font-size:10.5px;color:var(--muted);margin:2px 0 4px;}
+  .lectura-text{
+    font-size:11.5px;line-height:1.55;white-space:pre-wrap;
+    background:#fbfaf6;border:1px solid var(--line);border-radius:3px;
+    padding:8px 10px;margin-top:4px;max-height:240px;overflow-y:auto;
+  }
+  .pres-block{
+    border:1px solid var(--line);border-left:4px solid var(--navy);background:#f6f8fc;
+    border-radius:3px;padding:8px 12px;margin-top:6px;
+  }
+  .pres-head{display:flex;gap:8px;align-items:center;}
+  .pres-title{font-weight:800;color:var(--navy);}
+  .pres-sub{font-size:11.5px;color:#34507f;margin-top:3px;}
+  .pres-meta{font-size:10.5px;color:var(--muted);margin:3px 0 6px;}
+  .pres-frame{
+    width:100%;height:430px;border:1px solid var(--line);border-radius:4px;
+    background:var(--navy);display:block;
+  }
+  .pres-tools{display:flex;gap:8px;margin-top:6px;flex-wrap:wrap;}
+  .pres-btn{
+    font-size:11px;font-weight:600;color:var(--navy);background:#fff;
+    border:1px solid var(--navy);border-radius:4px;padding:5px 10px;cursor:pointer;
+  }
+  .pres-btn:hover{background:var(--navy);color:#fff;}
+  .chip.pres{background:var(--navy);color:#fff;}
+
+  /* ---------- Quiz / banco interactivo ---------- */
+  .quiz-intro{font-size:12px;color:var(--muted);margin:6px 0 4px;}
+  .quiz-card{
+    border:1px solid var(--line);border-radius:6px;
+    padding:10px 12px;margin-top:12px;background:#fff;
+  }
+  .quiz-qhead{display:flex;gap:8px;align-items:flex-start;}
+  .quiz-qnum{
+    background:var(--navy);color:#fff;font-weight:800;font-size:12px;
+    min-width:22px;height:22px;border-radius:50%;
+    display:inline-flex;align-items:center;justify-content:center;flex:none;
+  }
+  .quiz-stem{font-weight:700;color:var(--ink);font-size:12.8px;}
+  .quiz-meta{display:flex;gap:6px;flex-wrap:wrap;margin:6px 0 8px 30px;}
+  .quiz-level{font-size:10px;color:var(--muted);align-self:center;}
+  .quiz-opts{display:flex;flex-direction:column;gap:6px;margin-left:30px;}
+  .quiz-opt{
+    display:flex;gap:8px;align-items:flex-start;
+    border:1px solid var(--line);border-radius:5px;padding:7px 9px;cursor:pointer;
+    background:#fbfcfe;transition:background .12s,border-color .12s;
+  }
+  .quiz-opt:hover{background:#eef3fc;}
+  .quiz-opt input{margin-top:2px;}
+  .quiz-letter{
+    font-weight:800;color:var(--navy);min-width:16px;
+  }
+  .quiz-opttext{font-size:12px;}
+  .quiz-opt.correct{background:#e5f6ea;border-color:#2e8b57;}
+  .quiz-opt.wrong{background:#fdeaea;border-color:#c0392b;}
+  .quiz-feedback{
+    margin:8px 0 0 30px;padding:8px 10px;border-radius:5px;font-size:12px;
+    border-left:4px solid var(--gold);background:#faf6ea;
+  }
+  .quiz-feedback.ok{border-left-color:#2e8b57;background:#eef8f1;}
+  .quiz-feedback.bad{border-left-color:#c0392b;background:#fbecec;}
+  .quiz-feedback.none{border-left-color:var(--muted);background:#f1f3f7;}
+  .quiz-verdict{font-weight:800;margin-bottom:3px;}
+  .quiz-feedback.ok .quiz-verdict{color:#2e8b57;}
+  .quiz-feedback.bad .quiz-verdict{color:#c0392b;}
+  .quiz-fb-line{margin-top:3px;}
+  .quiz-bar{
+    position:sticky;bottom:0;z-index:5;
+    display:flex;gap:10px;align-items:center;flex-wrap:wrap;
+    margin-top:16px;padding:10px 12px;
+    background:var(--navy);border-radius:6px;border:2px solid var(--gold);
+  }
+  .quiz-bar .pres-btn{background:var(--gold);border-color:var(--gold);font-weight:800;}
+  .quiz-bar .pres-btn:hover{background:#fff;color:var(--navy);}
+  .quiz-score{color:#fff;font-weight:800;font-size:13px;margin-left:auto;}
+  .bank-reveal{
+    font-size:11px;font-weight:600;color:var(--navy);background:#fff;
+    border:1px solid var(--navy);border-radius:4px;padding:4px 9px;cursor:pointer;
+    margin:6px 0 0 30px;
+  }
+  .bank-reveal:hover{background:var(--navy);color:#fff;}
+
+  /* ---------- Print ---------- */
+  @media print{
+    @page{size:Letter;margin:12mm;}
+    body{background:#fff;font-size:11.5px;}
+    .toolbar,.no-print{display:none !important;}
+    .sheet{box-shadow:none;margin:0;max-width:none;width:100%;}
+    .edit{background:transparent;border:none;}
+    .edit-hint{display:none;}
+    .section,.session,table.t,.unit-head{page-break-inside:avoid;}
+    .section-head,.unit-head,.subhead,table.t th{
+      -webkit-print-color-adjust:exact;print-color-adjust:exact;
+    }
+    .lectura-text{max-height:none;overflow:visible;}
+    .ada-block{page-break-inside:auto;}
+    .pres-frame,.pres-tools{display:none !important;}
+    .pres-block{page-break-inside:avoid;}
+    .quiz-bar{position:static;}
+  }
+</style>
+</head>
+<body>
+  <div class="toolbar no-print">
+    <h1>Planeación Didáctica · UADY</h1>
+    <div class="spacer"></div>
+    <label>Archivo:</label>
+    <select id="fileSelect"><option value="">— buscando en data/output —</option></select>
+    <input type="file" id="filePicker" accept="application/json,.json" title="Subir un .json manualmente" />
+    <label>Vista:</label>
+    <select id="viewSelect" title="Cambiar de vista">
+      <option value="planeacion">Planeación didáctica</option>
+      <option value="moodle">Construcción Moodle</option>
+      <option value="quiz">Banco de preguntas / Quiz</option>
+    </select>
+    <button id="btnPrint" title="Guardar como PDF (diálogo de impresión)">Exportar PDF</button>
+    <span class="status" id="status"></span>
+  </div>
+
+  <div class="sheet" id="sheet">
+    <div class="banner"><img src="assets/logo1.png" alt="Universidad Autónoma de Yucatán" onerror="this.style.display='none'"/></div>
+    <div id="doc"></div>
+    <div class="empty-state" id="empty">
+      <h2>Selecciona un archivo de curso</h2>
+      <p>Elige un <code>.json</code> del menú superior (de <code>data/output/</code>) o súbelo manualmente para renderizar la planeación didáctica.</p>
+      <p style="font-size:12px;color:#7a87a0">Sugerencia: sirve el repo con <code>python -m http.server 8000</code> y abre <code>http://localhost:8000/spa/</code> para el listado automático.</p>
+    </div>
+  </div>
+
+<script>
+"use strict";
+
+/* =========================================================
+   Utilidades
+   ========================================================= */
+const $ = (sel, el=document) => el.querySelector(sel);
+const el = (tag, props={}, ...kids) => {
+  const n = document.createElement(tag);
+  for (const [k,v] of Object.entries(props)){
+    if (k === "class") n.className = v;
+    else if (k === "html") n.innerHTML = v;
+    else if (k === "text") n.textContent = v;
+    else if (k.startsWith("on") && typeof v === "function") n.addEventListener(k.slice(2), v);
+    else if (v !== null && v !== undefined) n.setAttribute(k, v);
+  }
+  for (const c of kids){
+    if (c == null) continue;
+    n.appendChild(typeof c === "string" ? document.createTextNode(c) : c);
+  }
+  return n;
+};
+const num = (v, d=0) => (v===null||v===undefined||v==="") ? d : v;
+const cap = s => typeof s === "string" && s.length ? s[0].toUpperCase()+s.slice(1) : s;
+
+let CURRENT_SOURCE = "doc"; // clave de persistencia (nombre de archivo)
+
+/* Campo editable persistente (localStorage).
+   `defaultValue` precarga el valor del JSON cuando el usuario aún no ha editado. */
+function editField(id, {placeholder="", multiline=true, hint=null, defaultValue=""}={}){
+  const key = `planeacion::${CURRENT_SOURCE}::${id}`;
+  const saved = localStorage.getItem(key);
+  const wrap = el("div");
+  if (hint) wrap.appendChild(el("span", {class:"edit-hint", text:hint}));
+  const field = multiline
+    ? el("textarea", {class:"edit", rows:"1", placeholder})
+    : el("input", {class:"edit", type:"text", placeholder});
+  field.value = (saved !== null && saved !== "") ? saved : (defaultValue || "");
+  const autogrow = () => { if (multiline){ field.style.height="auto"; field.style.height=(field.scrollHeight)+"px"; } };
+  field.addEventListener("input", () => { localStorage.setItem(key, field.value); autogrow(); });
+  wrap.appendChild(field);
+  // autogrow tras insertar en el DOM
+  setTimeout(autogrow, 0);
+  return wrap;
+}
+
+/* =========================================================
+   Carga de archivos
+   ========================================================= */
+async function discoverFiles(){
+  const select = $("#fileSelect");
+  try{
+    const res = await fetch("../data/output/", {headers:{"Accept":"text/html"}});
+    if (!res.ok) throw new Error("listado no disponible");
+    const html = await res.text();
+    const doc = new DOMParser().parseFromString(html, "text/html");
+    const files = [...doc.querySelectorAll("a")]
+      .map(a => a.getAttribute("href"))
+      .filter(h => h && h.toLowerCase().endsWith(".json"))
+      .map(h => decodeURIComponent(h.replace(/^.*\//, "")));
+    const unique = [...new Set(files)];
+    select.innerHTML = "";
+    select.appendChild(el("option", {value:"", text: unique.length ? "— elige un archivo —" : "— sin .json en data/output —"}));
+    unique.forEach(f => select.appendChild(el("option", {value:f, text:f})));
+    setStatus(unique.length ? `${unique.length} archivo(s) encontrados` : "No se hallaron .json");
+    // Autoselección si solo hay uno
+    if (unique.length === 1){ select.value = unique[0]; loadUrl("../data/output/"+unique[0], unique[0]); }
+  }catch(e){
+    select.innerHTML = "";
+    select.appendChild(el("option", {value:"", text:"— usa el selector de archivo →"}));
+    setStatus("Listado automático no disponible (abre vía http.server). Usa el selector manual.");
+  }
+}
+
+function setStatus(msg){ $("#status").textContent = msg || ""; }
+
+async function loadUrl(url, name){
+  setStatus("Cargando "+name+"…");
+  try{
+    const res = await fetch(url);
+    if (!res.ok) throw new Error("HTTP "+res.status);
+    const data = await res.json();
+    render(data, name);
+    setStatus("✔ "+name);
+  }catch(e){
+    setStatus("Error al cargar: "+e.message);
+  }
+}
+
+function loadFile(file){
+  const reader = new FileReader();
+  reader.onload = () => {
+    try{ render(JSON.parse(reader.result), file.name); setStatus("✔ "+file.name); }
+    catch(e){ setStatus("JSON inválido: "+e.message); }
+  };
+  reader.readAsText(file);
+}
+
+/* =========================================================
+   Render principal
+   ========================================================= */
+let LAST_DATA = null;     // último JSON cargado (para conmutar de vista)
+let LAST_NAME = "";
+let CURRENT_VIEW = "planeacion";
+
+function render(data, sourceName){
+  LAST_DATA = data;
+  LAST_NAME = sourceName;
+  CURRENT_SOURCE = (sourceName || "doc").replace(/[^a-z0-9_.-]/gi,"_");
+  $("#empty").style.display = "none";
+  const doc = $("#doc");
+  doc.innerHTML = "";
+
+  if (CURRENT_VIEW === "moodle") renderMoodleView(data, doc);
+  else if (CURRENT_VIEW === "quiz") renderQuizView(data, doc);
+  else renderPlaneacionView(data, doc);
+
+  window.scrollTo({top:0, behavior:"smooth"});
+}
+
+function footerLine(){
+  return el("div", {class:"footer-line"},
+    el("img", {src:"assets/logo2.png", alt:"", onerror:function(){this.style.display='none';}})
+  );
+}
+
+/* ---- Vista 1: Planeación didáctica (documento completo) ---- */
+function renderPlaneacionView(data, doc){
+  const reglas = (data.planeacion_operativa && data.planeacion_operativa.reglas) || {};
+  const periodos = (data.estructura_curso_adas && data.estructura_curso_adas.periodos) || [];
+
+  doc.appendChild(renderTitle(data));
+  const content = el("div", {class:"content"});
+  doc.appendChild(content);
+
+  content.appendChild(renderDatosGenerales(data, reglas));
+  content.appendChild(renderIntencionalidad(data));
+  content.appendChild(renderCompetencia(data));
+  content.appendChild(renderAcreditacion(periodos));
+  content.appendChild(renderSecuencia(periodos, reglas));
+  content.appendChild(renderProducto(periodos, reglas));
+  content.appendChild(renderPrograma(data));
+
+  doc.appendChild(footerLine());
+}
+
+/* =========================================================
+   Vista 2: Construcción del curso en Moodle
+   ========================================================= */
+function adaList(periodo){
+  const adas = Array.isArray(periodo.adas) ? periodo.adas.slice() : [];
+  const fase = periodo.fase_proyecto_integrador || {};
+  if (fase.ada_integradora_producto) adas.push(fase.ada_integradora_producto);
+  return adas;
+}
+
+function adaReadings(ada){
+  return (ada.lecturas_fundamentacion || []).map(l => ({
+    fundamento: l.fundamento || "Fundamentación temática",
+    publico: l.publico_objetivo || "",
+    lectura: l.lectura || "",
+    conteo: l.conteo_palabras || null,
+    fuentes: (l.fuentes_openalex || []).map(f => ({
+      apa: f.referencia_apa || "",
+      titulo: f.titulo || "",
+      anio: f.anio || "",
+      autores: Array.isArray(f.autores) ? f.autores.join(", ") : (f.autores || ""),
+      fuente: f.fuente || "",
+      doi: f.doi || "",
+      openalex: f.openalex_id || ""
+    })),
+    legacy: l.referencias_apa || []
+  }));
+}
+
+function evidenciaText(ada){
+  const ev = ada.evidencias_aprendizaje;
+  if (Array.isArray(ev)) return ev.join(" ");
+  return ev || "";
+}
+
+function adaPresentation(ada){
+  const p = ada.presentacion;
+  if (!p) return null;
+  return {
+    titulo: p.titulo || "",
+    subtitulo: p.subtitulo || "",
+    num: p.num_diapositivas || (Array.isArray(p.slides) ? p.slides.length : 0),
+    html: p.html || "",
+    aviso: p.aviso || ""
+  };
+}
+
+function doiUrl(f){
+  if (f.doi){
+    return /^https?:/i.test(f.doi) ? f.doi : ("https://doi.org/" + String(f.doi).replace(/^doi:/i,""));
+  }
+  if (f.openalex){
+    return /^https?:/i.test(f.openalex) ? f.openalex : ("https://openalex.org/" + f.openalex);
+  }
+  return "";
+}
+
+function snippet(text, max){
+  if (!text) return "";
+  const s = String(text).replace(/\s+/g," ").trim();
+  return s.length > max ? s.slice(0, max-1).trimEnd() + "…" : s;
+}
+
+function renderMoodleView(data, doc){
+  const periodos = (data.estructura_curso_adas && data.estructura_curso_adas.periodos) || [];
+
+  // Encabezado
+  const t = el("div", {class:"doc-title"});
+  t.appendChild(el("div", {class:"u1", text:"UNIVERSIDAD AUTÓNOMA DE YUCATÁN"}));
+  t.appendChild(el("div", {class:"u2", text:"CONSTRUCCIÓN DEL CURSO EN MOODLE"}));
+  t.appendChild(el("div", {class:"u3", text:"Mapa del aula virtual · una sección por ADA"}));
+  t.appendChild(el("div", {class:"course", text: data.curso || "(Nombre de la asignatura)"}));
+  doc.appendChild(t);
+
+  const content = el("div", {class:"content"});
+  doc.appendChild(content);
+
+  // Leyenda de mapeo
+  const intro = el("div", {class:"mdl-intro"});
+  intro.appendChild(el("div", {html:"<b>Cómo se construye el curso en Moodle.</b> Cada ADA se publica como una sección con su contenido, <b>un único entregable evaluable</b> y sus lecturas de fundamentación:"}));
+  const leg = el("ul", {class:"mdl-legend"});
+  leg.appendChild(el("li", {}, el("span",{class:"chip section",text:"Sección"}), el("span",{html:"Cada <b>ADA</b> se crea como una <b>sección/unidad</b> del aula."})));
+  leg.appendChild(el("li", {}, el("span",{class:"chip page",text:"Página"}), el("span",{html:"Cada <b>sesión</b> de la ADA se publica como una <b>Página</b> de contenido (no evaluable)."})));
+  leg.appendChild(el("li", {}, el("span",{class:"chip task",text:"Tarea"}), el("span",{html:"Cada ADA tiene <b>un único entregable</b> configurado como <b>Tarea</b> evaluable."})));
+  leg.appendChild(el("li", {}, el("span",{class:"chip reading",text:"Lectura"}), el("span",{html:"Cada <b>eje temático</b> aporta una <b>lectura</b> con sus <b>referencias</b> (OpenAlex · APA 7)."})));
+  intro.appendChild(leg);
+  content.appendChild(intro);
+
+  if (!periodos.length){
+    content.appendChild(el("div", {class:"ref-none", text:"No hay estructura de ADAs disponible."}));
+    doc.appendChild(footerLine());
+    return;
+  }
+
+  periodos.forEach((per, pi) => {
+    const sem = per.semanas || {};
+    const semTxt = (sem.inicio && sem.fin) ? (" · semanas " + sem.inicio + "–" + sem.fin) : "";
+    content.appendChild(el("div", {class:"period-head", text:"Periodo " + num(per.periodo, pi+1) + semTxt}));
+    adaList(per).forEach(ada => content.appendChild(renderMoodleAda(ada)));
+  });
+
+  doc.appendChild(footerLine());
+}
+
+function renderMoodleAda(ada){
+  const block = el("div", {class:"ada-block"});
+  const tipo = (ada.tipo_actividad || "").toLowerCase();
+  const isProd = tipo.includes("produc");
+  const tipoLabel = isProd ? "Producto integrador" : "Proceso";
+
+  // Cabecera de la ADA = sección Moodle
+  const head = el("div", {class:"ada-head"});
+  head.appendChild(el("span", {class:"chip section", text:"Sección"}));
+  head.appendChild(el("span", {class:"ada-name", text: ada.nombre || "ADA"}));
+  head.appendChild(el("span", {class:"pill " + (isProd ? "prod" : "proc"), text: tipoLabel}));
+  block.appendChild(head);
+
+  if (ada.objetivo) block.appendChild(el("div", {class:"ada-obj", html:"<b>Objetivo:</b> " + escapeHtml(ada.objetivo)}));
+
+  // 1) Páginas de contenido (sesiones)
+  block.appendChild(el("div", {class:"subhead", text:"Páginas de contenido (sesiones)"}));
+  const sesiones = ada.sesiones_desarrolladas || [];
+  if (!sesiones.length){
+    block.appendChild(el("div", {class:"ref-none", text:"Sin sesiones registradas."}));
+  } else {
+    const tbl = el("table", {class:"t"});
+    const tb = el("tbody", {});
+    tb.appendChild(el("tr", {},
+      el("td", {class:"lbl mdltype", text:"Recurso"}),
+      el("td", {class:"lbl", text:"Sesión / tema"}),
+      el("td", {class:"lbl", text:"Objetivo de la sesión"})
+    ));
+    sesiones.forEach(s => {
+      const temaTxt = "Sesión " + num(s.sesion, "?") + (s.tema ? (" · " + s.tema) : "");
+      tb.appendChild(el("tr", {},
+        el("td", {class:"mdltype"}, el("span",{class:"chip page", text:"Página"})),
+        el("td", {text: temaTxt}),
+        el("td", {text: s.objetivo || "—"})
+      ));
+    });
+    tbl.appendChild(tb);
+    block.appendChild(tbl);
+  }
+
+  // 2) Entregable único (Tarea)
+  block.appendChild(el("div", {class:"subhead", text:"Entregable único de la ADA"}));
+  const task = el("div", {class:"task-block"});
+  const tt = el("div", {class:"t-title"});
+  tt.appendChild(el("span", {class:"chip task", text:"Tarea"}));
+  tt.appendChild(document.createTextNode((isProd ? "Producto integrador · " : "Entregable · ") + (ada.nombre || "ADA")));
+  task.appendChild(tt);
+  const evid = evidenciaText(ada);
+  task.appendChild(el("div", {class:"t-desc", text: evid || ada.resultado_aprendizaje || "—"}));
+  if (ada.instrumento_evaluacion) task.appendChild(el("div", {class:"t-instr", html:"<b>Instrumento de evaluación:</b> " + escapeHtml(ada.instrumento_evaluacion)}));
+  block.appendChild(task);
+
+  // 3) Lecturas por eje temático
+  block.appendChild(el("div", {class:"subhead", text:"Lecturas por eje temático"}));
+  const readings = adaReadings(ada);
+  if (!readings.length){
+    block.appendChild(el("div", {class:"ref-none", text:"Esta ADA no tiene lecturas de fundamentación."}));
+  }
+  readings.forEach(r => {
+    const card = el("div", {class:"ref-card"});
+    const rh = el("div", {class:"rc-head"});
+    rh.appendChild(el("span", {text: r.fundamento}));
+    rh.appendChild(el("span", {class:"chip reading", text:"Eje temático"}));
+    card.appendChild(rh);
+
+    const body = el("div", {class:"rc-body"});
+    if (r.publico) body.appendChild(el("div", {class:"ref-publico", text:"Dirigido a: " + r.publico}));
+
+    // Lectura (texto por eje temático)
+    if (r.lectura){
+      body.appendChild(el("div", {class:"ref-found", text:"Lectura"}));
+      if (r.conteo) body.appendChild(el("div", {class:"lectura-words", text: r.conteo + " palabras"}));
+      body.appendChild(el("div", {class:"lectura-text", text: r.lectura}));
+    } else {
+      body.appendChild(el("div", {class:"ref-none", text:"Sin texto de lectura para este eje."}));
+    }
+
+    // Referencias
+    body.appendChild(el("div", {class:"ref-found", text:"Referencias (OpenAlex · APA 7)"}));
+    const ul = el("ul", {class:"apalist"});
+    const fuentes = r.fuentes.length ? r.fuentes : (r.legacy || []).map(s => ({apa:s}));
+    if (!fuentes.length){
+      ul.appendChild(el("li", {class:"ref-none", text:"Sin referencias."}));
+    }
+    fuentes.forEach(f => {
+      const li = el("li", {});
+      li.appendChild(document.createTextNode(f.apa || f.titulo || "Referencia"));
+      const url = doiUrl(f);
+      if (url){
+        li.appendChild(document.createTextNode("  "));
+        li.appendChild(el("a", {attr:{href:url, target:"_blank", rel:"noopener"}, text:"↗ DOI"}));
+      }
+      ul.appendChild(li);
+    });
+    body.appendChild(ul);
+    card.appendChild(body);
+    block.appendChild(card);
+  });
+
+  // 4) Presentación HTML5 incrustable en Moodle (basada en las lecturas)
+  const pres = adaPresentation(ada);
+  if (pres){
+    block.appendChild(el("div", {class:"subhead", text:"Presentación interactiva (HTML5 incrustable en Moodle)"}));
+    const pb = el("div", {class:"pres-block"});
+    const ph = el("div", {class:"pres-head"});
+    ph.appendChild(el("span", {class:"chip pres", text:"Presentación"}));
+    ph.appendChild(el("span", {class:"pres-title", text: pres.titulo || (ada.nombre || "ADA")}));
+    pb.appendChild(ph);
+    if (pres.subtitulo) pb.appendChild(el("div", {class:"pres-sub", text: pres.subtitulo}));
+    pb.appendChild(el("div", {class:"pres-meta", text: (pres.num || 0) + " diapositivas · navega con ← → o los botones"}));
+
+    if (pres.html){
+      const frame = el("iframe", {class:"pres-frame", attr:{
+        sandbox:"allow-scripts allow-same-origin",
+        loading:"lazy",
+        title:"Presentación " + (ada.nombre || "ADA")
+      }});
+      frame.setAttribute("srcdoc", pres.html);
+      pb.appendChild(frame);
+
+      const tools = el("div", {class:"pres-tools"});
+      const btnTab = el("button", {class:"pres-btn", text:"↗ Abrir a pantalla completa"});
+      btnTab.addEventListener("click", () => {
+        const blob = new Blob([pres.html], {type:"text/html"});
+        window.open(URL.createObjectURL(blob), "_blank", "noopener");
+      });
+      const btnDl = el("button", {class:"pres-btn", text:"⬇ Descargar HTML (para Moodle)"});
+      btnDl.addEventListener("click", () => {
+        const blob = new Blob([pres.html], {type:"text/html"});
+        const a = document.createElement("a");
+        a.href = URL.createObjectURL(blob);
+        a.download = "presentacion_" + (ada.nombre || "ADA").replace(/[^a-z0-9]+/gi, "_") + ".html";
+        a.click();
+      });
+      tools.appendChild(btnTab);
+      tools.appendChild(btnDl);
+      pb.appendChild(tools);
+    } else {
+      pb.appendChild(el("div", {class:"ref-none", text: pres.aviso || "Presentación no disponible para esta ADA."}));
+    }
+    block.appendChild(pb);
+  }
+
+  return block;
+}
+
+
+/* =========================================================
+   Vista 3: Banco de preguntas / Quiz interactivo
+   ========================================================= */
+function renderQuizView(data, doc){
+  const quiz = Array.isArray(data.quiz) ? data.quiz : [];
+  const banco = Array.isArray(data.banco_preguntas) ? data.banco_preguntas : [];
+
+  const t = el("div", {class:"doc-title"});
+  t.appendChild(el("div", {class:"u1", text:"UNIVERSIDAD AUTÓNOMA DE YUCATÁN"}));
+  t.appendChild(el("div", {class:"u2", text:"BANCO DE PREGUNTAS · QUIZ INTERACTIVO"}));
+  t.appendChild(el("div", {class:"u3", text:"Reactivos de opción múltiple · nivel aplicación"}));
+  t.appendChild(el("div", {class:"course", text: data.curso || "(Nombre de la asignatura)"}));
+  doc.appendChild(t);
+
+  const content = el("div", {class:"content"});
+  doc.appendChild(content);
+
+  if (!quiz.length && !banco.length){
+    content.appendChild(el("div", {class:"ref-none",
+      text:"Este archivo no contiene banco de preguntas ni quiz. Ejecuta el pipeline sin --skip-questions para generarlos."}));
+    doc.appendChild(footerLine());
+    return;
+  }
+
+  /* ---- Quiz interactivo ---- */
+  if (quiz.length){
+    content.appendChild(el("div", {class:"period-head", text:"Quiz interactivo (" + quiz.length + " ítems)"}));
+    content.appendChild(el("div", {class:"quiz-intro",
+      html:"Responde cada reactivo y pulsa <b>Calificar quiz</b> para ver tu puntaje, la respuesta correcta y la retroalimentación."}));
+
+    const controllers = quiz.map((q, i) => buildQuizItem(q, i));
+    controllers.forEach(c => content.appendChild(c.node));
+
+    const bar = el("div", {class:"quiz-bar"});
+    const btnGrade = el("button", {class:"pres-btn", text:"Calificar quiz"});
+    const btnReset = el("button", {class:"pres-btn", text:"Reiniciar"});
+    const score = el("span", {class:"quiz-score"});
+    btnGrade.addEventListener("click", () => {
+      let s = 0;
+      controllers.forEach(c => { s += c.grade(); });
+      score.textContent = "Puntaje: " + s + " / " + controllers.length;
+    });
+    btnReset.addEventListener("click", () => {
+      controllers.forEach(c => c.reset());
+      score.textContent = "";
+    });
+    bar.appendChild(btnGrade);
+    bar.appendChild(btnReset);
+    bar.appendChild(score);
+    content.appendChild(bar);
+  }
+
+  /* ---- Banco completo (explorable) ---- */
+  if (banco.length){
+    content.appendChild(el("div", {class:"period-head", text:"Banco de preguntas (" + banco.length + " reactivos)"}));
+    content.appendChild(el("div", {class:"quiz-intro",
+      html:"Todos los reactivos generados a partir de las lecturas. Usa <b>Mostrar respuesta</b> para revelar la correcta y su justificación."}));
+
+    const byAda = {};
+    banco.forEach(q => { const k = q.ada || "ADA"; (byAda[k] = byAda[k] || []).push(q); });
+    Object.keys(byAda).forEach(ada => {
+      content.appendChild(el("div", {class:"subhead", text: ada + " · " + byAda[ada].length + " reactivos"}));
+      byAda[ada].forEach(q => content.appendChild(buildBankItem(q)));
+    });
+  }
+
+  doc.appendChild(footerLine());
+}
+
+function buildQuizItem(q, i){
+  const card = el("div", {class:"quiz-card"});
+
+  const head = el("div", {class:"quiz-qhead"});
+  head.appendChild(el("span", {class:"quiz-qnum", text: String(i + 1)}));
+  head.appendChild(el("span", {class:"quiz-stem", text: q.pregunta || ""}));
+  card.appendChild(head);
+
+  const meta = el("div", {class:"quiz-meta"});
+  if (q.ada) meta.appendChild(el("span", {class:"chip section", text: q.ada}));
+  if (q.eje) meta.appendChild(el("span", {class:"chip reading", text: q.eje}));
+  if (q.nivel) meta.appendChild(el("span", {class:"quiz-level", text: "Nivel: " + q.nivel}));
+  card.appendChild(meta);
+
+  const opts = el("div", {class:"quiz-opts"});
+  const optionEls = [];
+  let chosen = -1;
+  (q.opciones || []).forEach((opt, oi) => {
+    const inputId = "quiz_q" + i + "_o" + oi;
+    const label = el("label", {class:"quiz-opt", for: inputId});
+    const input = el("input", {type:"radio", name:"quiz_q" + i, id: inputId});
+    input.addEventListener("change", () => { chosen = oi; });
+    label.appendChild(input);
+    label.appendChild(el("span", {class:"quiz-letter", text: String.fromCharCode(65 + oi)}));
+    label.appendChild(el("span", {class:"quiz-opttext", text: opt}));
+    opts.appendChild(label);
+    optionEls.push(label);
+  });
+  card.appendChild(opts);
+
+  const fb = el("div", {class:"quiz-feedback", style:"display:none"});
+  card.appendChild(fb);
+
+  const correcta = (typeof q.indice_correcta === "number") ? q.indice_correcta : -1;
+
+  function grade(){
+    optionEls.forEach((lab, oi) => {
+      lab.classList.remove("correct", "wrong");
+      if (oi === correcta) lab.classList.add("correct");
+      else if (oi === chosen) lab.classList.add("wrong");
+    });
+    const ok = chosen >= 0 && chosen === correcta;
+    fb.style.display = "";
+    fb.className = "quiz-feedback " + (chosen < 0 ? "none" : (ok ? "ok" : "bad"));
+    fb.innerHTML = "";
+    fb.appendChild(el("div", {class:"quiz-verdict",
+      text: chosen < 0 ? "Sin responder" : (ok ? "✔ Correcto" : "✗ Incorrecto")}));
+    if (q.retroalimentacion_general)
+      fb.appendChild(el("div", {class:"quiz-fb-line", html:"<b>Retroalimentación:</b> " + escapeHtml(q.retroalimentacion_general)}));
+    if (q.justificacion_correcta)
+      fb.appendChild(el("div", {class:"quiz-fb-line", html:"<b>Justificación:</b> " + escapeHtml(q.justificacion_correcta)}));
+    return ok ? 1 : 0;
+  }
+
+  function reset(){
+    chosen = -1;
+    optionEls.forEach(lab => {
+      lab.classList.remove("correct", "wrong");
+      const inp = lab.querySelector("input");
+      if (inp) inp.checked = false;
+    });
+    fb.style.display = "none";
+    fb.innerHTML = "";
+  }
+
+  return { node: card, grade, reset };
+}
+
+function buildBankItem(q){
+  const card = el("div", {class:"quiz-card"});
+
+  const head = el("div", {class:"quiz-qhead"});
+  head.appendChild(el("span", {class:"quiz-qnum", text: (q.id || "•").replace(/^Q0*/, "")}));
+  head.appendChild(el("span", {class:"quiz-stem", text: q.pregunta || ""}));
+  card.appendChild(head);
+
+  const meta = el("div", {class:"quiz-meta"});
+  if (q.eje) meta.appendChild(el("span", {class:"chip reading", text: q.eje}));
+  if (q.nivel) meta.appendChild(el("span", {class:"quiz-level", text: "Nivel: " + q.nivel}));
+  card.appendChild(meta);
+
+  const opts = el("div", {class:"quiz-opts"});
+  const optionEls = [];
+  (q.opciones || []).forEach((opt, oi) => {
+    const label = el("label", {class:"quiz-opt"});
+    label.appendChild(el("span", {class:"quiz-letter", text: String.fromCharCode(65 + oi)}));
+    label.appendChild(el("span", {class:"quiz-opttext", text: opt}));
+    opts.appendChild(label);
+    optionEls.push(label);
+  });
+  card.appendChild(opts);
+
+  const fb = el("div", {class:"quiz-feedback", style:"display:none"});
+  card.appendChild(fb);
+
+  const correcta = (typeof q.indice_correcta === "number") ? q.indice_correcta : -1;
+  const btn = el("button", {class:"bank-reveal", text:"Mostrar respuesta"});
+  let shown = false;
+  btn.addEventListener("click", () => {
+    shown = !shown;
+    if (shown){
+      optionEls.forEach((lab, oi) => { if (oi === correcta) lab.classList.add("correct"); });
+      fb.style.display = "";
+      fb.className = "quiz-feedback ok";
+      fb.innerHTML = "";
+      const letra = correcta >= 0 ? String.fromCharCode(65 + correcta) : "?";
+      fb.appendChild(el("div", {class:"quiz-verdict", text: "Respuesta correcta: " + letra}));
+      if (q.retroalimentacion_general)
+        fb.appendChild(el("div", {class:"quiz-fb-line", html:"<b>Retroalimentación:</b> " + escapeHtml(q.retroalimentacion_general)}));
+      if (q.justificacion_correcta)
+        fb.appendChild(el("div", {class:"quiz-fb-line", html:"<b>Justificación:</b> " + escapeHtml(q.justificacion_correcta)}));
+      btn.textContent = "Ocultar respuesta";
+    } else {
+      optionEls.forEach(lab => lab.classList.remove("correct"));
+      fb.style.display = "none";
+      fb.innerHTML = "";
+      btn.textContent = "Mostrar respuesta";
+    }
+  });
+  card.appendChild(btn);
+
+  return card;
+}
+
+
+/* ---- Encabezado / título ---- */
+function renderTitle(data){
+  const t = el("div", {class:"doc-title"});
+  t.appendChild(el("div", {class:"u1", text:"UNIVERSIDAD AUTÓNOMA DE YUCATÁN"}));
+  t.appendChild(el("div", {class:"u2", text:"PLANEACIÓN DIDÁCTICA"}));
+  t.appendChild(el("div", {class:"u3", text:"Curso Regular"}));
+  t.appendChild(el("div", {class:"course", text: data.curso || "(Nombre de la asignatura)"}));
+
+  const meta = el("table", {class:"t"});
+  const tb = el("tbody");
+  const rowEdit = (label, id, ph) => el("tr", {},
+    el("td", {class:"lbl", text:label}),
+    el("td", {}, editField(id, {placeholder:ph, multiline:false}))
+  );
+  tb.appendChild(rowEdit("Diseñó", "diseno", "Nombre del docente que diseñó"));
+  tb.appendChild(rowEdit("Modificó", "modifico", "Nombre del docente que modificó"));
+  tb.appendChild(rowEdit("Fecha", "fecha_doc", "Ej. Agosto 2025"));
+  meta.appendChild(tb);
+  t.appendChild(meta);
+  return t;
+}
+
+/* ---- 1. Datos generales ---- */
+function renderDatosGenerales(data, reglas){
+  const s = section(1, "Datos generales de identificación");
+  const horas = num(reglas.horas_totales, "");
+  const ses = num(reglas.sesiones_totales, "");
+  const sem = num(reglas.semanas_totales, "");
+
+  const dg = (data.programa_asignatura && data.programa_asignatura.datos_generales) || {};
+  const dh = dg.distribucion_horas || {};
+  const creditosDefault = (dg.numero_creditos || dg.tipo_creditos)
+    ? [dg.numero_creditos, dg.tipo_creditos].filter(Boolean).join(" · ")
+    : "";
+
+  const tbl = el("table", {class:"t"});
+  const tb = el("tbody");
+  const row = (label, node) => el("tr", {}, el("td",{class:"lbl",text:label}), el("td",{}, node));
+
+  tb.appendChild(row("Modalidad", editField("modalidad", {placeholder:"Presencial / No presencial / Mixta", multiline:false})));
+  tb.appendChild(row("Créditos (número y tipo)", editField("creditos", {placeholder:"Ej. 6 créditos · obligatorio", multiline:false, defaultValue:creditosDefault})));
+  tb.appendChild(row("Carácter", editField("caracter", {placeholder:"Obligatoria / Optativa", multiline:false, defaultValue:dg.tipo_creditos||""})));
+
+  // Distribución de horas (HCP/HEI/HPF) — prellenado desde programa_asignatura
+  const horasTotalDefault = dg.duracion_total_horas || (horas!==""?String(horas):"");
+  const horasTbl = el("table", {class:"t", style:"margin:0;"});
+  horasTbl.appendChild(el("thead",{},el("tr",{},
+    el("th",{text:"HCP (con profesor)"}),
+    el("th",{text:"HEI (independiente)"}),
+    el("th",{text:"HPF (práctica de campo)"}),
+    el("th",{text:"Total de horas"})
+  )));
+  horasTbl.appendChild(el("tbody",{},el("tr",{},
+    el("td",{}, editField("hcp",{placeholder:"—",multiline:false, defaultValue:dh.HCP||""})),
+    el("td",{}, editField("hei",{placeholder:"—",multiline:false, defaultValue:dh.HEI||""})),
+    el("td",{}, editField("hpf",{placeholder:"—",multiline:false, defaultValue:dh.practicas_formativas_laboratorios||""})),
+    el("td",{html:`<b>${horasTotalDefault||"—"}</b>`})
+  )));
+  tb.appendChild(row("Distribución de horas", horasTbl));
+
+  // PSP / PSE (Prácticas Sociales Profesionales / Servicio Social) desde el JSON
+  const pspPseTbl = el("table", {class:"t", style:"margin:0;"});
+  pspPseTbl.appendChild(el("thead",{},el("tr",{},
+    el("th",{text:"PSP (prácticas sociales profesionales)"}),
+    el("th",{text:"PSE (servicio social)"})
+  )));
+  pspPseTbl.appendChild(el("tbody",{},el("tr",{},
+    el("td",{}, editField("psp",{placeholder:"—",multiline:false, defaultValue:dh.PSP||""})),
+    el("td",{}, editField("pse",{placeholder:"—",multiline:false, defaultValue:dh.PSE||""}))
+  )));
+  tb.appendChild(row("PSP / PSE", pspPseTbl));
+
+  tb.appendChild(row("Ubicación (semestre)", editField("semestre", {placeholder:"Ej. Tercer semestre", multiline:false, defaultValue:dg.ubicacion||""})));
+  tb.appendChild(row("Requisitos académicos previos", editField("requisitos", {placeholder:"Asignaturas o conocimientos previos requeridos", defaultValue:dg.requisitos_previos||""})));
+
+  // Resumen operativo derivado del JSON (informativo)
+  const resumen = el("table", {class:"t", style:"margin:0;"});
+  resumen.appendChild(el("tbody",{},
+    el("tr",{}, el("td",{class:"lbl",text:"Semanas totales"}), el("td",{text:String(sem||"—")}),
+                el("td",{class:"lbl",text:"Sesiones totales"}), el("td",{text:String(ses||"—")})),
+    el("tr",{}, el("td",{class:"lbl",text:"Min. por sesión"}), el("td",{text:String(num(reglas.minutos_por_sesion,"—"))}),
+                el("td",{class:"lbl",text:"Sesiones/semana"}), el("td",{text:String(num(reglas.sesiones_por_semana,"—"))}))
+  ));
+  tb.appendChild(row("Datos operativos (del plan)", resumen));
+
+  tbl.appendChild(tb);
+  s.appendChild(tbl);
+  return s;
+}
+
+/* ---- 2. Intencionalidad ---- */
+function cleanConcepto(s){
+  return String(s == null ? "" : s)
+    .replace(/^\s*[\u2022\u25E6\u25AA\u00B7o•\-\*]\s+/i, "")  // viñeta/subtema ("o ") al inicio
+    .replace(/\s+/g, " ")
+    .trim();
+}
+
+function gatherConceptos(data){
+  // Devuelve grupos { titulo, subtemas[] } preservando las unidades.
+  const groups = [];
+  const pa = data.programa_asignatura;
+  if (pa && Array.isArray(pa.contenidos_esenciales) && pa.contenidos_esenciales.length){
+    pa.contenidos_esenciales.forEach(u => {
+      const titulo = cleanConcepto(u.titulo);
+      const subtemas = (u.subtemas || []).map(cleanConcepto).filter(Boolean);
+      if (titulo || subtemas.length) groups.push({ titulo, subtemas });
+    });
+    if (groups.length) return groups;
+  }
+  // Respaldo: campo plano del pipeline (puede traer "o "/títulos mezclados).
+  const flat = (data.conceptos_clave_openalex || []).map(cleanConcepto).filter(Boolean);
+  return flat.length ? [{ titulo: "", subtemas: flat }] : [];
+}
+
+function renderIntencionalidad(data){
+  const s = section(2, "Intencionalidad de la asignatura");
+  s.appendChild(editField("intencionalidad", {
+    placeholder:"Describe la intención formativa de la asignatura (no incluida en el JSON).",
+    hint:"Campo editable — completa la intencionalidad de la asignatura."
+  }));
+  // Conceptos clave del JSON como apoyo
+  const grupos = gatherConceptos(data);
+  if (grupos.length){
+    const box = el("div", {style:"margin-top:8px;"});
+    box.appendChild(el("div", {class:"subhead", text:"Conceptos clave (referencia)"}));
+    const ul = el("ul", {class:"clean"});
+    grupos.forEach(g => {
+      if (g.titulo){
+        const liUnit = el("li", {});
+        liUnit.appendChild(el("strong", {text: g.titulo}));
+        if (g.subtemas.length){
+          const sub = el("ul", {class:"clean"});
+          g.subtemas.forEach(t => sub.appendChild(el("li", {text: t})));
+          liUnit.appendChild(sub);
+        }
+        ul.appendChild(liUnit);
+      } else {
+        g.subtemas.forEach(t => ul.appendChild(el("li", {text: t})));
+      }
+    });
+    box.appendChild(ul);
+    s.appendChild(box);
+  }
+  return s;
+}
+
+/* ---- 3. Competencia de la asignatura ---- */
+function renderCompetencia(data){
+  const s = section(3, "Competencia de la asignatura");
+  const p = el("table", {class:"t"});
+  p.appendChild(el("tbody",{}, el("tr",{},
+    el("td",{html: escapeHtml(data.competencia_curso || "—")})
+  )));
+  s.appendChild(p);
+  return s;
+}
+
+/* ---- 4. Acreditación (distribución de puntajes) ---- */
+function flattenActividades(periodos){
+  // Devuelve lista ordenada: ADAs de proceso + ADA producto (PI) por unidad
+  const out = [];
+  periodos.forEach((per, i) => {
+    (per.adas||[]).forEach((a, j) => out.push({unidad:i+1, idx:j+1, tipo:"proceso", ada:a}));
+    const pi = per.fase_proyecto_integrador && per.fase_proyecto_integrador.ada_integradora_producto;
+    if (pi) out.push({unidad:i+1, idx:"PI", tipo:"producto", ada:pi});
+  });
+  return out;
+}
+
+function renderAcreditacion(periodos){
+  const s = section(4, "Acreditación de la asignatura");
+  const acts = flattenActividades(periodos);
+
+  const tbl = el("table", {class:"t"});
+  tbl.appendChild(el("thead",{}, el("tr",{},
+    el("th",{text:"Tipo"}),
+    el("th",{text:"Unidad / Actividad"}),
+    el("th",{text:"Evidencia de aprendizaje"}),
+    el("th",{text:"Instrumento"}),
+    el("th",{text:"Fecha de entrega"}),
+    el("th",{text:"Fecha de retroalimentación"}),
+    el("th",{text:"Puntaje"})
+  )));
+  const tb = el("tbody");
+  acts.forEach((a, i) => {
+    const ev = (a.ada.evidencias_aprendizaje||[]).join("; ") || "—";
+    const id = `acred_${a.unidad}_${a.idx}`;
+    tb.appendChild(el("tr",{},
+      el("td",{}, el("span",{class:"pill "+(a.tipo==="producto"?"prod":"proc"), text:a.tipo})),
+      el("td",{html:`<b>U${a.unidad}</b> · ${escapeHtml(a.ada.nombre||("Actividad "+a.idx))}`}),
+      el("td",{text:ev}),
+      el("td",{text:a.ada.instrumento_evaluacion || "—"}),
+      el("td",{}, editField(id+"_fe", {placeholder:"dd/mm/aaaa", multiline:false})),
+      el("td",{}, editField(id+"_fr", {placeholder:"dd/mm/aaaa", multiline:false})),
+      el("td",{}, editField(id+"_pj", {placeholder:"pts", multiline:false}))
+    ));
+  });
+  tb.appendChild(el("tr",{class:"total"},
+    el("td",{colspan:"6",text:"Total"}),
+    el("td",{html:"<b>100</b>"})
+  ));
+  tbl.appendChild(tb);
+  s.appendChild(tbl);
+  s.appendChild(el("div",{class:"edit-hint",text:"Las fechas y los puntajes son editables (no provienen del JSON). El total debe sumar 100."}));
+  return s;
+}
+
+/* ---- 5. Secuencia didáctica y guion de clase ---- */
+function renderSecuencia(periodos, reglas){
+  const s = section(5, "Secuencia didáctica y Guion de clase");
+  const minSes = num(reglas.minutos_por_sesion, 90);
+
+  periodos.forEach((per, i) => {
+    const unidad = i+1;
+    s.appendChild(el("div", {class:"unit-head", text:`Unidad ${unidad}`}));
+
+    // Tabla secuencia didáctica de la unidad
+    const dur = sumDuracionUnidad(per);
+    const seq = el("table", {class:"t"});
+    const stb = el("tbody");
+    const r = (label, node) => el("tr",{}, el("td",{class:"lbl",text:label}), el("td",{}, node));
+    stb.appendChild(r("Nombre de la unidad", editField(`u${unidad}_nombre`, {placeholder:"Nombre de la unidad", multiline:false})));
+    stb.appendChild(el("tr",{}, el("td",{class:"lbl",text:"Semanas"}),
+      el("td",{text: per.semanas ? `${per.semanas.inicio}–${per.semanas.fin} (${per.semanas.cantidad} semanas)` : "—"})));
+    stb.appendChild(r("Competencia de la unidad", editField(`u${unidad}_comp`, {placeholder:"Competencia específica de la unidad (no en JSON)"})));
+    stb.appendChild(r("Competencia del perfil de egreso", editField(`u${unidad}_perfil`, {placeholder:"Competencia del perfil de egreso (no en JSON)"})));
+    stb.appendChild(el("tr",{}, el("td",{class:"lbl",text:"Duración"}),
+      el("td",{text: `${dur.sesiones} sesiones · ${(dur.sesiones*minSes/60).toFixed(1)} horas`})));
+    seq.appendChild(stb);
+    s.appendChild(seq);
+
+    // Actividades (ADAs de proceso + PI producto)
+    const acts = (per.adas||[]).map((a,j)=>({tipo:"proceso", idx:j+1, ada:a}));
+    const pi = per.fase_proyecto_integrador && per.fase_proyecto_integrador.ada_integradora_producto;
+    if (pi) acts.push({tipo:"producto", idx:"PI", ada:pi});
+
+    acts.forEach(item => s.appendChild(renderActividad(unidad, item, minSes)));
+  });
+  return s;
+}
+
+function sumDuracionUnidad(per){
+  let ses = 0;
+  (per.adas||[]).forEach(a => ses += num(a.duracion_sesiones,0));
+  const pi = per.fase_proyecto_integrador && per.fase_proyecto_integrador.ada_integradora_producto;
+  if (pi) ses += num(pi.duracion_sesiones,0);
+  return {sesiones: ses};
+}
+
+function renderActividad(unidad, item, minSes){
+  const a = item.ada;
+  const box = el("div", {class:"section", style:"margin-top:16px;"});
+  const title = item.tipo==="producto"
+    ? `Actividad integradora (Proyecto) — ${a.nombre||""}`
+    : `Actividad No. ${item.idx} — ${a.nombre||""}`;
+  box.appendChild(el("div", {class:"subhead"},
+    el("span",{class:"pill "+(item.tipo==="producto"?"prod":"proc"), text:item.tipo}),
+    el("span",{style:"margin-left:8px;"}, document.createTextNode(title))
+  ));
+
+  const tbl = el("table", {class:"t"});
+  const tb = el("tbody");
+  const row = (label, node) => el("tr",{}, el("td",{class:"lbl",text:label}), el("td",{}, node));
+  const txt = v => el("td",{html: escapeHtml(v||"—")});
+  const list = arr => {
+    if (!arr || !arr.length) return el("td",{text:"—"});
+    const ul = el("ul",{class:"clean"}); arr.forEach(x=>ul.appendChild(el("li",{text:String(x)})));
+    return el("td",{}, ul);
+  };
+
+  const id = `u${unidad}_${item.idx}`;
+  tb.appendChild(el("tr",{}, el("td",{class:"lbl",text:"Tipo de actividad"}), el("td",{text:cap(a.tipo_actividad||item.tipo)})));
+  tb.appendChild(el("tr",{}, el("td",{class:"lbl",text:"Duración"}), el("td",{text:`${num(a.duracion_sesiones,"—")} sesiones (sesión ${num(a.sesion_inicio,"?")}–${num(a.sesion_fin,"?")})`})));
+  tb.appendChild(row("Puntaje", editField(id+"_pj", {placeholder:"pts (editable)", multiline:false})));
+  tb.appendChild(el("tr",{}, el("td",{class:"lbl",text:"Objetivo / Resultado de aprendizaje"}), txt(a.resultado_aprendizaje || a.objetivo)));
+  tb.appendChild(el("tr",{}, el("td",{class:"lbl",text:"Contenidos a desarrollar"}), list(a.contenidos_a_desarrollar)));
+  tb.appendChild(el("tr",{}, el("td",{class:"lbl",text:"Fundamentos temáticos"}), list(a.fundamentos_tematicos_requeridos)));
+  tb.appendChild(el("tr",{}, el("td",{class:"lbl",text:"Estrategias de enseñanza y aprendizaje"}), list(a.estrategias_ensenanza_aprendizaje)));
+  tb.appendChild(el("tr",{}, el("td",{class:"lbl",text:"Evidencias de aprendizaje"}), list(a.evidencias_aprendizaje)));
+  tb.appendChild(el("tr",{}, el("td",{class:"lbl",text:"Instrumento de evaluación"}), el("td",{text:a.instrumento_evaluacion||"—"})));
+  tbl.appendChild(tb);
+  box.appendChild(tbl);
+
+  // Referencias APA (de lecturas_fundamentacion)
+  const refs = collectRefs(a.lecturas_fundamentacion);
+  if (refs.length){
+    box.appendChild(el("div",{class:"subhead",text:"Referencias (APA 7.ª ed.)"}));
+    const ul = el("ul",{class:"clean refs"});
+    refs.forEach(r => ul.appendChild(el("li",{text:r})));
+    box.appendChild(ul);
+  }
+
+  // Guion sesión por sesión
+  const sesiones = a.sesiones_desarrolladas || [];
+  if (sesiones.length){
+    box.appendChild(el("div",{class:"subhead",text:"Guion de clase (sesión por sesión)"}));
+    sesiones.forEach(ses => box.appendChild(renderSesion(ses, a)));
+  }
+  return box;
+}
+
+function collectRefs(lecturas){
+  const set = new Set();
+  (lecturas||[]).forEach(l => {
+    (l.referencias_apa||[]).forEach(r => set.add(r));
+    (l.fuentes_openalex||[]).forEach(f => { if (f.referencia_apa) set.add(f.referencia_apa); });
+  });
+  return [...set];
+}
+
+function renderSesion(ses, ada){
+  const card = el("div", {class:"session"});
+  const head = el("div", {class:"s-head"});
+  head.appendChild(el("span",{}, document.createTextNode(`Sesión ${num(ses.sesion,"?")}`)));
+  head.appendChild(el("span",{class:"s-meta", text:`Semana ${num(ses.semana,"?")} · ${cap(ses.hito||"")} · ${cap(ses.tipo_actividad||"")}`}));
+  card.appendChild(head);
+
+  const body = el("div", {class:"s-body"});
+  // Tema y objetivo específico (prellenado desde el JSON de la sesión, editable)
+  const objetivoSesion = ses.objetivo || ada.objetivo || "";
+  const meta = el("table", {class:"t", style:"margin-top:0;"});
+  meta.appendChild(el("tbody",{},
+    el("tr",{}, el("td",{class:"lbl",style:"width:24%;",text:"Tema"}), el("td",{text: ada.nombre || "—"})),
+    el("tr",{}, el("td",{class:"lbl",text:"Objetivo específico"}),
+      el("td",{}, editField(`ses${num(ses.sesion,0)}_obj`, {
+        placeholder:"Verbo activo en infinitivo + objeto + complemento", multiline:true,
+        defaultValue: objetivoSesion})))
+  ));
+  body.appendChild(meta);
+
+  ["inicio","desarrollo","cierre"].forEach(phase => {
+    const p = ses[phase];
+    if (!p) return;
+    const div = el("div", {class:"phase "+phase});
+    const head2 = el("div");
+    head2.appendChild(el("span",{class:"p-tag", text:phase}));
+    head2.appendChild(el("span",{class:"min", text:`${num(p.duracion_min,"?")} min`}));
+    div.appendChild(head2);
+    div.appendChild(el("div",{class:"p-text", text: p.instrucciones || "—"}));
+    body.appendChild(div);
+  });
+
+  card.appendChild(body);
+  return card;
+}
+
+/* ---- 6. Evaluación de producto ---- */
+function renderProducto(periodos, reglas){
+  const s = section(6, "Evaluación de Producto");
+  const minSes = num(reglas.minutos_por_sesion, 90);
+  const prods = [];
+  periodos.forEach((per,i)=>{
+    const pi = per.fase_proyecto_integrador && per.fase_proyecto_integrador.ada_integradora_producto;
+    if (pi) prods.push({unidad:i+1, ada:pi, fase: per.fase_proyecto_integrador.nombre});
+  });
+  if (!prods.length){
+    s.appendChild(el("table",{class:"t"}, el("tbody",{}, el("tr",{}, el("td",{text:"No se definió evaluación de producto en el JSON."})))));
+    return s;
+  }
+  const tbl = el("table", {class:"t"});
+  tbl.appendChild(el("thead",{}, el("tr",{},
+    el("th",{text:"Unidad"}),
+    el("th",{text:"Actividad integradora"}),
+    el("th",{text:"Duración"}),
+    el("th",{text:"Instrumento"}),
+    el("th",{text:"Puntaje"})
+  )));
+  const tb = el("tbody");
+  prods.forEach(p => {
+    const horas = (num(p.ada.duracion_sesiones,0)*minSes/60).toFixed(1);
+    tb.appendChild(el("tr",{},
+      el("td",{text:"U"+p.unidad}),
+      el("td",{html:`<b>${escapeHtml(p.fase||"")}</b><br>${escapeHtml(p.ada.resultado_aprendizaje||p.ada.objetivo||"")}`}),
+      el("td",{text:`${num(p.ada.duracion_sesiones,"—")} sesiones · ${horas} h`}),
+      el("td",{text:p.ada.instrumento_evaluacion||"—"}),
+      el("td",{}, editField(`prod_u${p.unidad}_pj`, {placeholder:"pts", multiline:false}))
+    ));
+  });
+  tbl.appendChild(tb);
+  s.appendChild(tbl);
+  return s;
+}
+
+/* ---- Programa de la asignatura (fuente oficial) ---- */
+function renderPrograma(data){
+  const pa = data.programa_asignatura;
+  const s = el("div", {class:"section"});
+  s.appendChild(el("div", {class:"section-head"},
+    el("span",{class:"n", text:"7"}),
+    document.createTextNode("Programa de la asignatura (fuente oficial)")
+  ));
+  if (!pa){
+    s.appendChild(el("div",{class:"edit-hint",text:"No se encontró 'programa_asignatura' en el JSON."}));
+    return s;
+  }
+
+  const bloqueTexto = (titulo, valor) => {
+    if (!valor) return;
+    s.appendChild(el("div",{class:"subhead",text:titulo}));
+    s.appendChild(el("div",{class:"p-text", html: escapeHtml(valor)}));
+  };
+  const bloqueLista = (titulo, arr) => {
+    if (!arr || !arr.length) return;
+    s.appendChild(el("div",{class:"subhead",text:titulo}));
+    const ul = el("ul",{class:"clean"});
+    arr.forEach(x => ul.appendChild(el("li",{text:String(x)})));
+    s.appendChild(ul);
+  };
+
+  bloqueTexto("Contexto de la asignatura", pa.contexto_asignatura);
+  bloqueTexto("Relación con otras asignaturas", pa.relacion_otras_asignaturas);
+
+  // Contenidos esenciales (unidades + subtemas)
+  const cont = pa.contenidos_esenciales || [];
+  if (cont.length){
+    s.appendChild(el("div",{class:"subhead",text:"Contenidos esenciales"}));
+    cont.forEach((u, i) => {
+      s.appendChild(el("div",{class:"unit-head", text:`Unidad ${i+1}. ${u.titulo||""}`}));
+      const ul = el("ul",{class:"clean"});
+      (u.subtemas||[]).forEach(t => ul.appendChild(el("li",{text:String(t)})));
+      if ((u.subtemas||[]).length) s.appendChild(ul);
+    });
+  }
+
+  // Competencias del perfil de egreso
+  const cpe = pa.competencias_perfil_egreso || {};
+  bloqueLista("Competencias genéricas (perfil de egreso)", cpe.genericas);
+  bloqueLista("Competencias disciplinares (perfil de egreso)", cpe.disciplinares);
+
+  bloqueLista("Experiencias de aprendizaje", pa.experiencias_aprendizaje);
+  bloqueLista("Estrategias de enseñanza sugeridas", pa.estrategias_ensenanza_sugeridas);
+
+  // Estrategias de evaluación (proceso / producto)
+  const ev = pa.estrategias_evaluacion || {};
+  if (ev.proceso || ev.producto){
+    s.appendChild(el("div",{class:"subhead",text:"Estrategias de evaluación"}));
+    const evTbl = el("table",{class:"t"});
+    const evtb = el("tbody");
+    [["Proceso", ev.proceso],["Producto", ev.producto]].forEach(([lbl, blk]) => {
+      if (!blk) return;
+      const items = (blk.items||[]).join("; ") || "—";
+      const pct = (blk.porcentaje!==undefined && blk.porcentaje!==null) ? `${blk.porcentaje}%` : "—";
+      evtb.appendChild(el("tr",{},
+        el("td",{class:"lbl",text:lbl}),
+        el("td",{html:`<b>${pct}</b> · ${escapeHtml(items)}`})
+      ));
+    });
+    evTbl.appendChild(evtb);
+    s.appendChild(evTbl);
+  }
+
+  bloqueTexto("Prácticas formativas", pa.practicas_formativas);
+
+  // Referencias sugeridas
+  const refs = pa.referencias_sugeridas || {};
+  bloqueLista("Referencias básicas", refs.basicas);
+  bloqueLista("Referencias complementarias", refs.complementarias);
+
+  bloqueLista("Perfil docente", pa.perfil_docente);
+
+  return s;
+}
+
+/* ---- Helpers de sección ---- */
+function section(n, title){
+  const s = el("div", {class:"section"});
+  s.appendChild(el("div", {class:"section-head"},
+    el("span",{class:"n", text:String(n)}),
+    document.createTextNode(title)
+  ));
+  return s;
+}
+function escapeHtml(s){
+  return String(s==null?"":s)
+    .replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;")
+    .replace(/\n/g,"<br>");
+}
+
+/* =========================================================
+   Wiring
+   ========================================================= */
+$("#fileSelect").addEventListener("change", e => {
+  const f = e.target.value;
+  if (f) loadUrl("../data/output/"+f, f);
+});
+$("#filePicker").addEventListener("change", e => {
+  if (e.target.files && e.target.files[0]) loadFile(e.target.files[0]);
+});
+$("#btnPrint").addEventListener("click", () => window.print());
+$("#viewSelect").addEventListener("change", e => {
+  CURRENT_VIEW = e.target.value;
+  if (LAST_DATA) render(LAST_DATA, LAST_NAME);
+});
+
+discoverFiles();
+</script>
+</body>
+</html>
