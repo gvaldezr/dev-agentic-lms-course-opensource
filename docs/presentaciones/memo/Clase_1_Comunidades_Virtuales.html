@@ -1,0 +1,497 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Urbanist:wght@300;400;600;700&family=Lora:ital,wght@0,400;1,400&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+        :root {
+            --bg: #050505;
+            --accent: #00E5FF;
+            --white: #FFFFFF;
+            --dim: #A0A0A0;
+            --card-bg: #0a0a0a;
+            --border: #1a1a1a;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            background: var(--bg);
+            font-family: 'Urbanist', sans-serif;
+            color: var(--white);
+            overflow: hidden;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        #viewport {
+            flex: 1;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .slide {
+            position: absolute;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            display: none;
+            flex-direction: column;
+            justify-content: center;
+            padding: 60px 80px;
+            opacity: 0;
+            transition: opacity 0.4s ease;
+        }
+        .slide.active { display: flex; opacity: 1; }
+
+        h1 { font-size: 72px; font-weight: 700; line-height: 1.1; }
+        h1 span { color: var(--accent); }
+        h2 { font-size: 18px; color: var(--accent); text-transform: uppercase; letter-spacing: 4px; margin-bottom: 30px; font-weight: 600; }
+        h3 { font-size: 32px; font-weight: 600; margin-bottom: 12px; }
+        p { font-size: 20px; color: var(--dim); line-height: 1.6; }
+        .subtitle { font-family: 'Lora', serif; font-style: italic; font-size: 26px; color: #ccc; margin-top: 16px; }
+
+        .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 50px; align-items: center; }
+        .grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 24px; }
+
+        .card {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 30px;
+            text-align: center;
+        }
+        .card i { font-size: 36px; color: var(--accent); margin-bottom: 14px; display: block; }
+        .card h4 { font-size: 18px; font-weight: 600; margin-bottom: 8px; color: var(--white); }
+        .card p { font-size: 15px; color: var(--dim); }
+
+        .rule-item {
+            display: flex; align-items: flex-start; gap: 20px;
+            margin-bottom: 24px;
+        }
+        .rule-item .icon {
+            width: 48px; height: 48px; border-radius: 50%;
+            background: rgba(0,229,255,0.08); display: flex;
+            align-items: center; justify-content: center; flex-shrink: 0;
+        }
+        .rule-item .icon i { color: var(--accent); font-size: 20px; }
+        .rule-item .text h4 { font-size: 20px; font-weight: 600; margin-bottom: 4px; }
+        .rule-item .text p { font-size: 16px; }
+
+        .timeline { display: flex; flex-direction: column; gap: 16px; }
+        .timeline-item {
+            display: flex; align-items: center; gap: 16px;
+            padding: 16px 20px; border-radius: 12px;
+            background: var(--card-bg); border: 1px solid var(--border);
+        }
+        .timeline-item .num {
+            width: 36px; height: 36px; border-radius: 50%;
+            background: var(--accent); color: #000; font-weight: 700;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 16px; flex-shrink: 0;
+        }
+        .timeline-item .info h4 { font-size: 17px; font-weight: 600; }
+        .timeline-item .info p { font-size: 14px; color: var(--dim); margin-top: 2px; }
+
+        .big-question { text-align: center; }
+        .big-question h1 { font-size: 52px; color: var(--accent); margin-bottom: 20px; }
+        .big-question p { font-size: 22px; color: var(--dim); max-width: 700px; margin: 0 auto; }
+
+        .prompt-cards { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-top: 30px; }
+        .prompt-card {
+            background: var(--card-bg); border: 1px solid var(--border);
+            border-radius: 14px; padding: 24px; text-align: left;
+        }
+        .prompt-card .emoji { font-size: 32px; margin-bottom: 10px; display: block; }
+        .prompt-card h4 { font-size: 17px; font-weight: 600; margin-bottom: 6px; }
+        .prompt-card p { font-size: 14px; color: var(--dim); }
+
+        .controls {
+            position: absolute; bottom: 30px; right: 40px;
+            display: flex; gap: 12px; z-index: 100;
+        }
+        .nav-btn {
+            background: rgba(255,255,255,0.03);
+            border: 1px solid #333; color: white;
+            width: 50px; height: 50px; border-radius: 50%;
+            cursor: pointer; display: flex; align-items: center;
+            justify-content: center; font-size: 18px; transition: 0.2s;
+        }
+        .nav-btn:hover { background: var(--accent); color: #000; border-color: var(--accent); }
+
+        .slide-counter {
+            position: absolute; bottom: 40px; left: 60px;
+            color: #444; font-size: 13px; letter-spacing: 2px; z-index: 100;
+        }
+        .progress-track {
+            position: absolute; bottom: 0; left: 0;
+            width: 100%; height: 4px; background: #111;
+        }
+        .progress-bar { height: 100%; background: var(--accent); transition: width 0.3s ease; }
+
+        .tag {
+            display: inline-block; padding: 4px 14px; border-radius: 100px;
+            font-size: 13px; font-weight: 600; letter-spacing: 1px;
+            background: rgba(0,229,255,0.1); color: var(--accent);
+            margin-bottom: 8px;
+        }
+
+        .dyn-label {
+            display: inline-flex; align-items: center; gap: 6px;
+            background: rgba(0,229,255,0.08); color: var(--accent);
+            border-radius: 8px; padding: 6px 14px; font-size: 13px;
+            font-weight: 600; margin-bottom: 20px;
+        }
+
+        .exp-item {
+            display: flex; align-items: center; gap: 14px;
+            margin-bottom: 14px;
+        }
+        .exp-item i {
+            color: var(--accent); font-size: 18px; width: 24px; text-align: center;
+        }
+        .exp-item span { font-size: 17px; color: var(--dim); }
+        .exp-item strong { color: var(--white); }
+
+        /* Myth/Reality slides */
+        .myth-slide { text-align: center; align-items: center; }
+        .myth-badge {
+            display: inline-flex; align-items: center; gap: 8px;
+            padding: 8px 20px; border-radius: 100px; font-size: 14px;
+            font-weight: 700; letter-spacing: 2px; margin-bottom: 20px;
+            opacity: 0; transform: translateY(-10px);
+            transition: opacity 0.5s ease, transform 0.5s ease;
+        }
+        .myth-badge.visible { opacity: 1; transform: translateY(0); }
+        .myth-badge.mito { background: rgba(255,82,82,0.12); color: #FF5252; }
+        .myth-badge.realidad { background: rgba(0,229,255,0.12); color: var(--accent); }
+
+        .myth-statement {
+            font-size: 42px; font-weight: 700; line-height: 1.2;
+            color: var(--white); max-width: 800px; margin: 0 auto 30px;
+        }
+
+        .myth-reveal {
+            max-width: 650px; margin: 0 auto;
+            padding: 30px 40px; border-radius: 16px;
+            background: var(--card-bg); border: 1px solid var(--border);
+            opacity: 0; transform: translateY(16px);
+            transition: opacity 0.5s ease, transform 0.5s ease;
+            pointer-events: none;
+        }
+        .myth-reveal.visible {
+            opacity: 1; transform: translateY(0); pointer-events: auto;
+        }
+        .myth-reveal p { font-size: 18px; color: var(--dim); line-height: 1.6; }
+        .myth-reveal strong { color: var(--white); }
+
+        .reveal-btn {
+            margin-top: 20px; padding: 12px 28px; border-radius: 100px;
+            border: 1px solid var(--accent); background: transparent;
+            color: var(--accent); font-family: 'Urbanist', sans-serif;
+            font-size: 15px; font-weight: 600; cursor: pointer;
+            transition: 0.2s;
+        }
+        .reveal-btn:hover { background: var(--accent); color: #000; }
+        .reveal-btn.hidden { display: none; }
+
+        /* Fullscreen button */
+        .fs-btn {
+            position: absolute; top: 20px; right: 20px; z-index: 200;
+            background: rgba(255,255,255,0.03);
+            border: 1px solid #333; color: #666;
+            width: 42px; height: 42px; border-radius: 50%;
+            cursor: pointer; display: flex; align-items: center;
+            justify-content: center; font-size: 16px; transition: 0.2s;
+        }
+        .fs-btn:hover { color: var(--accent); border-color: var(--accent); }
+    </style>
+</head>
+<body>
+
+<div id="viewport">
+
+    <!-- Fullscreen button -->
+    <button class="fs-btn" onclick="toggleFS()" title="Pantalla completa"><i class="fa-solid fa-expand" id="fs-icon"></i></button>
+
+    <!-- SLIDE 1: Portada -->
+    <div class="slide active">
+        <div style="text-align:center;">
+            <p style="letter-spacing:8px; color:var(--accent); font-weight:700; margin-bottom:12px; font-size:14px;">PREPARATORIA UNO · UADY · 5° SEMESTRE</p>
+            <h1 style="font-size:80px;">Comunidades <span>Virtuales</span></h1>
+            <p class="subtitle">Gestión estratégica de comunidades digitales</p>
+            <div style="width:80px; height:3px; background:var(--accent); margin:30px auto 0;"></div>
+            <p style="margin-top:24px; font-size:16px; color:#666;">Agosto 2026 · Sesión 1</p>
+        </div>
+    </div>
+
+    <!-- SLIDE 2: Quién soy -->
+    <div class="slide">
+        <h2>Conociéndonos</h2>
+        <div class="grid-2">
+            <div>
+                <h3 style="font-size:48px;">Soy <span style="color:var(--accent);">Memo</span></h3>
+                <p style="margin-top:12px; margin-bottom:20px;">No profe, no maestro. <strong style="color:#fff;">Solo Memo.</strong></p>
+                <div class="exp-item"><i class="fa-solid fa-server"></i><span><strong>Tecnologías de la Información</strong> — Infraestructura, redes y soluciones digitales.</span></div>
+                <div class="exp-item"><i class="fa-solid fa-bullhorn"></i><span><strong>Comunicación</strong> — Estrategia de contenidos y gestión de comunidades.</span></div>
+                <div class="exp-item"><i class="fa-solid fa-robot"></i><span><strong>IA Aplicada</strong> — Automatización, arquitectura de soluciones y datos.</span></div>
+                <div style="margin-top:24px; display:flex; gap:10px; flex-wrap:wrap;">
+                    <div class="tag"><i class="fa-solid fa-microchip" style="margin-right:6px;"></i> IA</div>
+                    <div class="tag"><i class="fa-solid fa-music" style="margin-right:6px;"></i> Música</div>
+                    <div class="tag"><i class="fa-solid fa-chalkboard-user" style="margin-right:6px;"></i> Docencia</div>
+                </div>
+            </div>
+            <div style="text-align:center;">
+                <div style="width:180px;height:180px;border-radius:50%;background:#0a0a0a;border:2px solid var(--accent);margin:0 auto;display:flex;align-items:center;justify-content:center;">
+                    <span style="font-size:72px;font-weight:700;color:#fff;">M<span style="color:var(--accent);">V.</span></span>
+                </div>
+                <p style="margin-top:16px; font-family:'Lora',serif; font-style:italic; color:#888; font-size:16px;">"Código y Ritmo. Cero Etiquetas."</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- SLIDE 3: Reglas del aula -->
+    <div class="slide">
+        <h2>Acuerdos del aula</h2>
+        <h3 style="margin-bottom:30px;">Tres reglas simples para fluir bien</h3>
+        <div class="rule-item">
+            <div class="icon"><i class="fa-solid fa-clock"></i></div>
+            <div class="text">
+                <h4>Puntualidad</h4>
+                <p><strong style="color:var(--accent);">No hay tolerancia.</strong> Cuando la clase inicia, la puerta se cierra. Si llegas tarde, no entras. Así de simple.</p>
+            </div>
+        </div>
+        <div class="rule-item">
+            <div class="icon"><i class="fa-solid fa-mobile-screen"></i></div>
+            <div class="text">
+                <h4>Celulares = herramientas</h4>
+                <p>El celular es una herramienta útil… <strong style="color:#fff;">siempre que no te distraigas.</strong> Si lo necesitas para la actividad, úsalo. Si te desconecta del grupo, guárdalo.</p>
+            </div>
+        </div>
+        <div class="rule-item">
+            <div class="icon"><i class="fa-solid fa-handshake-simple"></i></div>
+            <div class="text">
+                <h4>Respeto horizontal</h4>
+                <p>Aquí no hay preguntas tontas ni respuestas perfectas. Aprendemos juntos. Si algo no queda claro, se pregunta sin pena.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- SLIDE 4: La asignatura -->
+    <div class="slide">
+        <h2>La asignatura</h2>
+        <h3>¿De qué trata Comunidades Virtuales?</h3>
+        <p style="margin-bottom:30px;">Aprenderás a gestionar comunidades digitales como un profesional: observar, escuchar, influir y activar audiencias con estrategia.</p>
+        <div class="grid-3">
+            <div class="card">
+                <i class="fa-solid fa-user-tie"></i>
+                <h4>Community Manager</h4>
+                <p>El rol que conecta marcas con personas reales.</p>
+            </div>
+            <div class="card">
+                <i class="fa-solid fa-chart-line"></i>
+                <h4>Monitoreo</h4>
+                <p>Observar datos, menciones y tendencias constantemente.</p>
+            </div>
+            <div class="card">
+                <i class="fa-solid fa-bolt"></i>
+                <h4>Dinamización</h4>
+                <p>Crear contenidos que generen reacción y participación.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- SLIDE 5: Actividad 1 — Ruta -->
+    <div class="slide">
+        <h2>Actividad 1 · Vista General</h2>
+        <div class="grid-2">
+            <div>
+                <h3>¿Quién es el Community Manager?</h3>
+                <p style="margin-bottom:20px;">6 sesiones para entender, observar y proponer estrategias de engagement.</p>
+                <div class="timeline">
+                    <div class="timeline-item"><div class="num">1</div><div class="info"><h4>Rol del CM</h4><p>Mapa conceptual</p></div></div>
+                    <div class="timeline-item"><div class="num">2</div><div class="info"><h4>Funciones y rutina</h4><p>Refinamiento</p></div></div>
+                    <div class="timeline-item"><div class="num">3</div><div class="info"><h4>Influencia</h4><p>Análisis de acciones</p></div></div>
+                    <div class="timeline-item"><div class="num">4</div><div class="info"><h4>Monitorización</h4><p>Matriz de monitoreo</p></div></div>
+                    <div class="timeline-item"><div class="num">5</div><div class="info"><h4>Profundización</h4><p>Indicadores clave</p></div></div>
+                    <div class="timeline-item"><div class="num">6</div><div class="info"><h4>Dinamización</h4><p>Propuesta de contenidos</p></div></div>
+                </div>
+            </div>
+            <div>
+                <div class="card" style="text-align:left; padding:30px;">
+                    <h4 style="color:var(--accent); margin-bottom:16px;"><i class="fa-solid fa-trophy" style="margin-right:8px;"></i> Entregables</h4>
+                    <p style="font-size:15px; margin-bottom:10px;"><strong style="color:#fff;">P1:</strong> Mapa conceptual del CM</p>
+                    <p style="font-size:15px; margin-bottom:10px;"><strong style="color:#fff;">P2:</strong> Análisis de 3 acciones</p>
+                    <p style="font-size:15px; margin-bottom:10px;"><strong style="color:#fff;">P3:</strong> Matriz de monitoreo semanal</p>
+                    <p style="font-size:15px; margin-bottom:10px;"><strong style="color:#fff;">P4:</strong> 3 contenidos de dinamización</p>
+                    <p style="font-size:15px;"><strong style="color:var(--accent);">Final:</strong> Compilado de evidencias</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- SLIDE 6: Activación — Pregunta central -->
+    <div class="slide">
+        <div class="dyn-label"><i class="fa-solid fa-rocket"></i> DINÁMICA ACTIVA</div>
+        <div class="big-question">
+            <h1>¿Qué hace un Community Manager<br>todo el día?</h1>
+            <p>Piensa en una marca que sigues. ¿Qué crees que hace esa persona detrás de la cuenta durante 8 horas?</p>
+        </div>
+        <div class="prompt-cards">
+            <div class="prompt-card">
+                <span class="emoji">🤔</span>
+                <h4>Ronda 1 — Individual (2 min)</h4>
+                <p>Escribe 3 tareas que crees que realiza un CM en un día típico.</p>
+            </div>
+            <div class="prompt-card">
+                <span class="emoji">🗣️</span>
+                <h4>Ronda 2 — En pares (3 min)</h4>
+                <p>Compara con tu compañero: ¿coinciden? ¿Qué les sorprende?</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- SLIDE 7: Mito 1 -->
+    <div class="slide myth-slide">
+        <div class="dyn-label"><i class="fa-solid fa-bolt"></i> MITOS VS REALIDAD · 1 de 4</div>
+        <div class="myth-badge mito">MITO</div>
+        <p class="myth-statement">"Un CM solo publica memes y fotos bonitas"</p>
+        <button class="reveal-btn" onclick="revealAnswer(this)">¿Mito o realidad?</button>
+        <div class="myth-reveal">
+            <p><strong>¡Mito!</strong> Un Community Manager planifica estrategia, analiza métricas, gestiona crisis, responde mensajes, coordina con equipos creativos y monitorea la reputación de la marca. Publicar es solo la punta del iceberg.</p>
+        </div>
+    </div>
+
+    <!-- SLIDE 8: Mito 2 -->
+    <div class="slide myth-slide">
+        <div class="dyn-label"><i class="fa-solid fa-bolt"></i> MITOS VS REALIDAD · 2 de 4</div>
+        <div class="myth-badge mito">MITO</div>
+        <p class="myth-statement">"Si tienes muchos seguidores, eres buen CM"</p>
+        <button class="reveal-btn" onclick="revealAnswer(this)">¿Mito o realidad?</button>
+        <div class="myth-reveal">
+            <p><strong>¡Mito!</strong> Los seguidores son una métrica de vanidad. Lo que importa es el <strong>engagement</strong>: interacciones reales, comentarios con intención, conversaciones y conversiones. 10,000 seguidores pasivos valen menos que 500 activos.</p>
+        </div>
+    </div>
+
+    <!-- SLIDE 9: Mito 3 -->
+    <div class="slide myth-slide">
+        <div class="dyn-label"><i class="fa-solid fa-bolt"></i> MITOS VS REALIDAD · 3 de 4</div>
+        <div class="myth-badge mito">MITO</div>
+        <p class="myth-statement">"Cualquiera que use redes puede ser CM"</p>
+        <button class="reveal-btn" onclick="revealAnswer(this)">¿Mito o realidad?</button>
+        <div class="myth-reveal">
+            <p><strong>¡Mito!</strong> Usar redes como usuario no te prepara para gestionarlas profesionalmente. Se necesita pensamiento estratégico, capacidad de análisis de datos, redacción persuasiva, gestión de crisis y conocimiento de herramientas especializadas.</p>
+        </div>
+    </div>
+
+    <!-- SLIDE 10: Mito 4 -->
+    <div class="slide myth-slide">
+        <div class="dyn-label"><i class="fa-solid fa-bolt"></i> MITOS VS REALIDAD · 4 de 4</div>
+        <div class="myth-badge realidad">DEPENDE</div>
+        <p class="myth-statement">"El CM trabaja solo de 9 a 5 como todos"</p>
+        <button class="reveal-btn" onclick="revealAnswer(this)">¿Mito o realidad?</button>
+        <div class="myth-reveal">
+            <p><strong>¡Depende!</strong> Las comunidades no se apagan a las 5 PM. Una crisis puede estallar a medianoche y el CM debe estar atento. Muchos tienen horarios extendidos o sistemas de alertas. La gestión de comunidades es <strong>24/7</strong>, aunque se organice por turnos.</p>
+        </div>
+    </div>
+
+    <!-- SLIDE 11: Para la próxima sesión -->
+    <div class="slide">
+        <div style="text-align:center;">
+            <h2 style="letter-spacing:6px; margin-bottom:20px;">PARA LA PRÓXIMA SESIÓN</h2>
+            <h1 style="font-size:44px; margin-bottom:20px;">Elige una cuenta de marca<br>que te guste <span>y observa.</span></h1>
+            <p style="max-width:600px; margin:0 auto;">Fíjate en qué publica, cómo responde comentarios, con qué frecuencia postea y qué tipo de reacciones genera. Trae tus observaciones.</p>
+            <div style="width:80px; height:3px; background:var(--accent); margin:40px auto 0;"></div>
+        </div>
+    </div>
+
+    <!-- SLIDE 12: Agradecimiento -->
+    <div class="slide">
+        <div style="text-align:center;">
+            <p style="letter-spacing:8px; color:var(--accent); font-weight:700; margin-bottom:16px; font-size:14px;">COMUNIDADES VIRTUALES · SESIÓN 1</p>
+            <h1 style="font-size:72px;">¡Gracias<span>!</span></h1>
+            <p class="subtitle">Nos vemos en la próxima sesión ✌️</p>
+            <div style="width:80px; height:3px; background:var(--accent); margin:40px auto 0;"></div>
+            <div style="margin-top:30px;">
+                <span style="font-size:60px; font-weight:700; color:#fff;">M<span style="color:var(--accent);">V.</span></span>
+            </div>
+        </div>
+    </div>
+
+    <!-- CONTROLES -->
+    <div class="slide-counter">COMUNIDADES VIRTUALES · <span id="cur">1</span> / <span id="tot">12</span></div>
+    <div class="controls">
+        <button class="nav-btn" onclick="prev()"><i class="fa-solid fa-chevron-left"></i></button>
+        <button class="nav-btn" onclick="next()"><i class="fa-solid fa-chevron-right"></i></button>
+    </div>
+    <div class="progress-track"><div class="progress-bar" id="pbar"></div></div>
+</div>
+
+<script>
+    const slides = document.querySelectorAll('.slide');
+    const total = slides.length;
+    let cur = 1;
+    document.getElementById('tot').textContent = total;
+
+    function update() {
+        slides.forEach((s, i) => {
+            s.classList.toggle('active', i + 1 === cur);
+        });
+        document.getElementById('cur').textContent = cur;
+        document.getElementById('pbar').style.width = (cur / total * 100) + '%';
+        // Reset all reveals and badges when navigating
+        slides.forEach(s => {
+            const reveal = s.querySelector('.myth-reveal');
+            const btn = s.querySelector('.reveal-btn');
+            const badge = s.querySelector('.myth-badge');
+            if (reveal) reveal.classList.remove('visible');
+            if (btn) btn.classList.remove('hidden');
+            if (badge) badge.classList.remove('visible');
+        });
+    }
+    function next() { cur = cur < total ? cur + 1 : 1; update(); }
+    function prev() { cur = cur > 1 ? cur - 1 : total; update(); }
+
+    function revealAnswer(btn) {
+        const slide = btn.closest('.slide');
+        const reveal = slide.querySelector('.myth-reveal');
+        const badge = slide.querySelector('.myth-badge');
+        reveal.classList.add('visible');
+        badge.classList.add('visible');
+        btn.classList.add('hidden');
+    }
+
+    function toggleFS() {
+        const icon = document.getElementById('fs-icon');
+        if (!document.fullscreenElement) {
+            document.documentElement.requestFullscreen();
+            icon.classList.remove('fa-expand');
+            icon.classList.add('fa-compress');
+        } else {
+            document.exitFullscreen();
+            icon.classList.remove('fa-compress');
+            icon.classList.add('fa-expand');
+        }
+    }
+
+    document.addEventListener('fullscreenchange', () => {
+        const icon = document.getElementById('fs-icon');
+        if (!document.fullscreenElement) {
+            icon.classList.remove('fa-compress');
+            icon.classList.add('fa-expand');
+        }
+    });
+
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'ArrowRight' || e.key === ' ') { e.preventDefault(); next(); }
+        if (e.key === 'ArrowLeft') prev();
+        if (e.key === 'f' || e.key === 'F') toggleFS();
+    });
+</script>
+
+</body>
+</html>
