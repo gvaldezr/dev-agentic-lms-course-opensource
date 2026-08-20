@@ -1,0 +1,3 @@
+[submodule "uady_brand_kit"]
+	path = uady_brand_kit
+	url = https://github.com/gvaldezr/uady-brand-kit.git
