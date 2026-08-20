@@ -1,0 +1,804 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quiz — Perfil del Community Manager</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+            min-height: 100vh;
+            color: #e0e0e0;
+            padding: 20px;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        header {
+            text-align: center;
+            padding: 30px 0;
+        }
+        header h1 {
+            font-size: 1.8rem;
+            color: #fff;
+            margin-bottom: 8px;
+        }
+        header p {
+            color: #a0b4c8;
+            font-size: 0.95rem;
+        }
+        .progress-bar {
+            background: rgba(255,255,255,0.1);
+            border-radius: 20px;
+            height: 8px;
+            margin: 20px 0;
+            overflow: hidden;
+        }
+        .progress-fill {
+            background: linear-gradient(90deg, #4facfe, #00f2fe);
+            height: 100%;
+            border-radius: 20px;
+            transition: width 0.4s ease;
+            width: 0%;
+        }
+        .progress-text {
+            text-align: center;
+            font-size: 0.85rem;
+            color: #a0b4c8;
+            margin-bottom: 20px;
+        }
+        .question-card {
+            background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 16px;
+            padding: 28px;
+            margin-bottom: 20px;
+            backdrop-filter: blur(10px);
+            transition: all 0.3s ease;
+        }
+        .question-card.correct {
+            border-color: #4caf50;
+            background: rgba(76,175,80,0.08);
+        }
+        .question-card.incorrect {
+            border-color: #f44336;
+            background: rgba(244,67,54,0.08);
+        }
+        .question-number {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: #4facfe;
+            margin-bottom: 12px;
+        }
+        .question-text {
+            font-size: 1.05rem;
+            line-height: 1.6;
+            color: #fff;
+            margin-bottom: 20px;
+        }
+        .options {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        .option {
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            padding: 14px 18px;
+            border: 1px solid rgba(255,255,255,0.15);
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            font-size: 0.95rem;
+            line-height: 1.5;
+        }
+        .option:hover:not(.disabled) {
+            background: rgba(79,172,254,0.1);
+            border-color: rgba(79,172,254,0.4);
+        }
+        .option.selected {
+            background: rgba(79,172,254,0.15);
+            border-color: #4facfe;
+        }
+        .option.disabled { cursor: default; opacity: 0.7; }
+        .option.correct-answer {
+            background: rgba(76,175,80,0.15) !important;
+            border-color: #4caf50 !important;
+            opacity: 1 !important;
+        }
+        .option.wrong-answer {
+            background: rgba(244,67,54,0.15) !important;
+            border-color: #f44336 !important;
+            opacity: 1 !important;
+        }
+        .option-letter {
+            min-width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.8rem;
+            font-weight: 600;
+            flex-shrink: 0;
+            margin-top: 2px;
+        }
+        .feedback {
+            margin-top: 14px;
+            padding: 14px 18px;
+            border-radius: 10px;
+            font-size: 0.9rem;
+            line-height: 1.5;
+            display: none;
+        }
+        .feedback.show { display: block; }
+        .feedback.correct-fb {
+            background: rgba(76,175,80,0.1);
+            border: 1px solid rgba(76,175,80,0.3);
+            color: #a5d6a7;
+        }
+        .feedback.incorrect-fb {
+            background: rgba(244,67,54,0.1);
+            border: 1px solid rgba(244,67,54,0.3);
+            color: #ef9a9a;
+        }
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 14px 32px;
+            border: none;
+            border-radius: 10px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        .btn-primary {
+            background: linear-gradient(135deg, #4facfe, #00f2fe);
+            color: #1a1a2e;
+        }
+        .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 8px 25px rgba(79,172,254,0.3); }
+        .btn-secondary {
+            background: rgba(255,255,255,0.1);
+            color: #fff;
+            border: 1px solid rgba(255,255,255,0.2);
+        }
+        .btn-secondary:hover { background: rgba(255,255,255,0.15); }
+        .actions {
+            text-align: center;
+            margin: 30px 0;
+            display: flex;
+            gap: 12px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+        .results-card {
+            background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 16px;
+            padding: 40px;
+            text-align: center;
+            display: none;
+        }
+        .results-card.show { display: block; }
+        .score-circle {
+            width: 140px;
+            height: 140px;
+            border-radius: 50%;
+            margin: 0 auto 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            font-size: 2.5rem;
+            font-weight: 700;
+        }
+        .score-circle.high { background: rgba(76,175,80,0.2); border: 3px solid #4caf50; color: #4caf50; }
+        .score-circle.medium { background: rgba(255,193,7,0.2); border: 3px solid #ffc107; color: #ffc107; }
+        .score-circle.low { background: rgba(244,67,54,0.2); border: 3px solid #f44336; color: #f44336; }
+        .score-label { font-size: 0.8rem; font-weight: 400; margin-top: 4px; }
+        .results-message { font-size: 1.1rem; margin: 16px 0 30px; color: #a0b4c8; }
+        .topic-breakdown { text-align: left; margin: 20px 0; }
+        .topic-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 16px;
+            border-radius: 8px;
+            margin-bottom: 6px;
+            background: rgba(255,255,255,0.03);
+        }
+        .topic-name { font-size: 0.9rem; }
+        .topic-score { font-size: 0.85rem; font-weight: 600; }
+        .hidden { display: none; }
+        @media (max-width: 600px) {
+            body { padding: 12px; }
+            .question-card { padding: 20px; }
+            header h1 { font-size: 1.4rem; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🧠 Quiz: Perfil del Community Manager</h1>
+            <p>ADA 1 — Comunidades Virtuales | Nivel Aplicación</p>
+        </header>
+
+        <div id="quiz-section">
+            <div class="progress-bar"><div class="progress-fill" id="progress-fill"></div></div>
+            <div class="progress-text" id="progress-text">Pregunta 1 de 10</div>
+            <div id="questions-container"></div>
+            <div class="actions">
+                <button class="btn btn-primary" id="btn-submit" onclick="submitQuiz()">Enviar respuestas</button>
+                <button class="btn btn-secondary hidden" id="btn-retry" onclick="retryQuiz()">🔄 Intentar de nuevo</button>
+            </div>
+        </div>
+
+        <div class="results-card" id="results-card">
+            <div class="score-circle" id="score-circle">
+                <span id="score-number">0</span>
+                <span class="score-label">/ 10</span>
+            </div>
+            <div class="results-message" id="results-message"></div>
+            <div class="topic-breakdown" id="topic-breakdown"></div>
+            <div class="actions">
+                <button class="btn btn-primary" onclick="retryQuiz()">🔄 Intentar con nuevas preguntas</button>
+            </div>
+        </div>
+    </div>
+
+<script>
+const questionPool = [
+    // === TEMA 1: ROL DEL CM (8 preguntas) ===
+    {
+        topic: "Rol del CM",
+        question: "Una cafetería local te contrata como Community Manager. El primer día descubres que solo publican fotos del menú sin responder comentarios. ¿Cuál sería tu primera acción?",
+        options: [
+            "Mejorar la calidad visual de las publicaciones para proyectar una imagen más profesional.",
+            "Diseñar un calendario de contenidos semanal con temáticas variadas.",
+            "Revisar y responder los comentarios pendientes para establecer conexión con la comunidad.",
+            "Analizar las métricas de alcance para determinar cuáles fotos han funcionado mejor."
+        ],
+        correct: 2,
+        feedback: "El CM conecta a la organización con su comunidad. Publicar mejor contenido o medir son funciones válidas, pero escuchar y responder es lo primero cuando la comunidad ya habla y nadie atiende."
+    },
+    {
+        topic: "Rol del CM",
+        question: "Un gimnasio te contrata. El dueño dice: \"Necesito que publiques contenido motivacional y crezcamos en seguidores\". ¿Cómo le explicarías que tu función va más allá?",
+        options: [
+            "Además de publicar, me encargo de diseñar la identidad gráfica de la marca.",
+            "Mi trabajo también incluye responder a la comunidad, detectar lo que se dice de la marca y cuidar su reputación digital.",
+            "Aparte de eso, puedo administrar campañas de publicidad pagada para llegar a más personas.",
+            "También puedo gestionar tu sitio web, crear landing pages y mejorar tu posicionamiento en Google."
+        ],
+        correct: 1,
+        feedback: "Las otras opciones describen funciones de diseñador, media buyer y webmaster. El CM se define por conectar con la comunidad: escuchar, responder, observar tendencias y cuidar la reputación."
+    },
+    {
+        topic: "Rol del CM",
+        question: "En una agencia de publicidad, el director creativo te pide que solo programes los posts que él diseña. ¿Qué argumento usarías para demostrar que tu rol implica más que eso?",
+        options: [
+            "Debo también analizar los KPIs de cada campaña pagada y optimizar presupuestos de pauta.",
+            "Necesito escuchar las conversaciones de la comunidad y reportar hallazgos que orienten la estrategia comunicativa.",
+            "Mi función incluye redactar los copys creativos de todas las piezas publicitarias.",
+            "Parte de mi trabajo es coordinar las sesiones fotográficas y aprobar los materiales gráficos."
+        ],
+        correct: 1,
+        feedback: "El CM no solo ejecuta publicaciones: observa tendencias, escucha a la comunidad y traduce esa información en insumos para la organización. Las otras opciones corresponden a roles de media planner, copywriter o coordinador de producción."
+    },
+    {
+        topic: "Rol del CM",
+        question: "Una ONG te contrata como CM. En tu primera semana detectas que la organización comunica logros pero nunca responde los mensajes directos de posibles donantes. ¿Cuál es el problema desde la perspectiva del rol del CM?",
+        options: [
+            "La estrategia de contenidos es demasiado institucional y necesita un tono más emocional.",
+            "No se está cumpliendo la función de conectar a la organización con su comunidad, porque se informa pero no se escucha.",
+            "Falta un chatbot automatizado que atienda las consultas fuera de horario laboral.",
+            "El problema es que no se segmenta correctamente la audiencia entre donantes y público general."
+        ],
+        correct: 1,
+        feedback: "El CM no se limita a publicar: también escucha y responde. Si la organización solo informa sin atender mensajes, falla la conexión con la comunidad, que es la esencia del rol."
+    },
+    {
+        topic: "Rol del CM",
+        question: "Trabajas como CM en una empresa de tecnología. El área comercial te pide que respondas consultas técnicas de clientes en redes. ¿Cuál es la mejor forma de abordar esta solicitud sin salir de tu rol?",
+        options: [
+            "Capacitarte en el producto para poder dar respuestas técnicas detalladas directamente.",
+            "Canalizar las consultas técnicas al área correspondiente y responder al cliente que su caso está siendo atendido, manteniendo la comunicación activa.",
+            "Publicar un FAQ técnico y no responder individualmente para no comprometer información incorrecta.",
+            "Derivar el caso a comercial y dejar de dar seguimiento porque no es tu responsabilidad."
+        ],
+        correct: 1,
+        feedback: "El CM cuida la relación con la comunidad: responde con claridad y canaliza internamente. No necesita ser experto técnico, pero tampoco abandona al usuario. Su rol es mantener la conexión activa."
+    },
+    {
+        topic: "Rol del CM",
+        question: "Dos empresas buscan CM. La Empresa A quiere alguien que \"maneje las redes\" y la Empresa B quiere alguien que \"conecte con la comunidad, escuche y proteja la reputación digital\". ¿Qué diferencia fundamental hay entre ambas ofertas?",
+        options: [
+            "La Empresa A ofrece un puesto operativo de social media y la B uno estratégico de marketing digital.",
+            "La Empresa B describe con mayor precisión la función real del CM: no solo publicar, sino escuchar, responder y cuidar la reputación.",
+            "Ambas describen lo mismo, solo que la Empresa B usa un lenguaje más profesional.",
+            "La Empresa A busca un perfil junior y la B un perfil senior con más años de experiencia."
+        ],
+        correct: 1,
+        feedback: "Manejar redes puede reducirse a publicar. La función real del CM incluye escuchar, responder, observar tendencias y cuidar la reputación, como describe la Empresa B."
+    },
+    {
+        topic: "Rol del CM",
+        question: "En una reunión de equipo, el gerente de marketing propone que el CM se encargue también del diseño gráfico, la pauta publicitaria y el SEO del sitio web. ¿Cuál es la mejor respuesta?",
+        options: [
+            "Aceptar todas las funciones porque el CM debe ser un profesional multidisciplinario en comunicación digital.",
+            "Explicar que el CM aporta valor específico en la conexión con la comunidad y que agregar funciones ajenas diluye su impacto en la relación marca-audiencia.",
+            "Rechazar la propuesta porque esas tareas requieren más presupuesto y herramientas adicionales.",
+            "Aceptar solo el diseño gráfico porque complementa la creación de contenido para redes."
+        ],
+        correct: 1,
+        feedback: "El CM tiene un valor diferenciado: conectar con la comunidad, escuchar, responder y cuidar la reputación. Asignarle funciones de otros roles (diseñador, media buyer, SEO) diluye su función principal."
+    },
+    {
+        topic: "Rol del CM",
+        question: "Un cliente de la agencia donde trabajas quiere saber en qué se diferencia un CM de un Social Media Manager. ¿Cuál explicación es más precisa según las funciones del CM?",
+        options: [
+            "El CM crea el contenido visual y el Social Media Manager lo publica y programa.",
+            "El Social Media Manager planifica la estrategia general de redes y el CM se enfoca en la relación directa con la comunidad: escuchar, responder y cuidar la reputación.",
+            "Son exactamente el mismo puesto, solo cambia el nombre según la empresa.",
+            "El CM se encarga de las métricas y reportes, mientras que el Social Media Manager interactúa con los seguidores."
+        ],
+        correct: 1,
+        feedback: "El CM se distingue por su enfoque en la comunidad: escuchar, responder y proteger la reputación. El Social Media Manager tiene un perfil más estratégico-operativo sobre la gestión global de redes."
+    },
+    // === TEMA 2: INFLUENCIA DEL CM (7 preguntas) ===
+    {
+        topic: "Influencia del CM",
+        question: "Eres CM de una marca de ropa juvenil. Cuando respondes con humor y cercanía, los seguidores comparten más las publicaciones. ¿Qué concepto explica mejor este efecto?",
+        options: [
+            "Dinamización de contenidos, porque el humor activa la participación de la audiencia.",
+            "Influencia del CM en los seguidores, porque la forma de comunicar impacta la percepción y el comportamiento de la audiencia.",
+            "Monitorización, porque observas los resultados de tus interacciones con la comunidad.",
+            "Identificación del target, porque adaptas tu tono al público que te sigue."
+        ],
+        correct: 1,
+        feedback: "La dinamización se refiere a diseñar publicaciones que provoquen interacción. Aquí el fenómeno es cómo la forma de comunicar del CM altera la percepción y comportamiento de los seguidores — eso es influencia."
+    },
+    {
+        topic: "Influencia del CM",
+        question: "Una universidad nota que los alumnos preguntan sobre inscripciones en comentarios sin recibir respuesta. Decides atender esas consultas de forma empática y constante. ¿Cuál será el efecto principal?",
+        options: [
+            "Los seguidores comenzarán a enviar todas sus dudas por redes en lugar de usar los canales oficiales.",
+            "La comunidad se sentirá escuchada y aumentará su disposición a interactuar con la cuenta.",
+            "Se reducirá la necesidad de publicar contenido nuevo porque la atención ya genera suficiente actividad.",
+            "La cuenta crecerá orgánicamente porque el algoritmo prioriza las cuentas que responden rápido."
+        ],
+        correct: 1,
+        feedback: "Cuando la comunicación es clara y cercana, la comunidad se siente escuchada y participa con mayor interés. Los otros distractores mencionan efectos posibles pero no son el resultado principal que describe la lectura."
+    },
+    {
+        topic: "Influencia del CM",
+        question: "Administras las redes de un hospital. Publicas un post sobre prevención de diabetes con datos duros, pero sin invitar a la acción. Recibes pocos comentarios. Luego publicas: \"¿Conoces a alguien que viva con diabetes? Comparte este post, puede ayudarle\". La interacción se triplica. ¿Qué explica la diferencia?",
+        options: [
+            "El segundo post funcionó porque usó un formato visual más atractivo para el algoritmo.",
+            "La forma empática y cercana de comunicar genera mayor participación porque los seguidores se sienten interpelados.",
+            "Los datos duros no funcionan en redes sociales; el contenido emocional siempre supera al informativo.",
+            "El algoritmo de la red social penaliza publicaciones sin preguntas directas al usuario."
+        ],
+        correct: 1,
+        feedback: "La influencia del CM se refleja en cómo comunica: coherencia, empatía y cercanía generan que la audiencia perciba el mensaje como relevante y actúe. No es solo el formato o el algoritmo."
+    },
+    {
+        topic: "Influencia del CM",
+        question: "Como CM de una tienda de deportes, notas que cuando reconoces públicamente a un cliente que compartió su logro deportivo, otros empiezan a compartir los suyos. ¿Qué principio de la influencia del CM opera aquí?",
+        options: [
+            "Monitorización activa, porque estás observando lo que hacen los clientes para reaccionar.",
+            "Dinamización de contenidos, porque el reconocimiento público es una técnica para generar más publicaciones.",
+            "Influencia del CM: cada decisión comunicativa (reconocer públicamente) fortalece la confianza y motiva mayor participación.",
+            "Segmentación de audiencia, porque identificas a los clientes más activos para dirigirte a ellos."
+        ],
+        correct: 2,
+        feedback: "Cada respuesta y decisión comunicativa del CM puede fortalecer la confianza o generar distancia. Reconocer públicamente fortalece el vínculo y motiva a otros — eso es influencia directa."
+    },
+    {
+        topic: "Influencia del CM",
+        question: "Una marca de cosméticos responde un comentario negativo con sarcasmo. Los seguidores reaccionan con enojo y algunos dejan de seguir la cuenta. ¿Qué demuestra esta situación?",
+        options: [
+            "Que la monitorización falló porque no se detectó el comentario a tiempo.",
+            "Que la comunidad es demasiado sensible y no tolera el humor.",
+            "Que cada decisión comunicativa del CM puede fortalecer la confianza o generar distancia con la audiencia.",
+            "Que los comentarios negativos siempre deben ignorarse para evitar conflictos."
+        ],
+        correct: 2,
+        feedback: "La influencia del CM es bidireccional: una respuesta empática fortalece; una irrespetuosa genera distancia. El sarcasmo rompió la confianza — exactamente lo que advierte la lectura."
+    },
+    {
+        topic: "Influencia del CM",
+        question: "Gestionas la cuenta de una editorial. Cada viernes publicas recomendaciones de libros con un tono personal y cercano. Con el tiempo, los seguidores empiezan a pedirte recomendaciones directamente. ¿Qué indica este comportamiento?",
+        options: [
+            "Que necesitas activar un chatbot para automatizar las recomendaciones personalizadas.",
+            "Que la coherencia y cercanía en tu comunicación ha generado confianza, lo que lleva a los seguidores a participar con mayor interés.",
+            "Que debes reducir la frecuencia de recomendaciones para no saturar a la audiencia.",
+            "Que el algoritmo está mostrando tu contenido a personas interesadas en libros."
+        ],
+        correct: 1,
+        feedback: "La lectura indica que cuando la comunicación es coherente y cercana, la comunidad se siente escuchada y participa con mayor interés. Los seguidores piden recomendaciones porque confían en el CM."
+    },
+    {
+        topic: "Influencia del CM",
+        question: "Dos marcas de café publican el mismo tipo de contenido (recetas, datos curiosos), pero una tiene 10 veces más comentarios. Al analizar, descubres que esa marca responde cada comentario con calidez y por nombre. ¿Qué factor marca la diferencia?",
+        options: [
+            "La marca con más comentarios tiene mejor estrategia de pauta publicitaria.",
+            "La calidad del contenido visual es superior en la marca más exitosa.",
+            "La forma en que el CM responde (con empatía y personalización) impacta directamente en la percepción y participación de los seguidores.",
+            "La marca con más comentarios publica en horarios más estratégicos."
+        ],
+        correct: 2,
+        feedback: "La influencia del CM se refleja en la forma en que la audiencia percibe, comenta y comparte. El trato personalizado y empático fortalece la confianza y genera más participación — no es solo cuestión de pauta u horarios."
+    },
+    // === TEMA 3: MONITORIZACIÓN (8 preguntas) ===
+    {
+        topic: "Monitorización",
+        question: "Detectas que un influencer critica públicamente a tu marca y sus seguidores replican el mensaje. ¿Qué acción corresponde a una monitorización adecuada?",
+        options: [
+            "Responder de inmediato al influencer para detener la conversación negativa.",
+            "Crear una publicación positiva para contrarrestar la percepción.",
+            "Rastrear menciones, comentarios derivados y alcance de la conversación para dimensionar el riesgo antes de actuar.",
+            "Contactar al influencer en privado y ofrecerle una colaboración para que elimine su publicación."
+        ],
+        correct: 2,
+        feedback: "Monitorizar es observar, identificar y dimensionar antes de actuar. Las otras opciones son respuestas (gestión de crisis), no monitorización. Primero se observa para tomar decisiones informadas."
+    },
+    {
+        topic: "Monitorización",
+        question: "Monitorizas un restaurante durante una semana y detectas que 12 personas mencionan que la comida a domicilio llega fría. ¿Qué acción demuestra que conviertes la monitorización en algo útil?",
+        options: [
+            "Publicar un post aclarando que el empaque es térmico y que el problema es del servicio de entrega.",
+            "Bloquear los comentarios negativos temporalmente mientras operaciones resuelve el problema.",
+            "Comunicar el hallazgo al área de operaciones con datos concretos y proponer una respuesta empática para los clientes.",
+            "Responder individualmente a cada cliente ofreciendo disculpa y un cupón de descuento."
+        ],
+        correct: 2,
+        feedback: "El CM convierte información en acciones útiles para la organización. Solo la opción c transforma la monitorización en acción organizacional coordinada: informa internamente con datos y responde externamente con empatía."
+    },
+    {
+        topic: "Monitorización",
+        question: "Administras las redes de una aerolínea. Un día notas un aumento repentino de menciones negativas. ¿Cuál es tu primer paso como CM que practica la monitorización?",
+        options: [
+            "Publicar inmediatamente un comunicado genérico pidiendo disculpas.",
+            "Identificar el origen, volumen y tema de las menciones para entender qué está pasando antes de tomar acción.",
+            "Desactivar los comentarios temporalmente para evitar que la situación escale.",
+            "Reportar a tu jefe que hay una crisis y esperar instrucciones antes de hacer cualquier cosa."
+        ],
+        correct: 1,
+        feedback: "La monitorización implica observar y comprender antes de actuar. Identificar origen, volumen y tema es el primer paso para tomar decisiones informadas, no reaccionar impulsivamente."
+    },
+    {
+        topic: "Monitorización",
+        question: "Llevas un mes monitorizando una marca de moda. Notas que cada vez que publican sobre sostenibilidad, reciben más guardados y compartidos que con otros temas. ¿Cómo usas este hallazgo?",
+        options: [
+            "Publicar exclusivamente sobre sostenibilidad y abandonar los otros temas de contenido.",
+            "Reportar la tendencia al equipo de contenido como una oportunidad para reforzar la línea de sostenibilidad en la estrategia.",
+            "Ignorar el dato porque los guardados no son tan relevantes como los comentarios.",
+            "Esperar a que la tendencia se confirme durante al menos seis meses antes de tomar acción."
+        ],
+        correct: 1,
+        feedback: "Un CM atento convierte la información en acciones útiles. Detectar una tendencia y comunicarla al equipo como oportunidad es el valor de la monitorización. No se trata de sobrereaccionar ni de ignorar los datos."
+    },
+    {
+        topic: "Monitorización",
+        question: "Tu marca lanzó un nuevo producto. En las primeras 48 horas quieres monitorizar la recepción. ¿Cuál combinación de elementos es más completa para una monitorización adecuada?",
+        options: [
+            "Solo las reseñas en la tienda en línea y los mensajes directos que lleguen.",
+            "Menciones de la marca y el producto, comentarios positivos y negativos, hashtags relacionados, y conversaciones en comunidades del sector.",
+            "Únicamente el número de ventas y el tráfico al sitio web generado desde redes.",
+            "Las publicaciones de la competencia sobre productos similares lanzados el mismo mes."
+        ],
+        correct: 1,
+        feedback: "La monitorización abarca menciones, comentarios, tendencias y señales de alerta en el entorno digital. Una visión limitada a un solo canal o métrica (ventas, DMs) no permite anticiparse a problemas ni reconocer oportunidades."
+    },
+    {
+        topic: "Monitorización",
+        question: "Monitorizas una clínica dental y detectas que tres pacientes diferentes mencionaron en redes que tuvieron problemas para agendar cita por teléfono. ¿Qué nivel de importancia le darías a este hallazgo?",
+        options: [
+            "Bajo, porque tres menciones en una semana no representan un problema real.",
+            "Alto, porque las menciones repetidas sobre un mismo tema representan una señal de alerta que debe comunicarse a la organización.",
+            "Medio, pero solo si las menciones provienen de cuentas con muchos seguidores que puedan amplificar el problema.",
+            "Ninguno, porque agendar citas no es responsabilidad del área de redes sociales."
+        ],
+        correct: 1,
+        feedback: "La monitorización busca señales de alerta. Menciones repetidas sobre un mismo problema son un patrón que el CM debe identificar y comunicar, sin importar el número de seguidores de quien lo menciona."
+    },
+    {
+        topic: "Monitorización",
+        question: "Trabajas para una marca de alimentos y notas que un competidor lanzó una campaña con un concepto muy similar al tuyo. ¿Cómo integras esto en tu monitorización?",
+        options: [
+            "Denuncias públicamente al competidor por copiar tu concepto creativo.",
+            "Lo registras como parte del contexto competitivo y reportas al equipo para evaluar si conviene ajustar el mensaje o diferenciarse más.",
+            "Ignoras al competidor porque tu monitorización debe enfocarse exclusivamente en tu propia marca.",
+            "Copias elementos de su campaña que estén funcionando mejor que los tuyos."
+        ],
+        correct: 1,
+        feedback: "Monitorizar implica observar todo lo que ocurre alrededor de la marca, incluyendo el contexto competitivo. Registrar y comunicar al equipo permite tomar decisiones informadas, sin reaccionar impulsivamente."
+    },
+    {
+        topic: "Monitorización",
+        question: "Durante tu monitorización semanal de una marca de tecnología, no encuentras menciones negativas, quejas ni señales de alerta. ¿Qué concluyes?",
+        options: [
+            "Que la marca tiene una presencia digital perfecta y no necesita ajustes.",
+            "Que la ausencia de señales negativas es un dato útil, pero también debes verificar si hay conversación positiva, silencios inusuales o baja participación.",
+            "Que puedes pausar la monitorización hasta que aparezca algún problema visible.",
+            "Que los esfuerzos de contenido están funcionando y puedes reducir la frecuencia de publicación."
+        ],
+        correct: 1,
+        feedback: "La monitorización no solo busca problemas: también detecta oportunidades y contexto. Un silencio total puede indicar desconexión. El CM atento interpreta tanto lo que se dice como lo que no se dice."
+    },
+    // === TEMA 4: DINAMIZACIÓN DE CONTENIDOS (7 preguntas) ===
+    {
+        topic: "Dinamización",
+        question: "La participación en la comunidad de una librería ha disminuido. ¿Cuál opción es un ejemplo correcto de dinamización?",
+        options: [
+            "Publicar una infografía con los 10 libros más vendidos del mes para informar a los seguidores.",
+            "Compartir un dato curioso sobre un autor y preguntar: \"¿Cuál es la frase de un libro que más te ha marcado?\"",
+            "Aumentar la frecuencia de publicación de tres a seis posts diarios para ganar mayor visibilidad.",
+            "Hacer una alianza con otra cuenta para publicar contenido cruzado y alcanzar nuevas audiencias."
+        ],
+        correct: 1,
+        feedback: "Dinamizar implica despertar conversación y participación activa. La infografía informa pero no invita a interactuar; publicar más no garantiza participación; la alianza amplía alcance pero no activa a la comunidad existente."
+    },
+    {
+        topic: "Dinamización",
+        question: "Una marca de mascotas quiere reactivar su comunidad. Propones: reto fotográfico, pregunta abierta e historia de adopción real. Tu compañero sugiere: infografía nutricional, video tutorial y carrusel de productos. ¿Cuál refleja mejor la dinamización?",
+        options: [
+            "La de tu compañero, porque los formatos variados mantienen la atención de la audiencia.",
+            "Ambas son igualmente válidas porque las dos generan contenido frecuente y diverso.",
+            "La tuya, porque incluye elementos que invitan a la audiencia a participar activamente, no solo a consumir.",
+            "La de tu compañero, porque el contenido educativo genera más valor a largo plazo que los retos."
+        ],
+        correct: 2,
+        feedback: "Dinamizar no es solo publicar contenido atractivo o variado. La clave es despertar conversación y participación. Los retos, preguntas e historias provocan respuestas; la infografía y el tutorial informan pero no necesariamente activan diálogo."
+    },
+    {
+        topic: "Dinamización",
+        question: "Gestionas la comunidad de una escuela de idiomas. Publicas: \"Aprende inglés con nosotros — inscripciones abiertas\". La publicación tiene bajo engagement. ¿Cómo la reformularías aplicando dinamización?",
+        options: [
+            "Agregar un diseño más llamativo con colores vibrantes y tipografía grande.",
+            "Cambiar el copy a: \"¿Cuál fue la primera palabra que aprendiste en otro idioma? 🌎 Cuéntanos en los comentarios\".",
+            "Pagar pauta publicitaria para que la publicación llegue a más personas.",
+            "Publicarla en un horario de mayor tráfico para que el algoritmo la favorezca."
+        ],
+        correct: 1,
+        feedback: "Las preguntas y llamados a la acción que invitan a compartir experiencias personales son herramientas de dinamización. El diseño, la pauta y el horario pueden ayudar, pero no generan conversación por sí solos."
+    },
+    {
+        topic: "Dinamización",
+        question: "Administras la cuenta de un museo. Quieres dinamizar la comunidad el fin de semana. ¿Cuál de estas opciones genera mayor posibilidad de interacción?",
+        options: [
+            "Publicar el horario actualizado del museo con una foto de la fachada.",
+            "Publicar una obra de arte y preguntar: \"¿Qué título le pondrías a esta obra? El más creativo gana una mención en stories\".",
+            "Compartir un artículo extenso sobre la historia del museo desde su fundación.",
+            "Subir un video institucional con la misión y visión de la organización."
+        ],
+        correct: 1,
+        feedback: "Dinamizar es crear publicaciones que despierten interés, conversación y participación. Un reto creativo con incentivo (mención en stories) invita directamente a la audiencia a responder. Las otras opciones informan pero no activan diálogo."
+    },
+    {
+        topic: "Dinamización",
+        question: "Tu jefe te pide \"más engagement\". Publicas tres tipos de contenido: (A) un carrusel informativo sobre tendencias, (B) un reto: \"Sube tu foto usando nuestro producto\", (C) un video testimonial de un cliente. ¿Cuál es el más claro ejemplo de dinamización?",
+        options: [
+            "El carrusel (A), porque los formatos extensos retienen más tiempo al usuario en la publicación.",
+            "El reto (B), porque invita directamente a la audiencia a crear contenido y participar activamente.",
+            "El video testimonial (C), porque la prueba social genera confianza y más interacciones.",
+            "Los tres por igual, porque cualquier contenido de calidad genera engagement."
+        ],
+        correct: 1,
+        feedback: "Dinamizar es motivar a la audiencia para que interactúe. El reto es el ejemplo más puro: invita a la acción, genera contenido del usuario y mantiene viva la comunidad. Los otros informan o inspiran, pero no necesariamente activan participación."
+    },
+    {
+        topic: "Dinamización",
+        question: "Una marca de café nota que sus publicaciones reciben muchos \"me gusta\" pero casi cero comentarios. ¿Cuál estrategia de dinamización abordaría mejor este problema?",
+        options: [
+            "Publicar más seguido para mantener presencia constante en el feed de los seguidores.",
+            "Invertir en mejorar la fotografía de producto para que las publicaciones sean más atractivas visualmente.",
+            "Incluir preguntas abiertas, retos o llamados a la acción que inviten a escribir, no solo a reaccionar.",
+            "Cambiar de red social a una plataforma donde los comentarios sean más comunes."
+        ],
+        correct: 2,
+        feedback: "Los 'me gusta' son reacciones pasivas. Para activar comentarios se necesitan elementos que inviten a la audiencia a expresarse: preguntas, retos y llamados a la acción. Eso es dinamización de contenidos."
+    },
+    {
+        topic: "Dinamización",
+        question: "Preparas el plan de contenido mensual para una tienda de videojuegos. Tu propuesta incluye: lunes de trivia gamer, miércoles de \"¿Qué estás jugando?\", y viernes de retos rápidos. Un compañero dice que es repetitivo. ¿Cómo justificas tu estrategia desde la dinamización?",
+        options: [
+            "La repetición genera recordación de marca, que es el objetivo principal de cualquier estrategia de contenido.",
+            "Las secciones fijas con participación recurrente mantienen viva la comunidad porque crean hábitos de interacción constante.",
+            "Es mejor variar cada semana para que la audiencia no se aburra del mismo formato.",
+            "Lo ideal sería intercalar contenido promocional entre las secciones para aprovechar la atención generada."
+        ],
+        correct: 1,
+        feedback: "Dinamizar es mantener activa la participación de forma constante. Las secciones recurrentes con invitación a participar crean hábito en la comunidad — preguntas, retos e historias mantienen viva la conversación semana a semana."
+    }
+];
+
+// Shuffle and pick 10
+function shuffle(arr) {
+    const a = [...arr];
+    for (let i = a.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [a[i], a[j]] = [a[j], a[i]];
+    }
+    return a;
+}
+
+let selectedQuestions = [];
+let userAnswers = [];
+let quizSubmitted = false;
+
+function initQuiz() {
+    // Seleccionar preguntas balanceadas por tema
+    const topics = ["Rol del CM", "Influencia del CM", "Monitorización", "Dinamización"];
+    let picked = [];
+    
+    // Tomar al menos 2 de cada tema, luego rellenar aleatoriamente
+    topics.forEach(topic => {
+        const topicQs = shuffle(questionPool.filter(q => q.topic === topic));
+        picked.push(...topicQs.slice(0, 2));
+    });
+    
+    // Rellenar hasta 10 con preguntas restantes
+    const remaining = shuffle(questionPool.filter(q => !picked.includes(q)));
+    picked.push(...remaining.slice(0, 10 - picked.length));
+    
+    selectedQuestions = shuffle(picked).slice(0, 10);
+    userAnswers = new Array(10).fill(null);
+    quizSubmitted = false;
+    
+    renderQuestions();
+    updateProgress();
+    
+    document.getElementById('results-card').classList.remove('show');
+    document.getElementById('quiz-section').classList.remove('hidden');
+    document.getElementById('btn-submit').classList.remove('hidden');
+    document.getElementById('btn-retry').classList.add('hidden');
+}
+
+function renderQuestions() {
+    const container = document.getElementById('questions-container');
+    container.innerHTML = '';
+    
+    selectedQuestions.forEach((q, qi) => {
+        const letters = ['a', 'b', 'c', 'd'];
+        let optionsHTML = q.options.map((opt, oi) => `
+            <div class="option" id="opt-${qi}-${oi}" onclick="selectOption(${qi}, ${oi})">
+                <span class="option-letter">${letters[oi]}</span>
+                <span>${opt}</span>
+            </div>
+        `).join('');
+        
+        container.innerHTML += `
+            <div class="question-card" id="card-${qi}">
+                <div class="question-number">Pregunta ${qi + 1} — ${q.topic}</div>
+                <div class="question-text">${q.question}</div>
+                <div class="options">${optionsHTML}</div>
+                <div class="feedback" id="feedback-${qi}"></div>
+            </div>
+        `;
+    });
+}
+
+function selectOption(qi, oi) {
+    if (quizSubmitted) return;
+    
+    userAnswers[qi] = oi;
+    
+    // Visual selection
+    for (let i = 0; i < 4; i++) {
+        document.getElementById(`opt-${qi}-${i}`).classList.remove('selected');
+    }
+    document.getElementById(`opt-${qi}-${oi}`).classList.add('selected');
+    
+    updateProgress();
+}
+
+function updateProgress() {
+    const answered = userAnswers.filter(a => a !== null).length;
+    const pct = (answered / 10) * 100;
+    document.getElementById('progress-fill').style.width = pct + '%';
+    document.getElementById('progress-text').textContent = `${answered} de 10 preguntas respondidas`;
+}
+
+function submitQuiz() {
+    const unanswered = userAnswers.filter(a => a === null).length;
+    if (unanswered > 0) {
+        if (!confirm(`Tienes ${unanswered} pregunta(s) sin responder. ¿Enviar de todos modos?`)) return;
+    }
+    
+    quizSubmitted = true;
+    let score = 0;
+    const topicScores = {};
+    
+    selectedQuestions.forEach((q, qi) => {
+        const card = document.getElementById(`card-${qi}`);
+        const feedback = document.getElementById(`feedback-${qi}`);
+        const isCorrect = userAnswers[qi] === q.correct;
+        
+        if (isCorrect) score++;
+        
+        // Track topic scores
+        if (!topicScores[q.topic]) topicScores[q.topic] = { correct: 0, total: 0 };
+        topicScores[q.topic].total++;
+        if (isCorrect) topicScores[q.topic].correct++;
+        
+        // Style card
+        card.classList.add(isCorrect ? 'correct' : 'incorrect');
+        
+        // Style options
+        for (let i = 0; i < 4; i++) {
+            const opt = document.getElementById(`opt-${qi}-${i}`);
+            opt.classList.add('disabled');
+            if (i === q.correct) opt.classList.add('correct-answer');
+            if (i === userAnswers[qi] && !isCorrect) opt.classList.add('wrong-answer');
+        }
+        
+        // Show feedback
+        feedback.className = `feedback show ${isCorrect ? 'correct-fb' : 'incorrect-fb'}`;
+        feedback.innerHTML = isCorrect 
+            ? `✅ <strong>¡Correcto!</strong> ${q.feedback}`
+            : `❌ <strong>Incorrecto.</strong> ${q.feedback}`;
+    });
+    
+    // Show results
+    showResults(score, topicScores);
+    
+    document.getElementById('btn-submit').classList.add('hidden');
+    document.getElementById('btn-retry').classList.remove('hidden');
+    
+    // Scroll to top
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function showResults(score, topicScores) {
+    const resultsCard = document.getElementById('results-card');
+    const scoreCircle = document.getElementById('score-circle');
+    const scoreNumber = document.getElementById('score-number');
+    const resultsMessage = document.getElementById('results-message');
+    const breakdown = document.getElementById('topic-breakdown');
+    
+    scoreNumber.textContent = score;
+    scoreCircle.className = 'score-circle ' + (score >= 8 ? 'high' : score >= 6 ? 'medium' : 'low');
+    
+    if (score >= 9) resultsMessage.textContent = '¡Excelente! Dominas los conceptos del perfil del Community Manager.';
+    else if (score >= 7) resultsMessage.textContent = 'Buen resultado. Refuerza los temas donde fallaste para consolidar tu comprensión.';
+    else if (score >= 5) resultsMessage.textContent = 'Resultado regular. Te recomiendo repasar las lecturas y prestar atención a las diferencias entre conceptos.';
+    else resultsMessage.textContent = 'Necesitas repasar. Vuelve a leer los contenidos del módulo y pon atención a los ejemplos prácticos.';
+    
+    // Topic breakdown
+    let breakdownHTML = '<h3 style="margin-bottom:12px; color:#fff; font-size:1rem;">Desempeño por tema:</h3>';
+    Object.entries(topicScores).forEach(([topic, data]) => {
+        const pct = Math.round((data.correct / data.total) * 100);
+        const color = pct >= 80 ? '#4caf50' : pct >= 50 ? '#ffc107' : '#f44336';
+        breakdownHTML += `
+            <div class="topic-row">
+                <span class="topic-name">${topic}</span>
+                <span class="topic-score" style="color:${color}">${data.correct}/${data.total} (${pct}%)</span>
+            </div>
+        `;
+    });
+    breakdown.innerHTML = breakdownHTML;
+    
+    resultsCard.classList.add('show');
+}
+
+function retryQuiz() {
+    initQuiz();
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+// Initialize on load
+initQuiz();
+</script>
+</body>
+</html>
