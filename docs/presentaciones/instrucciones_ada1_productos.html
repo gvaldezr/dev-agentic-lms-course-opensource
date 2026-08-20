@@ -1,0 +1,633 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ADA 1 — Instrucciones de Productos | UADY</title>
+    <style>
+        :root {
+            --uady-azul: #192E4C;
+            --uady-dorado: #C89211;
+            --uady-azul-claro: #2A4A7A;
+            --uady-dorado-claro: #e5b030;
+            --uady-azul-fondo: #F0F3F7;
+            --uady-gris-claro: #F5F5F5;
+            --uady-font-logo: 'Lucida Bright', Georgia, serif;
+            --uady-font-body: 'Segoe UI', system-ui, -apple-system, sans-serif;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: var(--uady-font-body);
+            background: var(--uady-azul-fondo);
+            color: #2d3748;
+            line-height: 1.7;
+            padding: 0;
+        }
+        .header-institucional {
+            background: var(--uady-azul);
+            padding: 16px 24px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+        .header-institucional img { height: 48px; width: auto; }
+        .header-institucional .asignatura {
+            font-family: var(--uady-font-logo);
+            color: var(--uady-dorado);
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            text-align: right;
+        }
+        .hero {
+            background: var(--uady-azul);
+            color: #fff;
+            padding: 40px 30px 36px;
+            text-align: center;
+        }
+        .hero h1 {
+            font-family: var(--uady-font-logo);
+            font-size: 1.8rem;
+            margin-bottom: 10px;
+            font-weight: 700;
+        }
+        .hero p {
+            font-size: 1.05rem;
+            opacity: 0.9;
+            max-width: 700px;
+            margin: 0 auto;
+        }
+        .hero .badge {
+            display: inline-block;
+            background: rgba(200,146,17,0.3);
+            color: var(--uady-dorado-claro);
+            padding: 6px 16px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            margin-top: 14px;
+            border: 1px solid rgba(200,146,17,0.5);
+        }
+        .footer-lema {
+            text-align: center;
+            padding: 24px 0;
+            font-family: var(--uady-font-logo);
+            font-style: italic;
+            font-weight: 600;
+            color: var(--uady-dorado);
+            font-size: 0.95rem;
+            background: var(--uady-azul-fondo);
+        }
+        .container {
+            max-width: 860px;
+            margin: 0 auto;
+            padding: 40px 24px 60px;
+        }
+        .intro-card {
+            background: #fff;
+            border-radius: 12px;
+            padding: 28px;
+            margin-bottom: 30px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+            border-left: 4px solid var(--uady-dorado);
+        }
+        .intro-card h2 {
+            font-size: 1.15rem;
+            color: var(--uady-azul);
+            margin-bottom: 10px;
+        }
+        .intro-card p { font-size: 0.95rem; }
+        .product-section {
+            background: #fff;
+            border-radius: 12px;
+            padding: 32px;
+            margin-bottom: 28px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+        }
+        .product-header {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            margin-bottom: 20px;
+            padding-bottom: 16px;
+            border-bottom: 2px solid #edf2f7;
+        }
+        .product-number {
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 1.1rem;
+            color: #fff;
+            flex-shrink: 0;
+        }
+        .product-number.p2 { background: var(--uady-azul); }
+        .product-number.p3 { background: var(--uady-dorado); }
+        .product-number.p4 { background: var(--uady-azul-claro); }
+        .product-title {
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: var(--uady-azul);
+        }
+        .product-subtitle {
+            font-size: 0.85rem;
+            color: #718096;
+            margin-top: 2px;
+        }
+        .step {
+            margin-bottom: 24px;
+        }
+        .step-label {
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            color: #4a5568;
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+        .step h3 {
+            font-size: 1.05rem;
+            color: #2d3748;
+            margin-bottom: 10px;
+        }
+        .step p, .step li {
+            font-size: 0.93rem;
+            color: #4a5568;
+        }
+        .step ul, .step ol {
+            margin-left: 20px;
+            margin-top: 8px;
+        }
+        .step li { margin-bottom: 6px; }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 14px 0;
+            font-size: 0.88rem;
+        }
+        th {
+            background: #edf2f7;
+            color: #2d3748;
+            font-weight: 600;
+            padding: 10px 12px;
+            text-align: left;
+            border-bottom: 2px solid #e2e8f0;
+        }
+        td {
+            padding: 10px 12px;
+            border-bottom: 1px solid #e2e8f0;
+            vertical-align: top;
+        }
+        tr:last-child td { border-bottom: none; }
+        .example-row { background: #f7fafc; font-style: italic; color: #718096; }
+        .checklist {
+            background: #f7fafc;
+            border: 1px solid #e2e8f0;
+            border-radius: 10px;
+            padding: 20px 24px;
+            margin-top: 20px;
+        }
+        .checklist h4 {
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--uady-dorado);
+            margin-bottom: 12px;
+        }
+        .checklist label {
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+            font-size: 0.9rem;
+            margin-bottom: 8px;
+            cursor: pointer;
+        }
+        .checklist input[type="checkbox"] {
+            margin-top: 3px;
+            width: 16px;
+            height: 16px;
+            accent-color: var(--uady-dorado);
+        }
+        .format-box {
+            background: #fffff0;
+            border: 1px solid #fefcbf;
+            border-radius: 8px;
+            padding: 14px 18px;
+            margin-top: 16px;
+            font-size: 0.88rem;
+        }
+        .format-box strong { color: #975a16; }
+        .tip {
+            background: #ebf8ff;
+            border: 1px solid #bee3f8;
+            border-radius: 8px;
+            padding: 12px 16px;
+            margin-top: 14px;
+            font-size: 0.88rem;
+            color: #2a4365;
+        }
+        .tip::before { content: "💡 "; }
+        .divider {
+            height: 2px;
+            background: linear-gradient(90deg, transparent, #e2e8f0, transparent);
+            margin: 10px 0;
+        }
+        @media print {
+            .hero { padding: 30px; }
+            .container { padding: 20px; }
+            .product-section { box-shadow: none; border: 1px solid #e2e8f0; }
+        }
+        @media (max-width: 600px) {
+            .hero h1 { font-size: 1.3rem; }
+            .container { padding: 20px 14px; }
+            .product-section { padding: 20px; }
+            table { font-size: 0.8rem; }
+            .header-institucional { padding: 12px 16px; }
+            .header-institucional img { height: 36px; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="header-institucional">
+    <img src="data:image/png;base64,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" alt="Universidad Autónoma de Yucatán">
+    <span class="asignatura">Comunidades Virtuales<br>Escuela Preparatoria Uno</span>
+</div>
+<div class="hero">
+    <h1>ADA 1 — Análisis Integral del Rol del Community Manager</h1>
+    <p>Instrucciones detalladas para los productos 2, 3 y 4 del entregable integrador</p>
+    <div class="badge">Comunidades Virtuales · Escuela Preparatoria Uno · 10 puntos</div>
+</div>
+
+<div class="container">
+
+    <!-- INTRO -->
+    <div class="intro-card">
+        <h2>📋 Contexto del entregable</h2>
+        <p>Seleccionaste <strong>una marca real con presencia activa en redes sociales</strong>. Tu documento integrador se construye alrededor de esa marca. Aquí encontrarás las instrucciones paso a paso para los productos 2, 3 y 4. Sigue cada paso en orden y asegúrate de cumplir todos los criterios de la lista de cotejo.</p>
+    </div>
+
+    <!-- PRODUCTO 2: ANÁLISIS DE INFLUENCIA -->
+    <div class="product-section">
+        <div class="product-header">
+            <div class="product-number p2">2</div>
+            <div>
+                <div class="product-title">Análisis de Influencia del Community Manager</div>
+                <div class="product-subtitle">Identifica cómo las acciones del CM impactan en los seguidores</div>
+            </div>
+        </div>
+
+        <div class="step">
+            <div class="step-label">Paso 1</div>
+            <h3>Selección de evidencias</h3>
+            <p>Revisa las publicaciones de la marca en la <strong>última semana</strong> (mínimo 10 publicaciones). Identifica <strong>tres acciones concretas</strong> que el Community Manager realiza y que generan una respuesta positiva en los seguidores.</p>
+            <p style="margin-top:10px;"><strong>Ejemplos de acciones a buscar:</strong></p>
+            <ul>
+                <li>Responder comentarios con tono personalizado (por nombre, con emojis, con humor).</li>
+                <li>Publicar historias/stories que inviten a votar, opinar o reaccionar.</li>
+                <li>Reconocer públicamente a un seguidor (repost, mención, agradecimiento).</li>
+                <li>Responder una queja con empatía y ofreciendo solución.</li>
+                <li>Usar un tono coherente que refleje la personalidad de la marca.</li>
+            </ul>
+        </div>
+
+        <div class="step">
+            <div class="step-label">Paso 2</div>
+            <h3>Documentación de cada acción</h3>
+            <p>Para <strong>cada una de las tres acciones</strong>, completa la siguiente información:</p>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Elemento</th>
+                        <th>Qué debes incluir</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Captura de pantalla</strong></td>
+                        <td>Imagen de la publicación o interacción (debe verse la fecha).</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Descripción de la acción</strong></td>
+                        <td>¿Qué hizo el CM? Descríbelo en 2-3 oraciones claras.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Reacción de la audiencia</strong></td>
+                        <td>¿Cómo respondieron los seguidores? (likes, comentarios, compartidos, tono de las respuestas).</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Tipo de influencia</strong></td>
+                        <td>¿La acción fortaleció la confianza, generó cercanía, motivó participación o aumentó la visibilidad? Justifica en una oración.</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="step">
+            <div class="step-label">Paso 3</div>
+            <h3>Conclusión breve</h3>
+            <p>En <strong>máximo 100 palabras</strong>, responde:</p>
+            <p><em>"¿Qué tienen en común las tres acciones que identificaste? ¿Qué pasaría si el CM dejara de realizarlas?"</em></p>
+        </div>
+
+        <div class="format-box">
+            <strong>Formato de entrega:</strong> Documento digital (Word, Google Docs o PDF). Extensión: 1.5 a 2 cuartillas (sin contar capturas). Incluir capturas dentro del documento.
+        </div>
+
+        <div class="checklist">
+            <h4>✅ Lista de cotejo — Producto 2</h4>
+            <label><input type="checkbox"> Se identificaron exactamente 3 acciones distintas.</label>
+            <label><input type="checkbox"> Cada acción incluye captura de pantalla con fecha visible.</label>
+            <label><input type="checkbox"> Se describe la acción del CM de forma clara y específica (no genérica).</label>
+            <label><input type="checkbox"> Se documenta la reacción real de la audiencia con datos observables.</label>
+            <label><input type="checkbox"> Se clasifica el tipo de influencia con justificación.</label>
+            <label><input type="checkbox"> La conclusión conecta las tres acciones con un patrón común.</label>
+        </div>
+    </div>
+
+    <!-- PRODUCTO 3: PLAN DE MONITORIZACIÓN -->
+    <div class="product-section">
+        <div class="product-header">
+            <div class="product-number p3">3</div>
+            <div>
+                <div class="product-title">Plan de Monitorización Semanal</div>
+                <div class="product-subtitle">Diseña qué observar, dónde buscarlo y para qué sirve</div>
+            </div>
+        </div>
+
+        <div class="step">
+            <div class="step-label">Paso 1</div>
+            <h3>Ficha de la marca</h3>
+            <p>Completa esta tabla con la información de la marca que seleccionaste:</p>
+            <table>
+                <thead>
+                    <tr><th>Dato</th><th>Tu respuesta</th></tr>
+                </thead>
+                <tbody>
+                    <tr><td>Nombre de la marca</td><td></td></tr>
+                    <tr><td>Red(es) social(es) donde tiene presencia</td><td></td></tr>
+                    <tr><td>Número aproximado de seguidores</td><td></td></tr>
+                    <tr><td>Tipo de contenido que publica habitualmente</td><td></td></tr>
+                    <tr><td>¿Tiene competidores directos visibles en redes? ¿Cuáles?</td><td></td></tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="step">
+            <div class="step-label">Paso 2</div>
+            <h3>Tabla de elementos a monitorear</h3>
+            <p>Identifica <strong>al menos 6 elementos</strong> que monitorearías durante una semana. Usa la tabla como guía:</p>
+            <table>
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Elemento a monitorear</th>
+                        <th>¿Dónde lo buscarías?</th>
+                        <th>¿Por qué es importante?</th>
+                        <th>Frecuencia</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr class="example-row">
+                        <td>Ej.</td>
+                        <td>Menciones directas (@)</td>
+                        <td>Instagram, X</td>
+                        <td>Saber quién habla de la marca y en qué tono</td>
+                        <td>Diario</td>
+                    </tr>
+                    <tr class="example-row">
+                        <td>Ej.</td>
+                        <td>Comentarios negativos o quejas</td>
+                        <td>Publicaciones y reels</td>
+                        <td>Alerta sobre problemas que pueden escalar</td>
+                        <td>Diario</td>
+                    </tr>
+                    <tr><td>1</td><td></td><td></td><td></td><td></td></tr>
+                    <tr><td>2</td><td></td><td></td><td></td><td></td></tr>
+                    <tr><td>3</td><td></td><td></td><td></td><td></td></tr>
+                    <tr><td>4</td><td></td><td></td><td></td><td></td></tr>
+                    <tr><td>5</td><td></td><td></td><td></td><td></td></tr>
+                    <tr><td>6</td><td></td><td></td><td></td><td></td></tr>
+                </tbody>
+            </table>
+            <div class="tip">Puedes agregar más filas. Piensa en: hashtags, tendencias del sector, mensajes directos sin responder, contenido de competidores, sentimiento general de los comentarios.</div>
+        </div>
+
+        <div class="step">
+            <div class="step-label">Paso 3</div>
+            <h3>Bitácora de hallazgos (3 días)</h3>
+            <p>Elige <strong>3 días de la semana</strong>, monitorea la marca y registra al menos un hallazgo real por día:</p>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Día</th>
+                        <th>Elemento monitoreado</th>
+                        <th>Hallazgo</th>
+                        <th>¿Qué harías con este dato?</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr class="example-row">
+                        <td>Ej. Lunes</td>
+                        <td>Menciones directas</td>
+                        <td>Un usuario se quejó de entrega tardía</td>
+                        <td>Reportar a logística y responder con empatía</td>
+                    </tr>
+                    <tr><td>Día 1:</td><td></td><td></td><td></td></tr>
+                    <tr><td>Día 2:</td><td></td><td></td><td></td></tr>
+                    <tr><td>Día 3:</td><td></td><td></td><td></td></tr>
+                </tbody>
+            </table>
+            <div class="tip">Los hallazgos deben ser reales y observables. No inventes datos. Si un día no encuentras nada relevante, documéntalo también — la ausencia de señales es un hallazgo válido.</div>
+        </div>
+
+        <div class="step">
+            <div class="step-label">Paso 4</div>
+            <h3>Reflexión final</h3>
+            <p>En <strong>máximo 150 palabras</strong>, responde:</p>
+            <p><em>"¿Qué aprendiste sobre la presencia digital de la marca que no hubieras notado sin monitorear de forma sistemática? ¿Detectaste alguna oportunidad o riesgo?"</em></p>
+        </div>
+
+        <div class="format-box">
+            <strong>Formato de entrega:</strong> Documento digital (Word, Google Docs o PDF). Extensión: 2 a 3 cuartillas. Las tablas deben estar completas con datos reales.
+        </div>
+
+        <div class="checklist">
+            <h4>✅ Lista de cotejo — Producto 3</h4>
+            <label><input type="checkbox"> La ficha de la marca está completa con los 5 datos solicitados.</label>
+            <label><input type="checkbox"> Se identificaron al menos 6 elementos distintos a monitorear.</label>
+            <label><input type="checkbox"> Cada elemento indica dónde se busca, por qué importa y con qué frecuencia.</label>
+            <label><input type="checkbox"> La bitácora incluye 3 días con hallazgos reales y observables.</label>
+            <label><input type="checkbox"> Cada hallazgo incluye una acción propuesta (qué haría el CM con ese dato).</label>
+            <label><input type="checkbox"> La reflexión conecta la monitorización con oportunidades o riesgos concretos.</label>
+        </div>
+    </div>
+
+    <!-- PRODUCTO 4: PROPUESTA DE DINAMIZACIÓN -->
+    <div class="product-section">
+        <div class="product-header">
+            <div class="product-number p4">4</div>
+            <div>
+                <div class="product-title">Propuesta de Dinamización de Contenidos</div>
+                <div class="product-subtitle">Diseña publicaciones que activen la participación de la comunidad</div>
+            </div>
+        </div>
+
+        <div class="step">
+            <div class="step-label">Paso 1</div>
+            <h3>Diagnóstico de la comunidad</h3>
+            <p>Antes de proponer acciones, analiza brevemente el estado actual de participación de la marca:</p>
+            <table>
+                <thead>
+                    <tr><th>Pregunta diagnóstica</th><th>Tu observación</th></tr>
+                </thead>
+                <tbody>
+                    <tr><td>¿Qué tipo de publicaciones genera más comentarios actualmente?</td><td></td></tr>
+                    <tr><td>¿Los seguidores suelen responder o solo dan "me gusta"?</td><td></td></tr>
+                    <tr><td>¿La marca hace preguntas, retos o invitaciones a participar?</td><td></td></tr>
+                    <tr><td>¿Con qué frecuencia publica contenido interactivo (encuestas, quizzes, retos)?</td><td></td></tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="step">
+            <div class="step-label">Paso 2</div>
+            <h3>Diseño de 3 publicaciones dinamizadoras</h3>
+            <p>Propón <strong>tres ideas de publicaciones</strong> para activar la participación de la comunidad. Cada una debe ser diferente en formato o enfoque. Para cada publicación, completa:</p>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Elemento</th>
+                        <th>Qué debes incluir</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Título o concepto</strong></td>
+                        <td>Nombre creativo de la publicación (ej. "Lunes de trivia", "Reto de la semana").</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Formato</strong></td>
+                        <td>¿Es un post con imagen, una historia interactiva, un reel, un carrusel, una encuesta?</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Copy textual</strong></td>
+                        <td>Escribe el texto exacto que publicarías (incluyendo emojis, hashtags y llamado a la acción).</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Descripción visual</strong></td>
+                        <td>¿Qué imagen o diseño acompañaría al texto? Descríbelo brevemente.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Reacción esperada</strong></td>
+                        <td>¿Qué quieres que haga el seguidor? (comentar, compartir, etiquetar a alguien, crear contenido propio, votar).</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Por qué dinamiza</strong></td>
+                        <td>Explica en 1-2 oraciones por qué esta publicación genera participación activa y no solo consumo pasivo.</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <div class="tip">Las tres publicaciones deben ser diferentes entre sí. Intenta variar: una que use preguntas, una que plantee un reto, y una que cuente una historia o invite a compartir experiencias. Evita repetir el mismo recurso tres veces.</div>
+        </div>
+
+        <div class="step">
+            <div class="step-label">Paso 3</div>
+            <h3>Calendario de publicación</h3>
+            <p>Ubica tus tres propuestas en una semana. Indica qué día y en qué horario las publicarías, y justifica brevemente por qué elegiste ese momento:</p>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Publicación</th>
+                        <th>Día sugerido</th>
+                        <th>Horario</th>
+                        <th>Justificación del momento</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr class="example-row">
+                        <td>Ej. "Reto fotográfico"</td>
+                        <td>Viernes</td>
+                        <td>5:00 PM</td>
+                        <td>Los seguidores están más activos al final de la semana laboral</td>
+                    </tr>
+                    <tr><td>Publicación 1:</td><td></td><td></td><td></td></tr>
+                    <tr><td>Publicación 2:</td><td></td><td></td><td></td></tr>
+                    <tr><td>Publicación 3:</td><td></td><td></td><td></td></tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="step">
+            <div class="step-label">Paso 4</div>
+            <h3>Reflexión: ¿Informar vs. Dinamizar?</h3>
+            <p>En <strong>máximo 120 palabras</strong>, responde:</p>
+            <p><em>"¿Cuál es la diferencia entre una publicación que solo informa y una que dinamiza? ¿Por qué no basta con publicar contenido bonito si el objetivo es mantener activa a la comunidad?"</em></p>
+        </div>
+
+        <div class="format-box">
+            <strong>Formato de entrega:</strong> Documento digital (Word, Google Docs o PDF). Extensión: 2 a 2.5 cuartillas. Los copys deben estar escritos tal como se publicarían (con emojis, hashtags, etc.).
+        </div>
+
+        <div class="checklist">
+            <h4>✅ Lista de cotejo — Producto 4</h4>
+            <label><input type="checkbox"> El diagnóstico de participación está completo (4 preguntas respondidas).</label>
+            <label><input type="checkbox"> Se proponen exactamente 3 publicaciones distintas en formato o enfoque.</label>
+            <label><input type="checkbox"> Cada publicación incluye: título, formato, copy textual, descripción visual, reacción esperada y justificación.</label>
+            <label><input type="checkbox"> Los copys están redactados tal como se publicarían (listos para usar).</label>
+            <label><input type="checkbox"> Se incluye un calendario con día, horario y justificación del momento.</label>
+            <label><input type="checkbox"> La reflexión distingue claramente entre informar y dinamizar.</label>
+        </div>
+    </div>
+
+    <!-- RESUMEN GENERAL -->
+    <div class="product-section" style="border-left: 4px solid var(--uady-dorado); background: #f7fafc;">
+        <h3 style="margin-bottom: 16px; color: var(--uady-azul);">📊 Resumen del entregable integrador</h3>
+        <table>
+            <thead>
+                <tr>
+                    <th>Producto</th>
+                    <th>Eje central</th>
+                    <th>Extensión</th>
+                    <th>Elemento clave</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><strong>1. Mapa conceptual</strong></td>
+                    <td>Funciones del CM</td>
+                    <td>1 cuartilla</td>
+                    <td>Mapa + ejemplo de trabajo diario</td>
+                </tr>
+                <tr>
+                    <td><strong>2. Análisis de influencia</strong></td>
+                    <td>Qué <em>hace</em> el CM y cómo impacta</td>
+                    <td>1.5–2 cuartillas</td>
+                    <td>3 capturas + clasificación de influencia</td>
+                </tr>
+                <tr>
+                    <td><strong>3. Plan de monitorización</strong></td>
+                    <td>Qué <em>observar</em> y para qué sirve</td>
+                    <td>2–3 cuartillas</td>
+                    <td>Tabla de 6 elementos + bitácora de 3 días</td>
+                </tr>
+                <tr>
+                    <td><strong>4. Propuesta de dinamización</strong></td>
+                    <td>Cómo <em>activar</em> la participación</td>
+                    <td>2–2.5 cuartillas</td>
+                    <td>3 publicaciones con copy real + calendario</td>
+                </tr>
+            </tbody>
+        </table>
+        <div class="tip" style="margin-top:16px;">Recuerda: los 4 productos deben estar basados en <strong>la misma marca</strong>. Esto le da coherencia a tu análisis integral.</div>
+    </div>
+
+</div>
+
+<div class="footer-lema">"Luz, Ciencia y Verdad"</div>
+</body>
+</html>
