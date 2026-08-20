@@ -128,35 +128,85 @@ def _extract_activity_number(ada_name: str) -> int | None:
 
 
 def _build_evidencias_aprendizaje(
-    lesson_title: str,
-    lesson_activity: str,
+    resultados_aprendizaje: list[str],
+    acciones_base: list[str],
     tipo_actividad: str,
     instrumento: str,
 ) -> list[str]:
-    """Genera evidencias de aprendizaje con un producto especifico a revisar,
-    derivado del objetivo / resultado de aprendizaje del ADA."""
-    resultado = re.sub(r"\s+", " ", (lesson_activity or "").strip()).rstrip(".")
-    titulo = re.sub(r"\s+", " ", (lesson_title or "").strip()).rstrip(".")
+    """Genera evidencias en formato de productos completos, alineadas a los
+    resultados de aprendizaje del ADA."""
     instrumento_l = (instrumento or "instrumento de evaluacion").lower()
 
-    if not resultado:
-        resultado = (
-            f"el desempeno esperado en «{titulo}»" if titulo
-            else "el resultado de aprendizaje del ADA"
+    products: list[str] = []
+    source = acciones_base if acciones_base else resultados_aprendizaje
+    for idx, action in enumerate(source[:4], start=1):
+        clean = re.sub(r"\s+", " ", str(action).strip()).rstrip(".")
+        if not clean:
+            continue
+        products.append(
+            f"Producto {idx} (entregable completo): {clean}."
         )
 
-    if tipo_actividad == "producto":
-        return [
-            f"Producto integrador final que evidencia: {resultado} (evaluado con {instrumento_l}).",
-            f"Documento o artefacto entregable de «{titulo}» con criterios de calidad cumplidos.",
-            "Presentacion o defensa del producto integrador con retroalimentacion registrada.",
-        ]
+    if not products:
+        products.append(
+            f"Producto integrador completo alineado al objetivo del ADA (evaluado con {instrumento_l})."
+        )
 
-    return [
-        f"Producto especifico que evidencia: {resultado} (evaluado con {instrumento_l}).",
-        f"Avance o borrador del producto de «{titulo}» con registro de retroalimentacion formativa.",
-        "Registro de participacion y autoevaluacion del avance hacia el resultado de aprendizaje.",
-    ]
+    products.append(
+        f"Compilado final de evidencias con trazabilidad de mejoras y criterios cumplidos ({instrumento_l})."
+    )
+
+    if tipo_actividad == "producto":
+        products.append(
+            "Presentacion o defensa del producto final con argumentacion de decisiones y resultados."
+        )
+
+    return products
+
+
+def _split_learning_actions(activity_text: str) -> list[str]:
+    chunks = re.split(r"\.|\n|;", activity_text or "")
+    actions: list[str] = []
+    for chunk in chunks:
+        clean = re.sub(r"\s+", " ", chunk).strip(" .")
+        if len(clean) >= 20:
+            actions.append(clean)
+    # Deduplicar conservando orden.
+    return list(dict.fromkeys(actions))
+
+
+def _build_strategic_objective(
+    foundations: list[str],
+    tipo_actividad: str,
+) -> str:
+    focus = [f for f in foundations[:2] if f]
+    focus_txt = " y ".join(focus) if focus else "la gestion estrategica de comunidades digitales"
+
+    if tipo_actividad == "producto":
+        return (
+            f"Integrar de forma estrategica los aprendizajes de {focus_txt} para desarrollar un producto final "
+            "con impacto comunicativo, criterios de calidad y pertinencia para comunidades virtuales."
+        )
+
+    return (
+        f"Analizar y aplicar de forma estrategica los principios de {focus_txt} para disenar, monitorear "
+        "y optimizar acciones orientadas al engagement de comunidades virtuales."
+    )
+
+
+def _build_learning_outcomes(actions: list[str]) -> list[str]:
+    verbs = ["Sintetizar", "Evaluar", "Determinar", "Proponer"]
+    outcomes: list[str] = []
+
+    for idx, action in enumerate(actions[:4]):
+        verb = verbs[idx] if idx < len(verbs) else "Aplicar"
+        clean = re.sub(r"\s+", " ", action).strip(" .")
+        outcomes.append(f"{verb} productos verificables asociados a: {clean}.")
+
+    if not outcomes:
+        outcomes.append("Aplicar criterios estrategicos de comunicacion digital en un producto verificable.")
+
+    return outcomes
 
 
 def _infer_thematic_foundations(
@@ -406,15 +456,12 @@ def _build_ada_payload(
         dict.fromkeys(act.strip() for _t, _x, act in lessons if act and act.strip())
     ) or primary_activity
 
-    if multi:
-        titulos = ", ".join(f"'{t}'" for t, _x, _a in lessons)
-        objetivo = (
-            f"Desarrollar las competencias asociadas a {titulos} mediante analisis de casos, trabajo colaborativo y elaboracion de evidencias evaluables."
-        )
-    else:
-        objetivo = (
-            f"Desarrollar la competencia asociada a '{primary_title}' mediante actividades guiadas, investigacion aplicada y produccion de evidencias evaluables."
-        )
+    acciones_base = _split_learning_actions(combined_activity)
+    objetivo = _build_strategic_objective(
+        foundations=fundamentos,
+        tipo_actividad=tipo_actividad,
+    )
+    resultados_aprendizaje = _build_learning_outcomes(acciones_base)
 
     session_numbers = list(range(ada_meta["sesion_inicio"], ada_meta["sesion_fin"] + 1))
     total_sessions = max(1, len(session_numbers))
@@ -447,6 +494,7 @@ def _build_ada_payload(
         "tipo_actividad": tipo_actividad,
         "objetivo": objetivo,
         "resultado_aprendizaje": combined_activity,
+        "resultados_aprendizaje": resultados_aprendizaje,
         "descripcion_actividad": (
             "Desarrollo progresivo de competencias mediante actividades de inicio, desarrollo y cierre "
             "en sesiones de 90 y 45 minutos, orientadas a la elaboracion del entregable del ADA."
@@ -463,8 +511,8 @@ def _build_ada_payload(
             "Uso de herramientas digitales para la creacion de contenidos",
         ],
         "evidencias_aprendizaje": _build_evidencias_aprendizaje(
-            lesson_title=primary_title,
-            lesson_activity=combined_activity,
+            resultados_aprendizaje=resultados_aprendizaje,
+            acciones_base=acciones_base,
             tipo_actividad=tipo_actividad,
             instrumento=instrumento,
         ),

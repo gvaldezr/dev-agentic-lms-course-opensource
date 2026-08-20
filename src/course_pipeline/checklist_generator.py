@@ -22,16 +22,16 @@ def _build_checklist_for_ada(ada: dict[str, Any], max_items: int = 8) -> dict[st
     criterios: list[str] = []
 
     if objetivo:
-        criterios.append("El entregable responde al objetivo del ADA con claridad y pertinencia.")
+        criterios.append("El producto entregado responde al objetivo estrategico del ADA con claridad y pertinencia.")
     if resultado:
-        criterios.append("El entregable evidencia el resultado de aprendizaje esperado.")
+        criterios.append("El producto integra de forma coherente el resultado de aprendizaje del ADA.")
 
     for ev in evidencias[:4]:
-        criterios.append(f"Incluye la evidencia solicitada: {ev}.")
+        criterios.append(f"Evalua de forma completa el producto de evidencia solicitado: {ev}")
 
     if fundamentos:
         criterios.append(
-            "Integra fundamentos tematicos de la unidad y justifica decisiones con base en las lecturas."
+            "El producto integra fundamentos tematicos de la unidad y justifica decisiones con base en las lecturas."
         )
 
     instrumento = str(ada.get("instrumento_evaluacion") or "").strip()
@@ -40,8 +40,8 @@ def _build_checklist_for_ada(ada: dict[str, Any], max_items: int = 8) -> dict[st
 
     criterios.extend(
         [
-            "Presenta organizacion, redaccion y formato adecuados para publicacion academica.",
-            "Entrega en tiempo y forma con evidencias verificables.",
+            "Presenta organizacion, redaccion y formato academico acorde al tipo de producto solicitado.",
+            "Se entrega completo, en tiempo y con criterios verificables de calidad.",
         ]
     )
 

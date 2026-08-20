@@ -7,3 +7,6 @@ data/output/*
 !data/output/.gitkeep
 assets/images/*
 !assets/images/.gitkeep
+
+# Manual de identidad (archivo pesado, no versionar)
+2023_Manual Inst UADY.pdf

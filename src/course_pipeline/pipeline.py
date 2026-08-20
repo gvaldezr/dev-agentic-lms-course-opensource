@@ -172,10 +172,10 @@ class CoursePipeline:
         )
 
         quiz_output_path: str | None = None
-        if quiz_items:
+        if question_bank:
             quiz_path = self.settings.output_dir / f"moodle_quiz_{slug}_{timestamp}.xml"
             self.exporter.export_quiz(
-                items=quiz_items,
+                items=question_bank,
                 output_file=quiz_path,
                 category=f"Quiz - {course.curso}",
             )

@@ -41,7 +41,7 @@ Resultado esperado:
 
 - Se crean categorias por ADA y una categoria de banco de preguntas.
 - Se importan reactivos de opcion multiple (con respuestas mezcladas).
-- Se importa una categoria con los 20 items del quiz.
+- Se importa una categoria de quiz con todo el banco de preguntas generado.
 
 ## 2.1) Que contiene `moodle_course_<slug>_<timestamp>.xml`
 
@@ -65,7 +65,7 @@ Debes crearla manualmente:
 3. Configura nombre, intentos, calificacion y fechas.
 4. Entra al cuestionario y selecciona `Editar cuestionario`.
 5. Agrega preguntas desde el banco:
-   - Usa la categoria del quiz de 20 items para un examen corto, o
+  - Usa la categoria del quiz (banco completo) para seleccionar reactivos segun tu estrategia de evaluacion, o
    - Usa la categoria del banco para seleccionar reactivos personalizados.
 
 ## 4) Como incorporar los demas elementos del curso (no quiz)

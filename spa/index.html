@@ -147,6 +147,8 @@
   .phase.cierre .p-tag{background:var(--gold);color:var(--navy);}
   .phase .min{font-size:11px;color:#34507f;font-weight:700;margin-left:6px;}
   .phase .p-text{margin-top:3px;}
+  .phase .p-list{margin:4px 0 0 22px;padding:0;}
+  .phase .p-list li{margin:2px 0;}
 
   .refs{font-size:11px;}
   .refs li{margin:3px 0;text-indent:-16px;margin-left:16px;}
@@ -1211,6 +1213,15 @@ function renderActividad(unidad, item, minSes){
   const tb = el("tbody");
   const row = (label, node) => el("tr",{}, el("td",{class:"lbl",text:label}), el("td",{}, node));
   const txt = v => el("td",{html: escapeHtml(v||"—")});
+  const inferResultadosAprendizaje = ada => {
+    if (Array.isArray(ada.resultados_aprendizaje) && ada.resultados_aprendizaje.length){
+      return ada.resultados_aprendizaje.map(x => String(x));
+    }
+    const base = String(ada.resultado_aprendizaje || "").trim();
+    if (!base) return [];
+    const parts = base.split(/[\.\n;]+/).map(x => x.trim()).filter(x => x.length > 0);
+    return parts.length ? parts.slice(0,4) : [base];
+  };
   const list = arr => {
     if (!arr || !arr.length) return el("td",{text:"—"});
     const ul = el("ul",{class:"clean"}); arr.forEach(x=>ul.appendChild(el("li",{text:String(x)})));
@@ -1221,7 +1232,8 @@ function renderActividad(unidad, item, minSes){
   tb.appendChild(el("tr",{}, el("td",{class:"lbl",text:"Tipo de actividad"}), el("td",{text:cap(a.tipo_actividad||item.tipo)})));
   tb.appendChild(el("tr",{}, el("td",{class:"lbl",text:"Duración"}), el("td",{text:`${num(a.duracion_sesiones,"—")} sesiones (sesión ${num(a.sesion_inicio,"?")}–${num(a.sesion_fin,"?")})`})));
   tb.appendChild(row("Puntaje", editField(id+"_pj", {placeholder:"pts (editable)", multiline:false})));
-  tb.appendChild(el("tr",{}, el("td",{class:"lbl",text:"Objetivo / Resultado de aprendizaje"}), txt(a.resultado_aprendizaje || a.objetivo)));
+  tb.appendChild(el("tr",{}, el("td",{class:"lbl",text:"Objetivo estratégico"}), txt(a.objetivo || a.resultado_aprendizaje)));
+  tb.appendChild(el("tr",{}, el("td",{class:"lbl",text:"Resultados de aprendizaje (evidencias de logro)"}), list(inferResultadosAprendizaje(a))));
   tb.appendChild(el("tr",{}, el("td",{class:"lbl",text:"Contenidos a desarrollar"}), list(a.contenidos_a_desarrollar)));
   tb.appendChild(el("tr",{}, el("td",{class:"lbl",text:"Fundamentos temáticos"}), list(a.fundamentos_tematicos_requeridos)));
   tb.appendChild(el("tr",{}, el("td",{class:"lbl",text:"Estrategias de enseñanza y aprendizaje"}), list(a.estrategias_ensenanza_aprendizaje)));
@@ -1257,6 +1269,18 @@ function collectRefs(lecturas){
   return [...set];
 }
 
+function getPhaseActivities(ses, phase){
+  const actividades = ses[`${phase}_actividades`];
+  if (!Array.isArray(actividades)) return [];
+  return actividades
+    .map(a => {
+      if (typeof a === "string") return a;
+      if (a && typeof a.descripcion === "string") return a.descripcion;
+      return "";
+    })
+    .filter(Boolean);
+}
+
 function renderSesion(ses, ada){
   const card = el("div", {class:"session"});
   const head = el("div", {class:"s-head"});
@@ -1279,13 +1303,23 @@ function renderSesion(ses, ada){
 
   ["inicio","desarrollo","cierre"].forEach(phase => {
     const p = ses[phase];
-    if (!p) return;
+    const actividades = getPhaseActivities(ses, phase);
+    if (!p && !actividades.length) return;
+
     const div = el("div", {class:"phase "+phase});
     const head2 = el("div");
     head2.appendChild(el("span",{class:"p-tag", text:phase}));
-    head2.appendChild(el("span",{class:"min", text:`${num(p.duracion_min,"?")} min`}));
+    head2.appendChild(el("span",{class:"min", text: p ? `${num(p.duracion_min,"?")} min` : "—"}));
     div.appendChild(head2);
-    div.appendChild(el("div",{class:"p-text", text: p.instrucciones || "—"}));
+
+    if (actividades.length){
+      const ol = el("ol", {class:"p-list"});
+      actividades.forEach(a => ol.appendChild(el("li", {text:a})));
+      div.appendChild(ol);
+    } else {
+      div.appendChild(el("div",{class:"p-text", text: (p && p.instrucciones) || "—"}));
+    }
+
     body.appendChild(div);
   });
 
