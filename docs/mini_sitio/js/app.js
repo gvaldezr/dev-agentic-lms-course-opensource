@@ -818,11 +818,6 @@ function setupGlobalEvents() {
   document.addEventListener('keydown', (e)=>{ if(e.key==='Escape') closeMobileMenu(); });
   window.addEventListener('resize', ()=>{ if(window.innerWidth>=1024) closeMobileMenu(); });
 
-  const bell = $('#bell'); const notif = $('#notif-panel');
-  if (bell && notif) {
-    bell.addEventListener('click', (e)=>{ e.stopPropagation(); notif.classList.toggle('is-open'); const b=$('#bell-badge'); if(b) b.style.display='none'; });
-    document.addEventListener('click', (e)=>{ if(!bell.contains(e.target)&&!notif.contains(e.target)) notif.classList.remove('is-open'); });
-  }
 
   let lastY = 0;
   window.addEventListener('scroll', ()=>{ const nb=$('.navbar'); if(nb) nb.classList.toggle('navbar--scrolled', window.scrollY>10); lastY=window.scrollY; }, { passive:true });
