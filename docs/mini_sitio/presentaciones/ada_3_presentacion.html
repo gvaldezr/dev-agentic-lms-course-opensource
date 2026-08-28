@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ADA 3 — Identidad de Marca y Comunicación Estratégica</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Segoe UI',system-ui,-apple-system,sans-serif;background:#1a0a2e;color:#e8e8f0;overflow:hidden;height:100vh}
+.deck{width:100%;height:100vh;position:relative}
+.slide{width:100%;height:100vh;display:none;flex-direction:column;justify-content:center;align-items:center;padding:3rem 4rem;position:absolute;top:0;left:0;animation:fadeIn .4s ease}
+.slide.active{display:flex}
+@keyframes fadeIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+.slide-title{background:linear-gradient(135deg,#c084fc,#e879f9);-webkit-background-clip:text;-webkit-text-fill-color:transparent;font-size:2.4rem;font-weight:800;margin-bottom:1.5rem;text-align:center;line-height:1.2}
+.slide-subtitle{color:#d8b4fe;font-size:1.2rem;text-align:center;margin-bottom:2rem;font-weight:300}
+.content-box{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:16px;padding:2rem;max-width:900px;width:100%}
+.content-box h3{color:#d8b4fe;font-size:1.1rem;margin-bottom:1rem}
+.content-box p,.content-box li{font-size:1rem;line-height:1.7;color:#c8c8d8;margin-bottom:.6rem}
+.content-box ul{list-style:none;padding-left:0}
+.content-box ul li::before{content:"→ ";color:#c084fc;font-weight:bold}
+.grid-2{display:grid;grid-template-columns:1fr 1fr;gap:1.5rem;max-width:900px;width:100%}
+.grid-3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:1rem;max-width:900px;width:100%}
+.grid-4{display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:.8rem;max-width:900px;width:100%}
+.card{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:12px;padding:1.5rem}
+.card h4{color:#fbbf24;font-size:.95rem;margin-bottom:.5rem}
+.card p{font-size:.9rem;line-height:1.5;color:#9ca3af}
+.brand-color{width:100%;height:40px;border-radius:8px;margin-bottom:.5rem}
+.voice-table{width:100%;border-collapse:collapse;max-width:900px}
+.voice-table th,.voice-table td{padding:.8rem 1rem;text-align:left;border-bottom:1px solid rgba(255,255,255,.06)}
+.voice-table th{color:#d8b4fe;font-weight:600;font-size:.85rem}
+.voice-table td{color:#9ca3af;font-size:.9rem}
+.img-placeholder{background:linear-gradient(135deg,#1e0a3e,#2d1060);border:2px dashed rgba(208,180,254,.3);border-radius:12px;padding:2rem;text-align:center;color:#a855f7;font-size:.9rem;font-style:italic}
+.reflection{background:rgba(192,132,252,.06);border-left:4px solid #c084fc;border-radius:0 12px 12px 0;padding:1.2rem 1.5rem;margin-top:1.5rem;max-width:900px}
+.reflection p{color:#d8b4fe;font-size:.95rem;font-weight:500}
+.tone-example{background:rgba(255,255,255,.03);border-radius:10px;padding:1rem;margin:.5rem 0}
+.tone-example .platform{color:#fbbf24;font-size:.8rem;font-weight:600;margin-bottom:.3rem}
+.tone-example .text{color:#e2e8f0;font-size:.9rem;font-style:italic}
+.nav{position:fixed;bottom:2rem;left:50%;transform:translateX(-50%);display:flex;align-items:center;gap:1rem;z-index:100}
+.nav button{background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.15);color:#fff;width:40px;height:40px;border-radius:50%;cursor:pointer;font-size:1.1rem;transition:all .2s}
+.nav button:hover{background:rgba(192,132,252,.4)}
+.nav .counter{color:#6b7280;font-size:.85rem}
+.progress{position:fixed;top:0;left:0;height:3px;background:linear-gradient(90deg,#c084fc,#e879f9);transition:width .3s;z-index:100}
+@media(max-width:768px){.slide{padding:1.5rem}.slide-title{font-size:1.6rem}.grid-2,.grid-3,.grid-4{grid-template-columns:1fr}.content-box{padding:1.2rem}}
+</style>
+</head>
+<body>
+<div class="progress" id="progress"></div>
+<div class="deck">
+
+<!-- Slide 1 -->
+<div class="slide active">
+<div class="slide-title">🎨 Identidad de Marca y<br>Comunicación Estratégica</div>
+<div class="slide-subtitle">ADA 3 — Construye tu marca digital desde cero</div>
+<div class="content-box" style="text-align:center">
+<p><strong>Objetivo:</strong> Analizar los elementos de identidad de marca y evaluar la coherencia entre tono, personalidad y estrategias de dinamización comunitaria.</p>
+<p style="margin-top:1rem;color:#6b7280">Nivel Bloom: Analizar / Evaluar</p>
+</div>
+</div>
+
+<!-- Slide 2: Voz de marca -->
+<div class="slide">
+<div class="slide-title">🗣️ Brand Voice — La personalidad que nunca cambia</div>
+<div class="content-box">
+<h3>¿Por qué reconoces a Duolingo sin ver su nombre?</h3>
+<p>Porque su <strong>voz</strong> es inconfundible. La voz de marca es quién ERES. El tono es cómo te SIENTES hoy.</p>
+<h3 style="margin-top:1rem">Framework de 3-5 adjetivos (modelo Mailchimp):</h3>
+</div>
+<table class="voice-table" style="margin-top:1rem">
+<tr><th>Adjetivo</th><th>Significa ✅</th><th>NO significa ❌</th></tr>
+<tr><td>Cercana</td><td>Hablamos como amigos, usamos "tú"</td><td>No somos cursis ni invasivos</td></tr>
+<tr><td>Experta</td><td>Compartimos conocimiento con seguridad</td><td>No somos pretenciosos</td></tr>
+<tr><td>Local</td><td>Celebramos Mérida, usamos regionalismos</td><td>No excluimos a visitantes</td></tr>
+</table>
+<div class="reflection"><p>💭 Si tu marca fuera una persona en una fiesta, ¿cómo hablaría? ¿Sería la chistosa? ¿La que sabe de todo? ¿La confiable?</p></div>
+</div>
+
+<!-- Slide 3: Tono por plataforma -->
+<div class="slide">
+<div class="slide-title">🔄 Mismo mensaje, diferente tono</div>
+<div class="slide-subtitle">Mensaje: "Acabamos de lanzar un nuevo menú de temporada"</div>
+<div class="grid-2">
+<div class="tone-example"><div class="platform">📸 Instagram</div><div class="text">"Nuevos sabores que te van a volar la cabeza 🤯 Desliza para ver el menú completo → Link en bio para reservar 💫"</div></div>
+<div class="tone-example"><div class="platform">🎵 TikTok</div><div class="text">"POV: cuando tu restaurante favorito saca menú nuevo y ya estás reservando mesa antes de ver qué hay 😂🏃‍♀️"</div></div>
+<div class="tone-example"><div class="platform">💬 WhatsApp</div><div class="text">"¡Hola! 👋 Te cuento que ya tenemos nuevo menú de temporada. ¿Te mando la carta? Solo responde SÍ 📋"</div></div>
+<div class="tone-example"><div class="platform">💼 LinkedIn</div><div class="text">"Orgullosos de presentar nuestro menú de temporada, desarrollado con ingredientes de productores locales de Yucatán. #GastronomíaLocal"</div></div>
+</div>
+<div class="reflection"><p>💭 Escribe el anuncio de un NUEVO PRODUCTO de tu marca en 4 tonos diferentes. ¿Cuál se siente más natural?</p></div>
+</div>
+
+<!-- Slide 4: Arquetipos -->
+<div class="slide">
+<div class="slide-title">🎭 Los 12 Arquetipos de Marca</div>
+<div class="slide-subtitle">¿Cuál es la personalidad de tu marca?</div>
+<div class="grid-4">
+<div class="card" style="padding:.8rem;text-align:center"><h4>🧭</h4><p style="font-size:.75rem"><strong>Explorador</strong><br>GoPro, Jeep</p></div>
+<div class="card" style="padding:.8rem;text-align:center"><h4>🦸</h4><p style="font-size:.75rem"><strong>Héroe</strong><br>Nike, FedEx</p></div>
+<div class="card" style="padding:.8rem;text-align:center"><h4>🏴‍☠️</h4><p style="font-size:.75rem"><strong>Rebelde</strong><br>Harley, Duolingo</p></div>
+<div class="card" style="padding:.8rem;text-align:center"><h4>🪄</h4><p style="font-size:.75rem"><strong>Mago</strong><br>Apple, Disney</p></div>
+<div class="card" style="padding:.8rem;text-align:center"><h4>🎭</h4><p style="font-size:.75rem"><strong>Bufón</strong><br>Oxxo, M&Ms</p></div>
+<div class="card" style="padding:.8rem;text-align:center"><h4>👥</h4><p style="font-size:.75rem"><strong>Tipo Normal</strong><br>IKEA, Target</p></div>
+<div class="card" style="padding:.8rem;text-align:center"><h4>💕</h4><p style="font-size:.75rem"><strong>Amante</strong><br>Chanel, Godiva</p></div>
+<div class="card" style="padding:.8rem;text-align:center"><h4>🤲</h4><p style="font-size:.75rem"><strong>Cuidador</strong><br>Volvo, UNICEF</p></div>
+<div class="card" style="padding:.8rem;text-align:center"><h4>🎨</h4><p style="font-size:.75rem"><strong>Creador</strong><br>Lego, Adobe</p></div>
+<div class="card" style="padding:.8rem;text-align:center"><h4>👑</h4><p style="font-size:.75rem"><strong>Gobernante</strong><br>Rolex, Mercedes</p></div>
+<div class="card" style="padding:.8rem;text-align:center"><h4>🧙</h4><p style="font-size:.75rem"><strong>Sabio</strong><br>Google, TED</p></div>
+<div class="card" style="padding:.8rem;text-align:center"><h4>🌿</h4><p style="font-size:.75rem"><strong>Inocente</strong><br>Dove, Coca-Cola</p></div>
+</div>
+<div class="reflection"><p>💭 ¿Qué arquetipo le darías a tu marca? ¿Y cuál usa tu competidor principal? Deben ser DIFERENTES.</p></div>
+</div>
+
+<!-- Slide 5: Identidad visual -->
+<div class="slide">
+<div class="slide-title">🎨 Identidad Visual — Los 4 elementos</div>
+<div class="grid-2">
+<div class="content-box">
+<h3>1. Paleta de colores (máx 5)</h3>
+<div style="display:flex;gap:.5rem;margin:.5rem 0">
+<div style="width:40px;height:40px;border-radius:8px;background:#C66B3D"></div>
+<div style="width:40px;height:40px;border-radius:8px;background:#F5E6D3"></div>
+<div style="width:40px;height:40px;border-radius:8px;background:#6B7B3A"></div>
+<div style="width:40px;height:40px;border-radius:8px;background:#FDFBF7"></div>
+<div style="width:40px;height:40px;border-radius:8px;background:#333333"></div>
+</div>
+<p style="font-size:.8rem;color:#9ca3af">Ejemplo: panadería artesanal — terracota + crema + oliva</p>
+<h3 style="margin-top:1rem">2. Tipografía (máx 3 familias)</h3>
+<p>Títulos: con personalidad | Cuerpo: legible | Acentos: decorativa</p>
+<h3 style="margin-top:1rem">3. Estilo fotográfico</h3>
+<p>¿Luz cálida o fría? ¿Overhead o 45°? ¿Con personas o solo producto?</p>
+<h3 style="margin-top:1rem">4. Grid de Instagram</h3>
+<p>Alterna: foto + gráfico + video cover = reconocimiento</p>
+</div>
+<div class="img-placeholder" style="display:flex;flex-direction:column;justify-content:center">[IMAGEN: Ejemplo de grid de Instagram coherente — 9 posts de una marca con paleta consistente, alternando fotos y gráficos con texto. Ejemplo: Coquí Coquí Mérida — feed monocromático crema/hueso]</div>
+</div>
+</div>
+
+<!-- Slide 6: Brand voices reales -->
+<div class="slide">
+<div class="slide-title">🏆 Brand voices que inspiran</div>
+<div class="grid-3">
+<div class="card"><h4>🦉 Duolingo</h4><p><strong>Voz:</strong> Atrevida, irreverente, obsesiva<br><strong>Ejemplo:</strong> "practica o el búho sabe dónde vives 🦉"<br><strong>Lección:</strong> No tengas miedo de tener opinión</p></div>
+<div class="card"><h4>🏪 Oxxo (Twitter)</h4><p><strong>Voz:</strong> Autoirónica, pop-culture, mexicanísima<br><strong>Ejemplo:</strong> [responde memes sobre sí mismo]<br><strong>Lección:</strong> Abraza cómo te percibe la gente</p></div>
+<div class="card"><h4>📧 Mailchimp</h4><p><strong>Voz:</strong> Clara, amigable, nerd-cómica<br><strong>Ejemplo:</strong> "High fives! Your campaign is on its way."<br><strong>Lección:</strong> Claridad + personalidad = confianza</p></div>
+</div>
+<div class="content-box" style="margin-top:1rem;text-align:center">
+<p><strong>La prueba del intercambio:</strong> Quita el logo de 5 publicaciones. ¿Puedes identificar la marca solo por cómo suena? Si sí → voz consistente. Si no → problema de coherencia.</p>
+</div>
+</div>
+
+<!-- Slide 7: UGC -->
+<div class="slide">
+<div class="slide-title">📸 UGC — Tu comunidad es tu equipo creativo</div>
+<div class="slide-subtitle">92% de consumidores confía más en otros usuarios que en la marca</div>
+<div class="grid-2">
+<div class="content-box">
+<h3>Tipos de UGC:</h3>
+<ul>
+<li><strong>Reviews/testimonios</strong> → Pedir post-experiencia positiva</li>
+<li><strong>Fotos/videos usando producto</strong> → Espacio "instagrameable" + hashtag</li>
+<li><strong>Challenges</strong> → Reto simple + incentivo (sorteo)</li>
+<li><strong>Encuestas/preguntas</strong> → Box de preguntas, Live Q&A</li>
+<li><strong>Co-decisión</strong> → "¿Qué sabor lanzamos?" con poll</li>
+</ul>
+</div>
+<div class="content-box">
+<h3>Caso local: Ki'Xocolatl</h3>
+<p>Los turistas publican Stories probando chocolate en su tienda del centro. Es UGC natural. Un CM inteligente:</p>
+<ul>
+<li>Crearía hashtag visible: #MiMomentoKiXocolatl</li>
+<li>Repostearía las mejores Stories</li>
+<li>Challenge mensual: "Video más creativo = caja gratis"</li>
+</ul>
+</div>
+</div>
+<div class="reflection"><p>💭 ¿Cómo incentivarias que los clientes de TU marca generen contenido espontáneo?</p></div>
+</div>
+
+<!-- Slide 8: Dinamización -->
+<div class="slide">
+<div class="slide-title">⚡ Dinámicas de activación comunitaria</div>
+<div class="grid-3">
+<div class="card"><h4>🗳️ Interacción</h4><p>• Encuestas en Stories<br>• "Esto o aquello"<br>• Box de preguntas<br>• Quizzes<br>• Slider de emoji<br><br><strong>KPI:</strong> Engagement rate en Stories > 5%</p></div>
+<div class="card"><h4>📸 UGC / Challenges</h4><p>• TikTok challenge con hashtag<br>• Concurso de fotos<br>• "Comparte tu experiencia"<br>• Duets / Stitches<br>• User takeover<br><br><strong>KPI:</strong> Contenido generado > 20 piezas</p></div>
+<div class="card"><h4>💎 Fidelización</h4><p>• Programa de embajadores<br>• Reconocimiento a seguidores<br>• Serie recurrente semanal<br>• Acceso anticipado a productos<br>• Live exclusivos para comunidad<br><br><strong>KPI:</strong> Retención + repeat engagement</p></div>
+</div>
+<div class="img-placeholder" style="margin-top:1rem;max-width:900px">[IMAGEN: Capturas de Instagram Stories con encuestas, quizzes y sliders de una marca — mostrando mecánicas reales de interacción]</div>
+</div>
+
+<!-- Slide 9: Auditoría -->
+<div class="slide">
+<div class="slide-title">🔍 Auditoría de coherencia de marca</div>
+<div class="content-box">
+<h3>¿Tu marca es coherente? Checklist rápido:</h3>
+<table class="voice-table">
+<tr><th>Pregunta</th><th style="color:#10b981">✅ Coherente</th><th style="color:#ef4444">❌ Incoherente</th></tr>
+<tr><td>¿Los últimos 9 posts comparten paleta?</td><td>Dominan los mismos 2-3 colores</td><td>Cada post es un color diferente</td></tr>
+<tr><td>¿El tono de copies es consistente?</td><td>Siempre cercano/con humor</td><td>A veces formal, a veces memes</td></tr>
+<tr><td>¿La bio refleja la personalidad?</td><td>Con tono de marca y propuesta clara</td><td>Genérica: "Restaurante en Mérida 📍"</td></tr>
+<tr><td>¿Las Stories mantienen estética?</td><td>Templates con colores de marca</td><td>Fondos random, stickers de colores</td></tr>
+<tr><td>¿El feed se siente como "una persona"?</td><td>Personalidad clara y reconocible</td><td>Parece que 5 personas publican</td></tr>
+</table>
+</div>
+<div class="reflection"><p>💭 Evalúa la marca que elegiste. ¿Cuántos ✅ y cuántos ❌ tiene? Ese diagnóstico va en tu Brand Book.</p></div>
+</div>
+
+<!-- Slide 10: Canva -->
+<div class="slide">
+<div class="slide-title">🎨 Canva como herramienta de identidad</div>
+<div class="grid-2">
+<div class="content-box">
+<h3>Kit de marca en Canva (versión gratuita):</h3>
+<ul>
+<li>Sube tu logo y colores → se aplican automáticamente</li>
+<li>Guarda 3 fuentes favoritas para nunca salirte de marca</li>
+<li>Usa templates y personalízalos con TU paleta</li>
+<li>Crea templates de Stories, Posts y Reels reutilizables</li>
+<li>Canva AI: genera variantes de diseño con un clic</li>
+</ul>
+<p style="margin-top:1rem;color:#fbbf24"><strong>Pro tip:</strong> Crea 5 templates base para tu marca y úsalos siempre. La consistencia crea reconocimiento.</p>
+</div>
+<div class="img-placeholder">[IMAGEN: Captura de Canva Brand Kit — mostrando logo subido, paleta de colores definida y tipografías seleccionadas para un negocio local]</div>
+</div>
+</div>
+
+<!-- Slide 11: Producto -->
+<div class="slide">
+<div class="slide-title">📋 Tu producto integrador</div>
+<div class="slide-subtitle">Brand Book Digital con Guía de Voz, Tono y Dinamización</div>
+<div class="content-box">
+<h3>Estructura de tu Brand Book:</h3>
+<ul>
+<li><strong>Portada</strong> — Marca, slogan, logo</li>
+<li><strong>1. Identidad</strong> — Propósito, valores, personalidad, arquetipo</li>
+<li><strong>2. Identidad Visual</strong> — Paleta (hex), tipografías, estilo fotográfico</li>
+<li><strong>3. Voz de Marca</strong> — Adjetivos + significa/no significa + léxico</li>
+<li><strong>4. Tono por Plataforma</strong> — Tabla + mismo mensaje en 4 versiones</li>
+<li><strong>5. Dinamización</strong> — 3 mecánicas con KPIs</li>
+<li><strong>6. UGC</strong> — Estrategia + hashtag + criterios de curación</li>
+<li><strong>7. Auditoría</strong> — Evaluación de coherencia actual + mejoras</li>
+</ul>
+</div>
+</div>
+
+</div>
+
+<div class="nav">
+<button onclick="changeSlide(-1)">←</button>
+<span class="counter" id="counter">1 / 11</span>
+<button onclick="changeSlide(1)">→</button>
+</div>
+
+<script>
+let current=0;const slides=document.querySelectorAll('.slide');const total=slides.length;
+function showSlide(n){slides.forEach(s=>s.classList.remove('active'));slides[n].classList.add('active');document.getElementById('counter').textContent=`${n+1} / ${total}`;document.getElementById('progress').style.width=`${((n+1)/total)*100}%`}
+function changeSlide(d){current=Math.max(0,Math.min(total-1,current+d));showSlide(current)}
+document.addEventListener('keydown',e=>{if(e.key==='ArrowRight'||e.key===' ')changeSlide(1);if(e.key==='ArrowLeft')changeSlide(-1)});
+let touchStart=0;document.addEventListener('touchstart',e=>touchStart=e.touches[0].clientX);document.addEventListener('touchend',e=>{const diff=touchStart-e.changedTouches[0].clientX;if(Math.abs(diff)>50){diff>0?changeSlide(1):changeSlide(-1)}});
+showSlide(0);
+
+// --- Puente postMessage con el modal padre (mini sitio) ---
+function _notifyParent(){try{if(window.parent!==window){window.parent.postMessage({type:'slideChange',current:current+1,total:total},'*');}}catch(e){}}
+window.addEventListener('message',function(e){var a=e.data&&e.data.action;if(a==='nextSlide')changeSlide(1);else if(a==='prevSlide')changeSlide(-1);});
+var _origShowSlide=showSlide;showSlide=function(n){_origShowSlide(n);_notifyParent();};
+_notifyParent();
+
+</script>
+</body>
+</html>

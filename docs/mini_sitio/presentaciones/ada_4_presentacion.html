@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ADA 4 — Plan de Media y Contenidos</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Segoe UI',system-ui,-apple-system,sans-serif;background:#0a1a0a;color:#e8e8f0;overflow:hidden;height:100vh}
+.deck{width:100%;height:100vh;position:relative}
+.slide{width:100%;height:100vh;display:none;flex-direction:column;justify-content:center;align-items:center;padding:3rem 4rem;position:absolute;top:0;left:0;animation:fadeIn .4s ease}
+.slide.active{display:flex}
+@keyframes fadeIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+.slide-title{background:linear-gradient(135deg,#34d399,#10b981);-webkit-background-clip:text;-webkit-text-fill-color:transparent;font-size:2.4rem;font-weight:800;margin-bottom:1.5rem;text-align:center;line-height:1.2}
+.slide-subtitle{color:#6ee7b7;font-size:1.2rem;text-align:center;margin-bottom:2rem;font-weight:300}
+.content-box{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:16px;padding:2rem;max-width:900px;width:100%}
+.content-box h3{color:#6ee7b7;font-size:1.1rem;margin-bottom:1rem}
+.content-box p,.content-box li{font-size:1rem;line-height:1.7;color:#c8c8d8;margin-bottom:.6rem}
+.content-box ul{list-style:none;padding-left:0}
+.content-box ul li::before{content:"→ ";color:#10b981;font-weight:bold}
+.grid-2{display:grid;grid-template-columns:1fr 1fr;gap:1.5rem;max-width:900px;width:100%}
+.grid-3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:1rem;max-width:900px;width:100%}
+.card{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:12px;padding:1.5rem}
+.card h4{color:#fbbf24;font-size:.95rem;margin-bottom:.5rem}
+.card p{font-size:.9rem;line-height:1.5;color:#9ca3af}
+.stat-card{text-align:center;padding:1.5rem}
+.stat-card .number{font-size:2.5rem;font-weight:800;background:linear-gradient(135deg,#34d399,#10b981);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.stat-card .label{color:#9ca3af;font-size:.85rem;margin-top:.3rem}
+.calendar{width:100%;max-width:900px;border:1px solid rgba(255,255,255,.08);border-radius:12px;overflow:hidden}
+.cal-header{display:grid;grid-template-columns:repeat(5,1fr);background:rgba(16,185,129,.1)}
+.cal-header div{padding:.6rem;text-align:center;color:#6ee7b7;font-size:.8rem;font-weight:600;border-right:1px solid rgba(255,255,255,.05)}
+.cal-row{display:grid;grid-template-columns:repeat(5,1fr);border-top:1px solid rgba(255,255,255,.05)}
+.cal-cell{padding:.6rem;font-size:.75rem;color:#9ca3af;border-right:1px solid rgba(255,255,255,.05)}
+.cal-cell strong{color:#e2e8f0;display:block;margin-bottom:.2rem}
+.pill{display:inline-block;padding:.15rem .5rem;border-radius:10px;font-size:.65rem;margin:.1rem 0}
+.pill.edu{background:rgba(99,102,241,.2);color:#a5b4fc}
+.pill.ent{background:rgba(251,191,36,.2);color:#fbbf24}
+.pill.com{background:rgba(236,72,153,.2);color:#f9a8d4}
+.pill.ven{background:rgba(16,185,129,.2);color:#6ee7b7}
+.img-placeholder{background:linear-gradient(135deg,#0a2a1a,#1a3a2a);border:2px dashed rgba(110,231,183,.3);border-radius:12px;padding:2rem;text-align:center;color:#10b981;font-size:.9rem;font-style:italic}
+.reflection{background:rgba(16,185,129,.06);border-left:4px solid #10b981;border-radius:0 12px 12px 0;padding:1.2rem 1.5rem;margin-top:1.5rem;max-width:900px}
+.reflection p{color:#6ee7b7;font-size:.95rem;font-weight:500}
+.tag{display:inline-block;background:rgba(16,185,129,.15);color:#6ee7b7;padding:.3rem .8rem;border-radius:20px;font-size:.8rem;margin:.2rem}
+.nav{position:fixed;bottom:2rem;left:50%;transform:translateX(-50%);display:flex;align-items:center;gap:1rem;z-index:100}
+.nav button{background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.15);color:#fff;width:40px;height:40px;border-radius:50%;cursor:pointer;font-size:1.1rem;transition:all .2s}
+.nav button:hover{background:rgba(16,185,129,.4)}
+.nav .counter{color:#6b7280;font-size:.85rem}
+.progress{position:fixed;top:0;left:0;height:3px;background:linear-gradient(90deg,#34d399,#10b981);transition:width .3s;z-index:100}
+@media(max-width:768px){.slide{padding:1.5rem}.slide-title{font-size:1.6rem}.grid-2,.grid-3{grid-template-columns:1fr}.calendar{overflow-x:auto}}
+</style>
+</head>
+<body>
+<div class="progress" id="progress"></div>
+<div class="deck">
+
+<!-- Slide 1 -->
+<div class="slide active">
+<div class="slide-title">📅 Plan de Media y Contenidos</div>
+<div class="slide-subtitle">ADA 4 — Planifica, crea y amplifica</div>
+<div class="content-box" style="text-align:center">
+<p><strong>Objetivo:</strong> Evaluar formatos y plataformas para crear un plan de contenidos multiplataforma con estrategia de influencers y monitoreo en tiempo real.</p>
+<p style="margin-top:1rem;color:#6b7280">Nivel Bloom: Evaluar / Crear</p>
+</div>
+</div>
+
+<!-- Slide 2: El calendario -->
+<div class="slide">
+<div class="slide-title">📅 El calendario editorial — Tu arma secreta</div>
+<div class="grid-2">
+<div class="content-box">
+<h3>Sin calendario:</h3>
+<p style="color:#ef4444">"¿Qué publicamos hoy?" a las 4:30pm → Improvisas → Post a las 6:47pm cuando nadie ve → 23 likes → $0</p>
+<h3 style="margin-top:1rem">Con calendario:</h3>
+<p style="color:#10b981">Lunes 9am: abres tu plan del mes → post de hoy ya tiene copy, diseño y hora programada → sale a las 12:30 → 3x más resultados</p>
+</div>
+<div class="content-box">
+<h3>Campos esenciales:</h3>
+<ul>
+<li>Fecha + Hora</li>
+<li>Plataforma</li>
+<li>Pilar de contenido</li>
+<li>Formato (Reel, Carrusel, Story...)</li>
+<li>Copy completo + Hashtags</li>
+<li>CTA específico</li>
+<li>Status: 🔴 Pendiente → 🟡 En diseño → ✅ Listo</li>
+</ul>
+</div>
+</div>
+</div>
+
+<!-- Slide 3: Calendario ejemplo -->
+<div class="slide">
+<div class="slide-title">📊 Ejemplo: Semana tipo de una marca</div>
+<div class="calendar">
+<div class="cal-header"><div>Lunes</div><div>Martes</div><div>Miércoles</div><div>Jueves</div><div>Viernes</div></div>
+<div class="cal-row">
+<div class="cal-cell"><strong>IG Feed</strong><span class="pill edu">📚 Tip</span><br>Carrusel 7 slides<br>12:30pm</div>
+<div class="cal-cell"><strong>TikTok</strong><span class="pill ent">😄 Trend</span><br>Video 30seg<br>7:30pm</div>
+<div class="cal-cell"><strong>IG Reel</strong><span class="pill com">❤️ UGC</span><br>Repost cliente<br>1:00pm</div>
+<div class="cal-cell"><strong>IG + FB</strong><span class="pill ven">🛒 Promo</span><br>Post estático<br>12:00pm</div>
+<div class="cal-cell"><strong>TikTok</strong><span class="pill edu">📚 Tutorial</span><br>Video 45seg<br>8:00pm</div>
+</div>
+<div class="cal-row">
+<div class="cal-cell"><strong>Stories</strong>Poll + Tips</div>
+<div class="cal-cell"><strong>Stories</strong>Behind-scenes</div>
+<div class="cal-cell"><strong>Stories</strong>Q&A box</div>
+<div class="cal-cell"><strong>Stories</strong>Countdown promo</div>
+<div class="cal-cell"><strong>Stories</strong>Recap semanal</div>
+</div>
+</div>
+<div class="reflection"><p>💭 Diseña una semana tipo para TU marca usando este formato. ¿Qué pilar va cada día?</p></div>
+</div>
+
+<!-- Slide 4: Pilares de contenido -->
+<div class="slide">
+<div class="slide-title">🏛️ Pilares de contenido — La ciencia de no aburrir</div>
+<div class="grid-2">
+<div class="content-box">
+<h3>Ejemplo: Cafetería en Mérida</h3>
+<ul>
+<li><span class="pill edu">30%</span> <strong>Educativo</strong> — Tips de café, datos curiosos del grano</li>
+<li><span class="pill ent">25%</span> <strong>Entretenimiento</strong> — Memes de café, trends, behind-scenes</li>
+<li><span class="pill com">20%</span> <strong>Comunidad</strong> — Repost clientes, encuestas, UGC</li>
+<li><span class="pill ven">15%</span> <strong>Producto/Venta</strong> — Nuevo menú, promos, delivery</li>
+<li><span class="pill" style="background:rgba(168,85,247,.2);color:#c4b5fd">10%</span> <strong>Valores</strong> — Sustentabilidad, origen, equipo</li>
+</ul>
+</div>
+<div class="content-box">
+<h3>Reglas de content mix:</h3>
+<p><strong>80/20:</strong> 80% valor, 20% venta (conservadora)<br><strong>4-1-1:</strong> 4 de curación, 1 soft sell, 1 hard sell<br><strong>70-20-10:</strong> 70% original, 20% compartido, 10% promo</p>
+<p style="margin-top:1rem;color:#fbbf24">⚠️ Si vendes todo el tiempo, tu audiencia huye. Si nunca vendes, tu negocio muere.</p>
+</div>
+</div>
+</div>
+
+<!-- Slide 5: Video corto -->
+<div class="slide">
+<div class="slide-title">🎬 Video corto — El formato rey de 2026</div>
+<div class="grid-3">
+<div class="card stat-card"><div class="number">67%</div><div class="label">Más distribución para Reels vs. posts estáticos</div></div>
+<div class="card stat-card"><div class="number">3seg</div><div class="label">Tienes 3 segundos para enganchar</div></div>
+<div class="card stat-card"><div class="number">70B</div><div class="label">Views diarias en YouTube Shorts</div></div>
+</div>
+<div class="content-box" style="margin-top:1rem">
+<h3>Estructura de un Reel/TikTok efectivo:</h3>
+<p>1️⃣ <strong>Hook</strong> (0-3seg) → Captura atención<br>
+2️⃣ <strong>Contexto</strong> (3-10seg) → ¿Por qué importa?<br>
+3️⃣ <strong>Valor</strong> (10-40seg) → La información/historia<br>
+4️⃣ <strong>CTA</strong> (últimos 3-5seg) → Seguir, guardar, comentar<br>
+5️⃣ <strong>Loop</strong> (opcional) → El final conecta con el inicio</p>
+</div>
+</div>
+
+<!-- Slide 6: Hooks de video -->
+<div class="slide">
+<div class="slide-title">🪝 Hooks de video que detienen el scroll</div>
+<div class="grid-2">
+<div class="content-box">
+<h3>Tipos que funcionan:</h3>
+<ul>
+<li><strong>Texto + movimiento:</strong> "ESTO cambió mi negocio" (caminas hacia cámara)</li>
+<li><strong>Pregunta local:</strong> "¿Tu café favorito de Mérida gana $0 en Instagram?"</li>
+<li><strong>Before/After:</strong> Muestra el DESPUÉS primero</li>
+<li><strong>Pattern interrupt:</strong> Algo inesperado en 0.5 seg</li>
+<li><strong>Hot take:</strong> "No necesitas publicar todos los días"</li>
+</ul>
+</div>
+<div class="content-box">
+<h3>Formatos que funcionan para marcas:</h3>
+<ul>
+<li>Tutorial rápido ("Cómo hacer X en 30seg")</li>
+<li>Day in the life / Behind-scenes</li>
+<li>Trending audio + tu twist de marca</li>
+<li>Satisfying process (elaboración de producto)</li>
+<li>POV humor ("POV: eres CM y tu cliente dice...")</li>
+</ul>
+</div>
+</div>
+<div class="reflection"><p>💭 Piensa en 3 ideas de Reel/TikTok para tu marca. ¿Cuál es el hook de cada uno?</p></div>
+</div>
+
+<!-- Slide 7: Influencers -->
+<div class="slide">
+<div class="slide-title">🤝 Marketing de Influencers — Evalúa con criterio</div>
+<div class="grid-3">
+<div class="card"><h4>Nano (1K-10K)</h4><p>$500-2K MXN/post<br>ER alto (5-8%)<br>Audiencia nicho, local<br>✅ Ideal para PyMEs Mérida</p></div>
+<div class="card"><h4>Micro (10K-100K)</h4><p>$3K-15K MXN/post<br>ER medio (3-5%)<br>Alcance + engagement<br>✅ Balance calidad/precio</p></div>
+<div class="card"><h4>Macro (100K+)</h4><p>$15K-150K MXN/post<br>ER bajo (1-3%)<br>Alcance masivo<br>⚠️ Solo con presupuesto</p></div>
+</div>
+<div class="content-box" style="margin-top:1rem">
+<h3>Framework de evaluación:</h3>
+<p>✅ <strong>Engagement Rate</strong> > 3% | ✅ <strong>Relevancia temática</strong> | ✅ <strong>Audiencia real</strong> (sin bots) | ✅ <strong>Ubicación</strong> de audiencia | ✅ <strong>Calidad</strong> de contenido | ✅ <strong>Historial</strong> de colaboraciones</p>
+<p style="margin-top:.5rem;color:#ef4444">⚠️ Error #1: Elegir por seguidores en vez de por relevancia. 500K seguidores ≠ ventas para ti.</p>
+</div>
+</div>
+
+<!-- Slide 8: IA para contenido -->
+<div class="slide">
+<div class="slide-title">🤖 IA Generativa para el CM</div>
+<div class="slide-subtitle">79% de marketers ya usan IA en su trabajo diario — HubSpot 2025</div>
+<div class="grid-2">
+<div class="content-box">
+<h3>La IA AYUDA en:</h3>
+<ul>
+<li>Generar 20 ideas de posts en 30 segundos</li>
+<li>Primer draft de copies (que TÚ editas)</li>
+<li>Proponer calendario editorial</li>
+<li>Scripts de respuesta para chatbot</li>
+<li>Resumir métricas y sugerir insights</li>
+</ul>
+</div>
+<div class="content-box">
+<h3>La IA NO reemplaza:</h3>
+<ul>
+<li>❌ Empatía real con tu comunidad</li>
+<li>❌ Criterio de marca (coherencia)</li>
+<li>❌ Gestión de crisis (requiere humano)</li>
+<li>❌ Relaciones con influencers</li>
+<li>❌ Creatividad estratégica original</li>
+</ul>
+</div>
+</div>
+<div class="content-box" style="margin-top:1rem;max-width:900px">
+<h3>Prompt estrella:</h3>
+<p style="font-family:monospace;background:rgba(0,0,0,.3);padding:.8rem;border-radius:8px;font-size:.85rem">"Actúa como CM de [tipo de negocio] en Mérida. Mi audiencia es [persona]. Genera 15 ideas de posts organizadas por pilar: educativo, entretenimiento, comunidad, venta. Incluye formato y hook."</p>
+</div>
+</div>
+
+<!-- Slide 9: Herramientas de scheduling -->
+<div class="slide">
+<div class="slide-title">🛠️ Herramientas de Planificación y Scheduling</div>
+<div class="grid-2">
+<div class="card"><h4>📅 Metricool (freemium)</h4><p>Programa posts, analiza métricas, gestiona DMs. Plan gratis: 1 marca, 50 posts/mes. Fuerte en LATAM.</p></div>
+<div class="card"><h4>📅 Buffer (freemium)</h4><p>3 canales gratis, 10 posts en cola. Interfaz simple y limpia. Ideal para empezar.</p></div>
+<div class="card"><h4>📅 Later (freemium)</h4><p>Visual-first. Vista previa del grid de Instagram. Link in bio integrado.</p></div>
+<div class="card"><h4>📅 Meta Business Suite (gratis)</h4><p>Oficial de Meta. Programa para IG + FB. Inbox unificado + insights nativos.</p></div>
+</div>
+<div class="content-box" style="margin-top:1rem">
+<h3>Batch content — El secreto para no quemarte:</h3>
+<p>📝 Lunes: copies | 🎨 Martes: diseños en Canva | 🎬 Miércoles: grabar 3-5 videos | 📅 Jueves: programar todo | 📊 Viernes: métricas</p>
+</div>
+</div>
+
+<!-- Slide 10: Meta Ads -->
+<div class="slide">
+<div class="slide-title">💰 Meta Ads — Tu primera campaña con $500 MXN</div>
+<div class="grid-2">
+<div class="content-box">
+<h3>Paso a paso:</h3>
+<ul>
+<li><strong>1.</strong> Elige tu mejor post del mes (ya tiene buen engagement orgánico)</li>
+<li><strong>2.</strong> Define UN objetivo: ¿mensajes? ¿tráfico? ¿seguidores?</li>
+<li><strong>3.</strong> Segmenta: Mérida +30km, 20-35 años, 3-5 intereses relevantes</li>
+<li><strong>4.</strong> Presupuesto: $500 MXN / 5 días = $100/día</li>
+<li><strong>5.</strong> Mide: ¿cuánto costó cada resultado?</li>
+</ul>
+</div>
+<div class="content-box">
+<h3>Benchmarks México 2025:</h3>
+<p>💵 CPC promedio: <strong>$2-8 MXN</strong><br>
+📊 CPM promedio: <strong>$30-80 MXN</strong><br>
+🖱️ CTR promedio: <strong>0.9-2.5%</strong><br>
+💬 Costo por mensaje WhatsApp: <strong>$5-15 MXN</strong></p>
+<p style="margin-top:1rem;color:#6ee7b7">Con $500 MXN puedes alcanzar 5,000-20,000 personas de tu público exacto.</p>
+</div>
+</div>
+<div class="reflection"><p>💭 ¿Cuál de tus posts recientes tiene mejor engagement? Ese es candidato ideal para boost.</p></div>
+</div>
+
+<!-- Slide 11: Producto -->
+<div class="slide">
+<div class="slide-title">📋 Tu producto integrador</div>
+<div class="slide-subtitle">Plan de Contenidos Multiplataforma + Estrategia de Influencers + Monitoreo</div>
+<div class="content-box">
+<h3>Tu plan debe incluir:</h3>
+<ul>
+<li><strong>Pilares de contenido</strong> definidos con % y justificación</li>
+<li><strong>Calendario editorial de 2 semanas</strong> (todos los campos completos)</li>
+<li><strong>3-5 conceptos de video corto</strong> con hook y estructura</li>
+<li><strong>Estrategia de influencers</strong>: criterios + 3-5 perfiles potenciales + presupuesto</li>
+<li><strong>Propuesta de pauta pagada</strong>: presupuesto + segmentación + KPIs</li>
+<li><strong>Herramientas de IA</strong> que usarás + prompts base + límites éticos</li>
+<li><strong>Herramientas de scheduling</strong> seleccionadas con justificación</li>
+</ul>
+</div>
+</div>
+
+</div>
+
+<div class="nav">
+<button onclick="changeSlide(-1)">←</button>
+<span class="counter" id="counter">1 / 11</span>
+<button onclick="changeSlide(1)">→</button>
+</div>
+
+<script>
+let current=0;const slides=document.querySelectorAll('.slide');const total=slides.length;
+function showSlide(n){slides.forEach(s=>s.classList.remove('active'));slides[n].classList.add('active');document.getElementById('counter').textContent=`${n+1} / ${total}`;document.getElementById('progress').style.width=`${((n+1)/total)*100}%`}
+function changeSlide(d){current=Math.max(0,Math.min(total-1,current+d));showSlide(current)}
+document.addEventListener('keydown',e=>{if(e.key==='ArrowRight'||e.key===' ')changeSlide(1);if(e.key==='ArrowLeft')changeSlide(-1)});
+let touchStart=0;document.addEventListener('touchstart',e=>touchStart=e.touches[0].clientX);document.addEventListener('touchend',e=>{const diff=touchStart-e.changedTouches[0].clientX;if(Math.abs(diff)>50){diff>0?changeSlide(1):changeSlide(-1)}});
+showSlide(0);
+
+// --- Puente postMessage con el modal padre (mini sitio) ---
+function _notifyParent(){try{if(window.parent!==window){window.parent.postMessage({type:'slideChange',current:current+1,total:total},'*');}}catch(e){}}
+window.addEventListener('message',function(e){var a=e.data&&e.data.action;if(a==='nextSlide')changeSlide(1);else if(a==='prevSlide')changeSlide(-1);});
+var _origShowSlide=showSlide;showSlide=function(n){_origShowSlide(n);_notifyParent();};
+_notifyParent();
+
+</script>
+</body>
+</html>

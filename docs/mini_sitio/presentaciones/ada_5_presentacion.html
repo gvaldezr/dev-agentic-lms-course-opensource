@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ADA 5 — Analítica y Optimización Estratégica</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Segoe UI',system-ui,-apple-system,sans-serif;background:#1a0f0a;color:#e8e8f0;overflow:hidden;height:100vh}
+.deck{width:100%;height:100vh;position:relative}
+.slide{width:100%;height:100vh;display:none;flex-direction:column;justify-content:center;align-items:center;padding:3rem 4rem;position:absolute;top:0;left:0;animation:fadeIn .4s ease}
+.slide.active{display:flex}
+@keyframes fadeIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+.slide-title{background:linear-gradient(135deg,#f59e0b,#ef4444);-webkit-background-clip:text;-webkit-text-fill-color:transparent;font-size:2.4rem;font-weight:800;margin-bottom:1.5rem;text-align:center;line-height:1.2}
+.slide-subtitle{color:#fcd34d;font-size:1.2rem;text-align:center;margin-bottom:2rem;font-weight:300}
+.content-box{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:16px;padding:2rem;max-width:900px;width:100%}
+.content-box h3{color:#fcd34d;font-size:1.1rem;margin-bottom:1rem}
+.content-box p,.content-box li{font-size:1rem;line-height:1.7;color:#c8c8d8;margin-bottom:.6rem}
+.content-box ul{list-style:none;padding-left:0}
+.content-box ul li::before{content:"→ ";color:#f59e0b;font-weight:bold}
+.grid-2{display:grid;grid-template-columns:1fr 1fr;gap:1.5rem;max-width:900px;width:100%}
+.grid-3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:1rem;max-width:900px;width:100%}
+.card{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:12px;padding:1.5rem}
+.card h4{color:#fbbf24;font-size:.95rem;margin-bottom:.5rem}
+.card p{font-size:.9rem;line-height:1.5;color:#9ca3af}
+.stat-card{text-align:center;padding:1.5rem}
+.stat-card .number{font-size:2.5rem;font-weight:800;background:linear-gradient(135deg,#f59e0b,#ef4444);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.stat-card .label{color:#9ca3af;font-size:.85rem;margin-top:.3rem}
+.metric-table{width:100%;border-collapse:collapse;max-width:900px}
+.metric-table th,.metric-table td{padding:.7rem 1rem;text-align:left;border-bottom:1px solid rgba(255,255,255,.06);font-size:.9rem}
+.metric-table th{color:#fcd34d;font-weight:600;font-size:.85rem}
+.metric-table td{color:#9ca3af}
+.formula{background:rgba(245,158,11,.08);border:1px solid rgba(245,158,11,.2);border-radius:10px;padding:1.2rem;text-align:center;font-family:monospace;color:#fcd34d;font-size:1.1rem;margin:.8rem 0}
+.dashboard{background:rgba(0,0,0,.3);border:1px solid rgba(255,255,255,.1);border-radius:12px;padding:1.5rem;max-width:900px;width:100%}
+.dashboard-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:.8rem;margin-top:.8rem}
+.dash-card{background:rgba(255,255,255,.03);border-radius:8px;padding:.8rem;text-align:center}
+.dash-card .val{font-size:1.5rem;font-weight:700;color:#fbbf24}
+.dash-card .lbl{font-size:.7rem;color:#6b7280;margin-top:.2rem}
+.trend-up{color:#10b981}
+.trend-down{color:#ef4444}
+.img-placeholder{background:linear-gradient(135deg,#2a1a0a,#3a2a1a);border:2px dashed rgba(252,211,77,.3);border-radius:12px;padding:2rem;text-align:center;color:#f59e0b;font-size:.9rem;font-style:italic}
+.reflection{background:rgba(245,158,11,.06);border-left:4px solid #f59e0b;border-radius:0 12px 12px 0;padding:1.2rem 1.5rem;margin-top:1.5rem;max-width:900px}
+.reflection p{color:#fcd34d;font-size:.95rem;font-weight:500}
+.nav{position:fixed;bottom:2rem;left:50%;transform:translateX(-50%);display:flex;align-items:center;gap:1rem;z-index:100}
+.nav button{background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.15);color:#fff;width:40px;height:40px;border-radius:50%;cursor:pointer;font-size:1.1rem;transition:all .2s}
+.nav button:hover{background:rgba(245,158,11,.4)}
+.nav .counter{color:#6b7280;font-size:.85rem}
+.progress{position:fixed;top:0;left:0;height:3px;background:linear-gradient(90deg,#f59e0b,#ef4444);transition:width .3s;z-index:100}
+@media(max-width:768px){.slide{padding:1.5rem}.slide-title{font-size:1.6rem}.grid-2,.grid-3{grid-template-columns:1fr}.dashboard-grid{grid-template-columns:repeat(2,1fr)}}
+</style>
+</head>
+<body>
+<div class="progress" id="progress"></div>
+<div class="deck">
+
+<!-- Slide 1 -->
+<div class="slide active">
+<div class="slide-title">📊 Analítica y Optimización<br>Estratégica</div>
+<div class="slide-subtitle">ADA 5 — Mide, decide y mejora</div>
+<div class="content-box" style="text-align:center">
+<p><strong>Objetivo:</strong> Crear un sistema de medición completo con dashboard, informe ejecutivo de ROI, y plan de optimización basado en datos — sintetizando TODOS los aprendizajes del curso.</p>
+<p style="margin-top:1rem;color:#6b7280">Nivel Bloom: Crear / Sintetizar</p>
+</div>
+</div>
+
+<!-- Slide 2: Vanity vs Actionable -->
+<div class="slide">
+<div class="slide-title">🚫 Vanity Metrics vs. Métricas que importan</div>
+<div class="grid-2">
+<div class="card" style="border-color:rgba(239,68,68,.3)">
+<h4 style="color:#ef4444">❌ Vanity Metrics</h4>
+<p>• "¡Tenemos 50,000 seguidores!"<br>• Likes totales<br>• Impresiones brutas<br>• Visitas al perfil<br>• Views del video</p>
+<p style="margin-top:.5rem;color:#ef4444;font-size:.85rem">Se ven impresionantes pero no indican impacto real.</p>
+</div>
+<div class="card" style="border-color:rgba(16,185,129,.3)">
+<h4 style="color:#10b981">✅ Actionable Metrics</h4>
+<p>• Tasa de crecimiento (%/mes)<br>• Engagement Rate<br>• Reach único / Alcance<br>• Conversion rate a seguidor<br>• Completion Rate de video</p>
+<p style="margin-top:.5rem;color:#10b981;font-size:.85rem">Te dicen qué hacer diferente para mejorar.</p>
+</div>
+</div>
+<div class="reflection"><p>💭 50K seguidores con 0.3% ER = 150 personas que interactúan. 5K con 8% ER = 400 personas activas. ¿Cuál prefieres?</p></div>
+</div>
+
+<!-- Slide 3: Las 10 métricas -->
+<div class="slide">
+<div class="slide-title">📈 Las 10 métricas de TODO dashboard de CM</div>
+<div class="grid-2">
+<div class="content-box">
+<h3>📡 Alcance (¿me ven?)</h3>
+<p>1. Reach (personas únicas)<br>2. Impresiones (veces mostrado)</p>
+<h3 style="margin-top:.8rem">❤️ Engagement (¿les importo?)</h3>
+<p>3. Engagement Rate<br>4. Save Rate<br>5. Share Rate</p>
+</div>
+<div class="content-box">
+<h3>🎯 Conversión (¿actúan?)</h3>
+<p>6. CTR (Click-Through Rate)<br>7. Tasa de mensajes recibidos<br>8. Costo por resultado</p>
+<h3 style="margin-top:.8rem">📈 Crecimiento</h3>
+<p>9. Tasa de crecimiento seguidores<br>10. Tasa + tiempo de respuesta</p>
+</div>
+</div>
+<div class="content-box" style="margin-top:1rem;text-align:center">
+<p><strong>Cada métrica responde una pregunta:</strong> Alcance → ¿Me ven? | ER → ¿Les importo? | Saves → ¿Soy útil? | Shares → ¿Soy compartible? | CTR → ¿Actúan?</p>
+</div>
+</div>
+
+<!-- Slide 4: Fórmulas -->
+<div class="slide">
+<div class="slide-title">🧮 Fórmulas que debes dominar</div>
+<div class="formula">Engagement Rate = (likes + comentarios + shares + saves) / alcance × 100</div>
+<div class="formula">CTR = clics / impresiones × 100</div>
+<div class="formula">ROI = (Ingresos - Inversión) / Inversión × 100</div>
+<div class="formula">ROAS = Ingresos por anuncios / Gasto en anuncios</div>
+<div class="content-box" style="margin-top:1rem">
+<h3>Ejemplo con números reales:</h3>
+<p>Un post tiene: 5,000 alcance | 120 likes | 18 comentarios | 35 saves | 12 shares<br>
+<strong>ER = (120+18+35+12) / 5,000 × 100 = 3.7%</strong> → Por encima del benchmark de alimentos (2.4%) ✅</p>
+</div>
+</div>
+
+<!-- Slide 5: Benchmarks -->
+<div class="slide">
+<div class="slide-title">📊 Benchmarks por industria 2025</div>
+<table class="metric-table">
+<tr><th>Industria</th><th>ER Instagram</th><th>Save Rate</th><th>Crecimiento/mes</th></tr>
+<tr><td>Educación</td><td>3.2%</td><td>2.5%</td><td>+2.8%</td></tr>
+<tr><td>Alimentos y bebidas</td><td>2.4%</td><td>1.8%</td><td>+1.5%</td></tr>
+<tr><td>Moda</td><td>1.8%</td><td>3.1%</td><td>+1.2%</td></tr>
+<tr><td>Tech/SaaS</td><td>1.3%</td><td>1.4%</td><td>+1.0%</td></tr>
+<tr><td>Turismo/Viajes</td><td>2.1%</td><td>2.8%</td><td>+1.8%</td></tr>
+<tr><td>Retail/E-commerce</td><td>1.5%</td><td>2.0%</td><td>+1.3%</td></tr>
+</table>
+<div class="reflection"><p>💭 ¿En qué industria está tu marca? Compara tus datos con el benchmark. ¿Estás arriba o abajo?</p></div>
+</div>
+
+<!-- Slide 6: Dashboard simulado -->
+<div class="slide">
+<div class="slide-title">📋 Así se ve un Dashboard de Social Media</div>
+<div class="dashboard">
+<p style="color:#fcd34d;font-size:.9rem;margin-bottom:.5rem">📊 Dashboard mensual — Agosto 2026 | Marca: [Tu marca local]</p>
+<div class="dashboard-grid">
+<div class="dash-card"><div class="val">4.2%</div><div class="lbl">Engagement Rate <span class="trend-up">↑ +0.8</span></div></div>
+<div class="dash-card"><div class="val">15,800</div><div class="lbl">Alcance total <span class="trend-up">↑ +23%</span></div></div>
+<div class="dash-card"><div class="val">42,300</div><div class="lbl">Impresiones <span class="trend-up">↑ +15%</span></div></div>
+<div class="dash-card"><div class="val">2.8%</div><div class="lbl">CTR <span class="trend-up">↑ +0.3</span></div></div>
+<div class="dash-card"><div class="val">+3.1%</div><div class="lbl">Crecimiento seguidores</div></div>
+<div class="dash-card"><div class="val">94%</div><div class="lbl">Tasa de respuesta</div></div>
+</div>
+</div>
+<div class="img-placeholder" style="margin-top:1rem;max-width:900px">[IMAGEN: Captura de un dashboard real en Google Looker Studio o Metricool — con gráficos de línea mostrando tendencias de engagement y alcance a lo largo del mes]</div>
+</div>
+
+<!-- Slide 7: ROI -->
+<div class="slide">
+<div class="slide-title">💰 ROI — Demuestra que tu trabajo genera dinero</div>
+<div class="grid-2">
+<div class="content-box">
+<h3>ROI Directo (pesos):</h3>
+<p>Inversión: Salario ($15K) + Herramientas ($500) + Pauta ($5K) = <strong>$20,500</strong></p>
+<p>Ingresos por redes: 45 ventas × $800 = <strong>$36,000</strong></p>
+<div class="formula" style="font-size:1rem">ROI = ($36,000 - $20,500) / $20,500 × 100 = <strong>75.6%</strong></div>
+</div>
+<div class="content-box">
+<h3>ROI Indirecto (valor):</h3>
+<ul>
+<li><strong>Awareness:</strong> ¿Cuánto costaría llegar a esa audiencia con ads?</li>
+<li><strong>Reputación:</strong> Una reseña positiva ≈ $500-2K en credibilidad</li>
+<li><strong>Ahorro en atención:</strong> Mensajes resueltos por chatbot</li>
+<li><strong>Cost of Inaction:</strong> 30% de clientes eligen al competidor si no respondes en 24h</li>
+</ul>
+</div>
+</div>
+<div class="reflection"><p>💭 ¿Puedes calcular el ROI de tu marca? Si no vende directamente, ¿cuál es el valor indirecto?</p></div>
+</div>
+
+<!-- Slide 8: A/B Testing -->
+<div class="slide">
+<div class="slide-title">🧪 A/B Testing — El método científico del CM</div>
+<div class="content-box">
+<h3>¿Qué puedes testear?</h3>
+<table class="metric-table">
+<tr><th>Variable</th><th>Versión A</th><th>Versión B</th><th>Métrica</th></tr>
+<tr><td>Hook</td><td>"¿Sabías que...?"</td><td>"STOP. Lee esto"</td><td>Saves + comentarios</td></tr>
+<tr><td>Formato</td><td>Carrusel</td><td>Reel (mismo tema)</td><td>Alcance + shares</td></tr>
+<tr><td>Hora</td><td>12:30 PM</td><td>7:30 PM</td><td>Alcance primeras 24h</td></tr>
+<tr><td>CTA</td><td>"Guárdalo 🔖"</td><td>"Comparte con un amigo"</td><td>Saves vs. Shares</td></tr>
+</table>
+</div>
+<div class="content-box" style="margin-top:1rem">
+<h3>Metodología:</h3>
+<p>1️⃣ Hipótesis → 2️⃣ Cambia UNA variable → 3️⃣ Define métrica ANTES → 4️⃣ Espera 48-72h → 5️⃣ Analiza: si diferencia > 25% = hallazgo fuerte</p>
+</div>
+</div>
+
+<!-- Slide 9: Caso local -->
+<div class="slide">
+<div class="slide-title">🌴 Caso Yucatán: De 3 a 18 ventas/mes con datos</div>
+<div class="slide-subtitle">"Hamacas del Mayab" — Taller en Tixkokob</div>
+<div class="dashboard">
+<div class="dashboard-grid">
+<div class="dash-card"><div class="val">+500%</div><div class="lbl">Ventas en 90 días</div></div>
+<div class="dash-card"><div class="val">$5.4K→$32K</div><div class="lbl">Ingresos mensuales</div></div>
+<div class="dash-card"><div class="val">1500%</div><div class="lbl">ROI de pauta ($1,200 invertidos)</div></div>
+</div>
+</div>
+<div class="content-box" style="margin-top:1rem">
+<h3>¿Qué hicieron diferente?</h3>
+<ul>
+<li>Mes 1: Cambiaron horario de publicación (dato de Insights) → +45% alcance</li>
+<li>Mes 2: Crearon Reels de proceso artesanal → 8,000 views vs. 400 likes en fotos</li>
+<li>Mes 3: Collab con nano-influencer local (canje) → 23,000 views, 18 ventas</li>
+</ul>
+<p style="color:#fcd34d;margin-top:.5rem"><strong>Lección:</strong> No gastaron más — usaron MEJOR los datos que ya tenían.</p>
+</div>
+</div>
+
+<!-- Slide 10: Reporte mensual -->
+<div class="slide">
+<div class="slide-title">📝 Estructura de tu Informe Ejecutivo</div>
+<div class="content-box">
+<h3>Tu informe debe responder estas preguntas:</h3>
+<ul>
+<li><strong>Resumen (5 bullets):</strong> ¿Qué pasó este mes? Los 5 hallazgos principales.</li>
+<li><strong>Rendimiento vs. objetivos:</strong> ¿Se cumplieron los SMART de ADA 4?</li>
+<li><strong>Formatos:</strong> ¿Qué funcionó mejor? ¿Qué peor? ¿Por qué?</li>
+<li><strong>Audiencia:</strong> ¿Se alcanzó al target definido en ADA 2?</li>
+<li><strong>ROI:</strong> Cálculo explícito con fórmula</li>
+<li><strong>Lecciones:</strong> 3 aprendizajes concretos del periodo</li>
+</ul>
+<p style="margin-top:1rem;color:#ef4444"><strong>⚠️ No basta reportar números.</strong> Debes EXPLICAR por qué ocurrieron y qué significan para la marca.</p>
+</div>
+</div>
+
+<!-- Slide 11: Plan de optimización -->
+<div class="slide">
+<div class="slide-title">🚀 Plan de Optimización basado en datos</div>
+<table class="metric-table">
+<tr><th>Área</th><th>Pregunta guía</th><th>Decisión ejemplo</th></tr>
+<tr><td>Contenido</td><td>¿Qué formato potenciar?</td><td>+50% Reels, -30% posts estáticos</td></tr>
+<tr><td>Horarios</td><td>¿Cuándo publicar?</td><td>Martes y jueves 7-8pm (dato de Insights)</td></tr>
+<tr><td>Pauta</td><td>¿Dónde reasignar $?</td><td>Mover $500 de Facebook a TikTok</td></tr>
+<tr><td>Influencers</td><td>¿Qué colaboración repetir?</td><td>Nano-influencers con Stories >90% completion</td></tr>
+<tr><td>Comunidad</td><td>¿Qué dinámica escalar?</td><td>Quiz semanal en Stories (8% ER)</td></tr>
+<tr><td>Tests propuestos</td><td>¿Qué testear el próximo mes?</td><td>Carrusel narrado vs. Reel tutorial</td></tr>
+</table>
+<div class="reflection"><p>💭 Cada decisión de tu plan debe estar respaldada por UN DATO de tu dashboard. Sin dato = opinión. Con dato = estrategia.</p></div>
+</div>
+
+<!-- Slide 12: Producto final -->
+<div class="slide">
+<div class="slide-title">📋 Tu producto final — El entregable que sintetiza todo</div>
+<div class="slide-subtitle">Dashboard + Informe Ejecutivo + Plan de Optimización</div>
+<div class="grid-3">
+<div class="card"><h4>📊 Dashboard</h4><p>10+ KPIs<br>Datos simulados realistas<br>Métricas por plataforma<br>Top 5 posts del mes<br>Rendimiento por formato<br><br><strong>Herramientas:</strong> Looker Studio, Sheets, Canva</p></div>
+<div class="card"><h4>📝 Informe Ejecutivo</h4><p>Máximo 3 páginas<br>5 hallazgos principales<br>Análisis de rendimiento<br>Cálculo de ROI<br>Lecciones aprendidas<br><br><strong>Formato:</strong> PDF o Google Docs</p></div>
+<div class="card"><h4>🚀 Plan de Optimización</h4><p>Decisiones por área<br>3+ A/B tests propuestos<br>Presupuesto recomendado<br>Proyección de resultados<br>Timeline de implementación<br><br><strong>Formato:</strong> Tabla + narrativa</p></div>
+</div>
+<div class="content-box" style="margin-top:1rem;text-align:center">
+<p style="color:#fcd34d;font-size:1.1rem"><strong>Este es tu portafolio profesional.</strong> Un empleador que vea este entregable sabe que puedes gestionar redes con criterio estratégico.</p>
+</div>
+</div>
+
+</div>
+
+<div class="nav">
+<button onclick="changeSlide(-1)">←</button>
+<span class="counter" id="counter">1 / 12</span>
+<button onclick="changeSlide(1)">→</button>
+</div>
+
+<script>
+let current=0;const slides=document.querySelectorAll('.slide');const total=slides.length;
+function showSlide(n){slides.forEach(s=>s.classList.remove('active'));slides[n].classList.add('active');document.getElementById('counter').textContent=`${n+1} / ${total}`;document.getElementById('progress').style.width=`${((n+1)/total)*100}%`}
+function changeSlide(d){current=Math.max(0,Math.min(total-1,current+d));showSlide(current)}
+document.addEventListener('keydown',e=>{if(e.key==='ArrowRight'||e.key===' ')changeSlide(1);if(e.key==='ArrowLeft')changeSlide(-1)});
+let touchStart=0;document.addEventListener('touchstart',e=>touchStart=e.touches[0].clientX);document.addEventListener('touchend',e=>{const diff=touchStart-e.changedTouches[0].clientX;if(Math.abs(diff)>50){diff>0?changeSlide(1):changeSlide(-1)}});
+showSlide(0);
+
+// --- Puente postMessage con el modal padre (mini sitio) ---
+function _notifyParent(){try{if(window.parent!==window){window.parent.postMessage({type:'slideChange',current:current+1,total:total},'*');}}catch(e){}}
+window.addEventListener('message',function(e){var a=e.data&&e.data.action;if(a==='nextSlide')changeSlide(1);else if(a==='prevSlide')changeSlide(-1);});
+var _origShowSlide=showSlide;showSlide=function(n){_origShowSlide(n);_notifyParent();};
+_notifyParent();
+
+</script>
+</body>
+</html>
