@@ -518,6 +518,13 @@ li { margin: var(--space-1) 0; }
 .lectura-body ul, .lectura-body ol { padding-left: var(--space-6); margin-bottom: var(--space-5); }
 .lectura-body .pull-quote { position: relative; margin: var(--space-8) 0; padding: var(--space-5) var(--space-8); background: linear-gradient(135deg, rgba(25,46,76,0.03), rgba(200,146,17,0.05)); border-left: 4px solid var(--uady-dorado); border-radius: 0 var(--radius-md) var(--radius-md) 0; font-size: var(--text-lg); font-weight: 500; font-style: italic; color: var(--uady-azul); line-height: 1.6; }
 .lectura-body .pull-quote .quote-icon { position: absolute; top: -12px; left: 12px; font-size: 2rem; color: var(--uady-dorado); opacity: 0.4; font-style: normal; }
+.lectura-body .lectura-table { width: 100%; border-collapse: collapse; margin: var(--space-6) 0; font-size: var(--text-base-sm); line-height: 1.5; background: var(--uady-blanco); border: 1px solid rgba(25,46,76,0.12); border-radius: var(--radius-md); overflow: hidden; }
+.lectura-body .lectura-table thead { background: var(--uady-azul); }
+.lectura-body .lectura-table thead th { color: var(--uady-blanco); font-family: var(--font-heading); font-weight: 700; text-align: left; padding: var(--space-3) var(--space-4); }
+.lectura-body .lectura-table tbody td { padding: var(--space-3) var(--space-4); border-top: 1px solid rgba(25,46,76,0.10); color: #2D3748; vertical-align: top; }
+.lectura-body .lectura-table tbody tr:nth-child(even) { background: rgba(25,46,76,0.03); }
+.lectura-body .lectura-table tbody tr:hover { background: rgba(200,146,17,0.06); }
+.lectura-body .lectura-table strong { color: var(--uady-azul); }
 .reading-break { display: flex; justify-content: center; align-items: center; margin: var(--space-10) 0; gap: var(--space-4); }
 .reading-break::before, .reading-break::after { content: ''; width: 40px; height: 1px; background: linear-gradient(90deg, transparent, var(--uady-dorado), transparent); }
 .reading-break .symbol { width: 12px; height: 12px; background: var(--uady-dorado); transform: rotate(45deg); opacity: 0.6; }
@@ -611,6 +618,7 @@ li { margin: var(--space-1) 0; }
   .lectura-content__title { font-size: var(--text-xl); }
   .lectura-body { font-size: var(--text-base); }
   .lectura-body .pull-quote { padding: var(--space-4) var(--space-5); }
+  .lectura-body .lectura-table { display: block; overflow-x: auto; -webkit-overflow-scrolling: touch; white-space: nowrap; font-size: var(--text-sm); }
   .lectura-conexion { flex-direction: column; gap: var(--space-3); }
   .lectura-nav { grid-template-columns: 1fr; }
   .lectura-nav__next { text-align: left; justify-content: flex-start; }
