@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Medios Sociales | Preparatoria Uno UADY</title>
+  <meta name="description" content="Curso Medios Sociales de la Escuela Preparatoria Uno, UADY. La Ruta del Jaguar Social: de usuario a estratega de medios sociales con ética y responsabilidad digital.">
+  <link rel="icon" href="data:image/x-icon;," id="favicon">
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+  <a class="skip-link" href="#main-content">Ir al contenido principal</a>
+
+  <div class="site">
+    <!-- ================= HEADER / NAVBAR ================= -->
+    <header class="navbar" role="banner">
+      <div class="navbar__container">
+        <div class="navbar__brand">
+          <a class="navbar__logo" href="#/" aria-label="Inicio — Universidad Autónoma de Yucatán">
+            <img class="navbar__firma" id="navbar-firma" src="" alt="Universidad Autónoma de Yucatán">
+          </a>
+          <div class="navbar__course-info">
+            <span class="navbar__dependency">Escuela Preparatoria Uno</span>
+            <span class="navbar__course-name">Medios Sociales</span>
+          </div>
+        </div>
+
+        <nav class="navbar__nav" aria-label="Navegación principal">
+          <ul class="navbar__menu">
+            <li class="navbar__item"><a class="navbar__link" data-route="home" href="#/">Inicio</a></li>
+            <li class="navbar__item"><a class="navbar__link" data-route="adas" href="#/adas">ADAs</a></li>
+            <li class="navbar__item">
+              <button class="navbar__link navbar__dropdown-trigger" id="ada-dropdown-trigger" aria-expanded="false" aria-haspopup="true" aria-controls="ada-dropdown">
+                Ir a ADA <svg class="navbar__chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg>
+              </button>
+              <ul class="navbar__dropdown" id="ada-dropdown" role="menu" aria-label="Lista de ADAs">
+                <li><a role="menuitem" href="#/ada-1">1 · Ecosistema Digital</a></li>
+                <li><a role="menuitem" href="#/ada-2">2 · Brief Estratégico</a></li>
+                <li><a role="menuitem" href="#/ada-3">3 · Portafolio Multimedia</a></li>
+                <li><a role="menuitem" href="#/ada-4">4 · Ciudadanía Digital</a></li>
+                <li><a role="menuitem" href="#/ada-5">5 · Campaña Social</a></li>
+                <li><a role="menuitem" href="#/complete">🏆 Mi logro final</a></li>
+              </ul>
+            </li>
+          </ul>
+        </nav>
+
+        <button class="navbar__hamburger" id="hamburger" aria-label="Abrir menú de navegación" aria-expanded="false" aria-controls="sidebar">
+          <span class="navbar__hamburger-line"></span><span class="navbar__hamburger-line"></span><span class="navbar__hamburger-line"></span>
+        </button>
+      </div>
+    </header>
+
+    <div class="site__body">
+      <aside class="site__sidebar" id="sidebar" role="navigation" aria-label="Progreso y navegación de ADAs">
+        <div id="sidebar-progress"></div>
+      </aside>
+      <div class="site__overlay" id="overlay"></div>
+
+      <main class="site__main" id="main-content" role="main" tabindex="-1">
+        <!-- Vista activa inyectada por app.js -->
+      </main>
+    </div>
+
+    <!-- ================= FOOTER ================= -->
+    <footer class="footer" role="contentinfo">
+      <div class="footer__pattern" id="footer-pattern" role="presentation"></div>
+      <div class="footer__container container">
+        <div class="footer__top">
+          <div class="footer__brand">
+            <img class="footer__firma" id="footer-firma" src="" alt="Universidad Autónoma de Yucatán">
+            <p class="footer__lema">"Luz, Ciencia y Verdad"</p>
+          </div>
+          <div class="footer__info">
+            <div class="footer__col">
+              <h4 class="footer__heading">Curso</h4>
+              <p>Medios Sociales</p><p>Escuela Preparatoria Uno</p><p>5° Semestre — 2026</p>
+            </div>
+            <div class="footer__col">
+              <h4 class="footer__heading">Navegación</h4>
+              <nav aria-label="Navegación pie de página"><ul class="footer__links">
+                <li><a href="#/">Inicio</a></li><li><a href="#/adas">ADAs</a></li>
+                <li><a href="#/ada-1">ADA 1</a></li><li><a href="#/ada-3">ADA 3</a></li><li><a href="#/ada-5">ADA 5</a></li>
+              </ul></nav>
+            </div>
+            <div class="footer__col">
+              <h4 class="footer__heading">Marco Pedagógico</h4>
+              <ul class="footer__links"><li>Diseño Universal para el Aprendizaje (DUA)</li><li>Modelo Educativo MEFI</li><li>Taxonomía de Bloom Revisada</li></ul>
+            </div>
+          </div>
+        </div>
+        <div class="footer__divider" aria-hidden="true"><img class="footer__border-img" id="footer-border" src="" alt=""></div>
+        <div class="footer__bottom">
+          <p class="footer__copyright">© 2026 Universidad Autónoma de Yucatán · Escuela Preparatoria Uno. Contenido de uso institucional.</p>
+          <p class="footer__credit">Diseñado con 💛 para la comunidad educativa UADY</p>
+        </div>
+      </div>
+    </footer>
+  </div>
+
+  <!-- Progreso mobile -->
+  <div class="progress-tracker-mobile" id="progress-mobile" aria-label="Progreso del curso"></div>
+
+  <!-- Jag companion -->
+  <div class="jag" aria-hidden="false">
+    <div class="jag__bubble" id="jag-bubble" role="status" aria-live="polite"></div>
+    <button class="jag__avatar" id="jag-avatar" aria-label="Jag, tu estratega de medios sociales guía">
+      <img id="jag-avatar-img" src="" alt="" aria-hidden="true">
+    </button>
+  </div>
+
+  <div class="toast-container" id="toast-container" aria-live="polite"></div>
+
+  <!-- Presentación Modal ("El Mirador" fullscreen) -->
+  <div class="presentacion-modal" id="presentacion-modal" role="dialog" aria-modal="true" aria-labelledby="presentacion-modal-title" hidden>
+    <header class="presentacion-modal__header">
+      <h2 class="presentacion-modal__title" id="presentacion-modal-title">Presentación</h2>
+      <div class="presentacion-modal__controls">
+        <span class="presentacion-modal__slide-counter" aria-live="polite">Vista 1 / 1</span>
+        <button class="presentacion-modal__close" data-close-presentacion aria-label="Cerrar presentación (Esc)"><span aria-hidden="true">✕</span> <kbd>Esc</kbd></button>
+      </div>
+    </header>
+    <div class="presentacion-modal__body">
+      <iframe class="presentacion-modal__iframe" src="" title="Presentación de la ADA" allow="fullscreen" loading="lazy"></iframe>
+    </div>
+    <footer class="presentacion-modal__footer">
+      <button class="presentacion-modal__nav-btn" data-slide-prev aria-label="Vista anterior"><span aria-hidden="true">‹</span> <span>Anterior</span></button>
+      <div class="presentacion-modal__progress"><div class="presentacion-modal__progress-bar" style="width:0%"></div></div>
+      <button class="presentacion-modal__nav-btn" data-slide-next aria-label="Vista siguiente"><span>Siguiente</span> <span aria-hidden="true">›</span></button>
+    </footer>
+  </div>
+
+  <script type="module" src="js/app.js"></script>
+</body>
+</html>

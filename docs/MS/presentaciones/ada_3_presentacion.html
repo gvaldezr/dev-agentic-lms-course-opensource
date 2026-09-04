@@ -1,0 +1,372 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ADA 3 — Creación de Contenido Multimedia y Estrategia Digital</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Segoe UI',system-ui,sans-serif;background:#1a0a2e;color:#e0e0e0;overflow:hidden;height:100vh}
+.slide{display:none;height:100vh;padding:40px 60px;flex-direction:column;justify-content:center;position:relative;overflow-y:auto}
+.slide.active{display:flex}
+.slide-counter{position:fixed;bottom:20px;right:30px;font-size:14px;color:#888;z-index:100}
+.nav{position:fixed;bottom:20px;left:50%;transform:translateX(-50%);display:flex;gap:10px;z-index:100}
+.nav button{background:#2a1a4a;border:2px solid #4a2a7a;color:#fff;padding:10px 24px;border-radius:8px;cursor:pointer;font-size:14px;transition:all .3s}
+.nav button:hover{background:#4a2a7a}
+h1{font-size:2.8em;background:linear-gradient(135deg,#e879f9,#a855f7);-webkit-background-clip:text;-webkit-text-fill-color:transparent;margin-bottom:20px;line-height:1.2}
+h2{font-size:2em;color:#e879f9;margin-bottom:16px}
+h3{font-size:1.4em;color:#c084fc;margin-bottom:12px}
+p{font-size:1.1em;line-height:1.7;color:#c0c0d0;margin-bottom:16px;max-width:900px}
+.subtitle{font-size:1.3em;color:#a0a0c0;margin-bottom:30px}
+.tag{display:inline-block;background:#2a1a4a;border:1px solid #4a2a7a;padding:4px 14px;border-radius:20px;font-size:.85em;color:#c084fc;margin:4px}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:24px;margin:20px 0}
+.grid3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:20px;margin:20px 0}
+.card{background:#1f0f3a;border:1px solid #3a1a5a;border-radius:12px;padding:24px}
+.stat{font-size:2.5em;font-weight:700;background:linear-gradient(135deg,#e879f9,#a855f7);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.stat-label{font-size:.9em;color:#888;margin-top:4px}
+.img-placeholder{background:#1f0f3a;border:2px dashed #4a2a7a;border-radius:12px;padding:30px;text-align:center;color:#666;font-style:italic;margin:16px 0}
+.reflection{background:linear-gradient(135deg,#1f0f3a,#2a1a5a);border-left:4px solid #c084fc;padding:20px 24px;border-radius:0 12px 12px 0;margin:20px 0;font-style:italic}
+table{width:100%;border-collapse:collapse;margin:16px 0;font-size:.95em}
+th{background:#1f0f3a;color:#c084fc;padding:12px 16px;text-align:left;border-bottom:2px solid #4a2a7a}
+td{padding:10px 16px;border-bottom:1px solid #2a1a4a;color:#c0c0d0}
+.bloom-tag{background:#1a2a0a;border:1px solid #2a4a1a;color:#a3e635;padding:4px 12px;border-radius:12px;font-size:.8em;display:inline-block;margin-bottom:16px}
+.timeline{display:flex;gap:4px;margin:16px 0;align-items:end}
+.timeline-bar{background:linear-gradient(180deg,#e879f9,#a855f7);border-radius:4px 4px 0 0;min-width:60px;display:flex;flex-direction:column;align-items:center;justify-content:end;padding:8px 4px;font-size:.75em;color:#fff}
+</style>
+</head>
+<body>
+
+<div class="slide active" id="s1">
+<div class="bloom-tag">🧠 Bloom: Aplicar → Analizar</div>
+<h1>Creación de Contenido Multimedia y Estrategia Digital</h1>
+<p class="subtitle">ADA 3 — Diseño visual, video corto, IA generativa, UGC y social commerce</p>
+<p>Curso: Medios Sociales | Preparatoria UADY — 5° Semestre<br>Sesiones 13-18 | Mérida, Yucatán | Septiembre 2026</p>
+<div style="margin-top:30px">
+<span class="tag">🎨 Diseño visual</span>
+<span class="tag">🎬 Video corto</span>
+<span class="tag">🤖 IA generativa</span>
+<span class="tag">📸 UGC</span>
+<span class="tag">🛒 Social Commerce</span>
+<span class="tag">🌮 Casos Mérida</span>
+</div>
+</div>
+
+<div class="slide" id="s2">
+<h2>🎨 Principios de diseño visual para redes</h2>
+<p>No necesitas ser diseñador. Necesitas criterio visual.</p>
+<div class="grid2">
+<div class="card">
+<h3>1. Jerarquía visual</h3>
+<p>Lo más importante = más grande, más contrastado. El ojo recorre: título → subtítulo → detalle.</p>
+<p><strong>Regla:</strong> Si todo tiene el mismo tamaño, nada destaca.</p>
+</div>
+<div class="card">
+<h3>2. Contraste y legibilidad</h3>
+<p>Texto sobre imagen solo funciona si se lee sin esfuerzo. Fondo sólido detrás del texto. Máximo 2 fuentes por diseño.</p>
+</div>
+<div class="card">
+<h3>3. Paleta de colores</h3>
+<p>3-4 colores que se repitan en todo. Los colores comunican emociones. Herramienta: Coolors.co</p>
+</div>
+<div class="card">
+<h3>4. Espacios en blanco</h3>
+<p>El espacio vacío es respiro visual. Diseños sobrecargados confunden y cansan. Menos es más.</p>
+</div>
+</div>
+<div class="reflection">💭 <strong>Test rápido:</strong> Abre tu feed de Instagram. ¿Qué publicaciones te detuvieron? Analiza: ¿tenían buena jerarquía? ¿Contraste? ¿Colores coherentes?</div>
+</div>
+
+<div class="slide" id="s3">
+<h2>🛠️ Herramientas de diseño accesibles en 2026</h2>
+<div class="grid2">
+<div class="card">
+<h3>Canva</h3>
+<p>La más popular para no diseñadores. Miles de plantillas para cada red. <strong>Versión educativa gratuita</strong> para estudiantes.</p>
+<p>✅ Kit de marca | ✅ Colaboración | ✅ IA Magic Studio</p>
+</div>
+<div class="card">
+<h3>Figma</h3>
+<p>Más avanzada. Diseño colaborativo en tiempo real. Favorita de profesionales. Versión gratuita disponible.</p>
+<p>✅ Prototipado | ✅ Componentes | ✅ Plugins</p>
+</div>
+<div class="card">
+<h3>Adobe Express</h3>
+<p>Versión simplificada de Adobe. Plantillas + banco de imágenes + IA (Firefly) integrada.</p>
+<p>✅ Remoción de fondo | ✅ Animación | ✅ Video</p>
+</div>
+<div class="card">
+<h3>CapCut (editor de imagen)</h3>
+<p>No solo video: tiene editor de imagen con plantillas para Stories, carruseles y posts. Gratuito.</p>
+<p>✅ Templates trending | ✅ Filtros | ✅ Texto</p>
+</div>
+</div>
+<p><strong>Formato estrella 2026:</strong> El carrusel de Instagram genera 1.4x más alcance que la imagen única (Venngage 2025).</p>
+</div>
+
+<div class="slide" id="s4">
+<h2>🎬 Video corto: el rey del contenido en 2026</h2>
+<div class="grid3">
+<div class="card"><div class="stat">91%</div><div class="stat-label">de negocios usan video como herramienta de marketing (Wyzowl 2025)</div></div>
+<div class="card"><div class="stat">82%</div><div class="stat-label">del tráfico de internet será video en 2026 (Cisco)</div></div>
+<div class="card"><div class="stat">73%</div><div class="stat-label">de consumidores prefieren video corto para conocer productos</div></div>
+</div>
+<h3 style="margin-top:24px">Estructura de un video corto efectivo</h3>
+<div style="display:flex;gap:16px;margin:16px 0">
+<div class="card" style="flex:1;border-top:4px solid #ef4444">
+<h3 style="color:#fca5a5">🪝 Hook (0-3s)</h3>
+<p>Captura o se van. Pregunta sorprendente, afirmación provocadora, resultado final primero.</p>
+</div>
+<div class="card" style="flex:2;border-top:4px solid #e879f9">
+<h3>📖 Desarrollo (3-50s)</h3>
+<p>Contenido principal. Cortes rápidos cada 2-3s, texto superpuesto, cambios de ángulo, zooms.</p>
+</div>
+<div class="card" style="flex:1;border-top:4px solid #22c55e">
+<h3 style="color:#6ee7b7">📢 CTA (últimos 5-10s)</h3>
+<p>Seguir, comentar, guardar, compartir, visitar enlace. Sin CTA = engagement perdido.</p>
+</div>
+</div>
+</div>
+
+<div class="slide" id="s5">
+<h2>📝 El guion para video corto</h2>
+<p>Un guion de 30 segundos tiene máximo 75 palabras habladas. Cada segundo cuenta.</p>
+<table>
+<tr><th>Segundo</th><th>Audio</th><th>Visual</th><th>Texto en pantalla</th></tr>
+<tr><td>0-3</td><td>"¿Sabías que este cenote está contaminado?"</td><td>Toma aérea de cenote cristalino</td><td>⚠️ DATO IMPACTANTE</td></tr>
+<tr><td>3-15</td><td>Narración sobre el problema de contaminación</td><td>Cortes: basura flotando, tubería, comunidad</td><td>Datos clave superpuestos</td></tr>
+<tr><td>15-25</td><td>"Pero un grupo de jóvenes está cambiando esto"</td><td>Voluntarios limpiando, sonrisas, antes/después</td><td>🌿 Cenotes Vivos</td></tr>
+<tr><td>25-30</td><td>"Firma la petición. Link en bio."</td><td>Logo de campaña + QR/enlace</td><td>FIRMA AHORA 👆</td></tr>
+</table>
+<div class="grid3" style="margin-top:16px">
+<div class="card"><h3>CapCut</h3><p>#1 en edición para TikTok/Reels. Subtítulos automáticos, plantillas, efectos. Gratuito.</p></div>
+<div class="card"><h3>InShot</h3><p>Alternativa popular en LATAM. Interfaz intuitiva, cortes rápidos, música.</p></div>
+<div class="card"><h3>Editor nativo</h3><p>TikTok e Instagram tienen editores integrados con plantillas y efectos trending.</p></div>
+</div>
+</div>
+
+<div class="slide" id="s6">
+<h2>🤖 IA generativa en social media</h2>
+<p>76% de los marketers usan al menos una herramienta de IA en su flujo diario (Salesforce 2025).</p>
+<div class="grid2">
+<div class="card">
+<h3>✍️ IA de texto</h3>
+<p><strong>ChatGPT:</strong> Copies, guiones, ideas de contenido</p>
+<p><strong>Claude:</strong> Estrategias largas, documentos complejos</p>
+<p><strong>Gemini:</strong> Integrado con Google Analytics</p>
+<p><strong>Copilot:</strong> Integrado en Office (reportes, PPTs)</p>
+</div>
+<div class="card">
+<h3>🎨 IA de imagen</h3>
+<p><strong>DALL-E 3:</strong> Imágenes desde descripciones de texto</p>
+<p><strong>Adobe Firefly:</strong> Integrado en Photoshop/Express</p>
+<p><strong>Ideogram:</strong> Texto dentro de imágenes (único)</p>
+<p><strong>Canva Magic Studio:</strong> IA dentro de Canva</p>
+</div>
+</div>
+<div class="card" style="border-left:4px solid #ef4444;margin-top:16px">
+<h3 style="color:#fca5a5">⚠️ Ética: el factor no negociable</h3>
+<p>• <strong>Transparencia:</strong> ¿Debes decir que usaste IA? La EU AI Act (2024) ya lo exige.</p>
+<p>• <strong>Sesgos:</strong> Las IAs reproducen estereotipos de sus datos de entrenamiento.</p>
+<p>• <strong>Detección:</strong> GPTZero (texto), Hive Moderation (imagen), Google Reverse Image Search.</p>
+<p>• <strong>Académico:</strong> Presentar texto de IA como propio = deshonestidad académica.</p>
+</div>
+</div>
+
+<div class="slide" id="s7">
+<h2>📸 UGC: Contenido Generado por el Usuario</h2>
+<div class="grid2">
+<div class="card">
+<div class="stat">79%</div>
+<div class="stat-label">de consumidores dicen que el UGC influye en sus decisiones de compra (Stackla 2025)</div>
+<p style="margin-top:12px">Solo el 13% confía en el contenido creado por la propia marca.</p>
+</div>
+<div class="card">
+<h3>¿Qué es UGC?</h3>
+<p>Contenido creado por usuarios/clientes reales: fotos, videos, reseñas, stories, comentarios.</p>
+<p><strong>Ejemplo:</strong> Un cliente sube una foto de su hamaca nueva y etiqueta a @HamacasDelMayab.</p>
+</div>
+</div>
+<h3 style="margin-top:20px">4 estrategias para generar UGC</h3>
+<div class="grid2">
+<div class="card"><h3>1. Hashtag de marca</h3><p>#MiEstiloMerida — invita a publicar con tu hashtag.</p></div>
+<div class="card"><h3>2. Incentivos</h3><p>Descuento, regalo o aparecer en la cuenta oficial.</p></div>
+<div class="card"><h3>3. Challenges</h3><p>Un reto en TikTok bien diseñado = miles de videos en días.</p></div>
+<div class="card"><h3>4. Repostear con crédito</h3><p>Compartir el contenido del usuario valida y motiva a otros.</p></div>
+</div>
+<div class="reflection">💭 <strong>Dato:</strong> El mercado de creadores UGC profesionales creció 340% entre 2023-2025 (ConvertKit).</div>
+</div>
+
+<div class="slide" id="s8">
+<h2>🛒 Social Commerce: las redes como tienda</h2>
+<p>Compra y venta directa dentro de las plataformas, sin salir a un sitio web.</p>
+<div class="grid2">
+<div class="card"><div class="stat">$1.2T</div><div class="stat-label">Ventas globales por social commerce en 2026 (eMarketer)</div></div>
+<div class="card"><div class="stat">+45%</div><div class="stat-label">Crecimiento del social commerce en México durante 2025</div></div>
+</div>
+<div class="grid2" style="margin-top:16px">
+<div class="card">
+<h3>🛍️ Instagram Shop</h3>
+<p>Etiqueta productos en posts, Reels y Stories. El usuario compra sin salir de la app.</p>
+</div>
+<div class="card">
+<h3>🎵 TikTok Shop</h3>
+<p>Compra directa desde videos. Creadores ganan comisión por ventas.</p>
+</div>
+<div class="card">
+<h3>💬 WhatsApp Business Catalogs</h3>
+<p>Catálogo con fotos, descripciones y precios. El cliente pide por chat. <strong>#1 en Mérida.</strong></p>
+</div>
+<div class="card">
+<h3>📘 Facebook Marketplace</h3>
+<p>Compraventa local activa en Mérida: ropa, muebles, comida, servicios.</p>
+</div>
+</div>
+</div>
+
+<div class="slide" id="s9">
+<h2>🔄 El ciclo: contenido → confianza → compra → UGC</h2>
+<div style="display:flex;justify-content:center;margin:30px 0">
+<div style="display:flex;gap:16px;align-items:center;flex-wrap:wrap;justify-content:center">
+<div class="card" style="text-align:center;min-width:140px"><h3>1. Descubrir</h3><p>Ve contenido auténtico en FYP o Explore</p></div>
+<div style="font-size:2em;color:#c084fc">→</div>
+<div class="card" style="text-align:center;min-width:140px"><h3>2. Seguir</h3><p>Le interesa, sigue la cuenta</p></div>
+<div style="font-size:2em;color:#c084fc">→</div>
+<div class="card" style="text-align:center;min-width:140px"><h3>3. Confiar</h3><p>Ve UGC de otros compradores</p></div>
+<div style="font-size:2em;color:#c084fc">→</div>
+<div class="card" style="text-align:center;min-width:140px"><h3>4. Comprar</h3><p>Escribe por DM o WhatsApp</p></div>
+<div style="font-size:2em;color:#c084fc">→</div>
+<div class="card" style="text-align:center;min-width:140px"><h3>5. Compartir</h3><p>Publica su reseña = más UGC</p></div>
+</div>
+</div>
+<div class="reflection">💭 <strong>Pregunta:</strong> Piensa en la última compra que hiciste influenciado por redes sociales. ¿Seguiste este ciclo? ¿En qué paso te convenció?</div>
+</div>
+
+<div class="slide" id="s10">
+<h2>🌮 Casos de éxito en Mérida</h2>
+<div class="grid2">
+<div class="card" style="border-left:4px solid #e879f9">
+<h3>🍽️ Gastronomía por IG + WhatsApp</h3>
+<p>Cochinita a domicilio sin local físico: 200+ pedidos/semana.</p>
+<p><strong>Fórmula:</strong> Foto a las 9AM + menú del día + Reels de preparación + UGC de clientes</p>
+<p><strong>38%</strong> de nuevos emprendimientos gastronómicos en Mérida operan solo por redes (Canacintra 2025).</p>
+</div>
+<div class="card" style="border-left:4px solid #a855f7">
+<h3>🪢 Artesanías a nivel nacional</h3>
+<p>Cooperativas de hamacas venden directo, sin intermediarios.</p>
+<p><strong>Fórmula:</strong> Reels del proceso artesanal + storytelling maya + catálogo WhatsApp</p>
+<p><strong>Ventaja competitiva:</strong> La historia cultural es irremplazable por marcas industriales.</p>
+</div>
+<div class="card" style="border-left:4px solid #06b6d4">
+<h3>🏊 Turismo de cenotes en TikTok</h3>
+<p>Videos de 30s de cenotes generan millones de vistas = reservaciones reales.</p>
+<p><strong>Fórmula:</strong> Visual impresionante + info práctica + enlace de reserva en bio</p>
+</div>
+<div class="card" style="border-left:4px solid #22c55e">
+<h3>🌿 Causas sociales en Facebook</h3>
+<p>Colectivos ambientalistas movilizan miles de firmas y voluntarios para protección de cenotes.</p>
+<p><strong>Fórmula:</strong> Storytelling con datos + petición online + eventos presenciales documentados</p>
+</div>
+</div>
+</div>
+
+<div class="slide" id="s11">
+<h2>🏆 Factores de éxito: patrones comunes</h2>
+<div class="grid2">
+<div class="card">
+<h3>1. Autenticidad > Producción</h3>
+<p>62% de consumidores confían más en contenido que "se ve real" que en producción profesional (Hootsuite 2026).</p>
+</div>
+<div class="card">
+<h3>2. WhatsApp = Canal de cierre</h3>
+<p>En Yucatán, el cliente ve en IG/TikTok y compra por WhatsApp. El cierre es conversacional.</p>
+</div>
+<div class="card">
+<h3>3. Comunidad antes que venta</h3>
+<p>Primero: valor, respuestas, Lives. Después: productos. Así se construye lealtad.</p>
+</div>
+<div class="card">
+<h3>4. Cultura como ventaja</h3>
+<p>La identidad yucateca (gastronomía, maya, cenotes, tradiciones) es un activo diferenciador que ninguna marca global puede replicar.</p>
+</div>
+</div>
+<div class="reflection">💭 <strong>Reto:</strong> ¿Qué emprendimiento o causa de tu colonia o escuela podrías impulsar con una estrategia digital? Anótalo — lo usarás en tu producto.</div>
+</div>
+
+<div class="slide" id="s12">
+<h2>⚡ Tendencias de video corto en 2026</h2>
+<div class="grid2">
+<div class="card"><h3>📱 Raw content</h3><p>El contenido "sin edición", espontáneo y genuino genera más confianza que las producciones pulidas.</p></div>
+<div class="card"><h3>📝 Subtítulos siempre</h3><p>80% del video en móvil se ve sin sonido. CapCut genera subtítulos automáticos en 1 toque.</p></div>
+<div class="card"><h3>📐 Vertical siempre</h3><p>94% del uso de celular es en vertical. Video horizontal = espacio y atención perdidos.</p></div>
+<div class="card"><h3>🎵 Sonidos trending</h3><p>Usar un audio en tendencia multiplica el alcance algorítmico. TikTok Creative Center muestra los populares.</p></div>
+</div>
+<div class="card" style="margin-top:16px;border-left:4px solid #22c55e">
+<h3 style="color:#6ee7b7">♿ Accesibilidad en video</h3>
+<p>Un video inclusivo incluye: subtítulos, buen contraste, descripción verbal del contenido visual, y sin destellos rápidos (riesgo de epilepsia). No es opcional — es responsabilidad.</p>
+</div>
+</div>
+
+<div class="slide" id="s13">
+<h2>🎯 Producto integrador del ADA 3</h2>
+<div class="card" style="border-color:#e879f9;margin:20px 0">
+<h3>📋 Tus entregables deben incluir:</h3>
+<p>1. <strong>Propuesta de estrategia digital</strong> para una causa social o emprendimiento (objetivo, público, plataformas)</p>
+<p>2. <strong>Pieza visual</strong> diseñada en Canva/Figma con jerarquía, contraste, paleta coherente y accesibilidad</p>
+<p>3. <strong>Guion de reel/video</strong> con hook-desarrollo-CTA, audio, visual y texto en pantalla → <strong>Idealmente: grábalo con CapCut</strong></p>
+<p>4. <strong>Publicación interactiva</strong> (encuesta, quiz, historia, challenge) con estrategia de UGC</p>
+<p>5. <strong>Reflexión sobre IA generativa:</strong> ¿Cómo la usaste? ¿Qué herramienta? ¿Fue ético y transparente?</p>
+</div>
+<div class="reflection">💭 <strong>Reflexión final:</strong> Crear contenido es fácil. Crear contenido con propósito, ética y estrategia es la competencia que te diferenciará. Ahora tienes las herramientas — úsalas.</div>
+<p style="margin-top:20px;font-size:.9em;color:#666">Fuentes: Wyzowl 2025, Hootsuite 2026, Stackla/Nosto 2025, eMarketer 2026, Salesforce 2025, Canacintra Yucatán 2025</p>
+</div>
+
+<div class="slide" id="s14">
+<h2>📚 Mapa de recursos — ADA 3</h2>
+<div class="grid3">
+<div class="card"><h3>🎨 Diseño</h3><p>• Canva for Education (gratis)<br>• Coolors.co (paletas)<br>• Figma (versión free)</p></div>
+<div class="card"><h3>🎬 Video</h3><p>• CapCut (edición free)<br>• TikTok Creative Center<br>• InShot (alternativa)</p></div>
+<div class="card"><h3>🤖 IA</h3><p>• ChatGPT / Claude (texto)<br>• DALL-E 3 / Firefly (imagen)<br>• GPTZero (detección)</p></div>
+<div class="card"><h3>🛒 Commerce</h3><p>• WhatsApp Business<br>• Instagram Shop<br>• TikTok Shop</p></div>
+<div class="card"><h3>📊 Analítica</h3><p>• Instagram Insights<br>• TikTok Analytics<br>• Metricool (gratis)</p></div>
+<div class="card"><h3>📖 Aprender más</h3><p>• HubSpot Academy (gratis)<br>• Google Skillshop<br>• TikTok Academy</p></div>
+</div>
+</div>
+
+<div class="slide-counter"><span id="current">1</span> / <span id="total">14</span></div>
+<div class="nav">
+<button onclick="prev()">← Anterior</button>
+<button onclick="next()">Siguiente →</button>
+</div>
+
+<script>
+let c=0;const s=document.querySelectorAll('.slide');
+function show(i){s.forEach(x=>x.classList.remove('active'));s[i].classList.add('active');document.getElementById('current').textContent=i+1}
+function next(){if(c<s.length-1){c++;show(c)}}
+function prev(){if(c>0){c--;show(c)}}
+document.addEventListener('keydown',e=>{if(e.key==='ArrowRight'||e.key===' ')next();if(e.key==='ArrowLeft')prev()});
+document.getElementById('total').textContent=s.length;
+</script>
+
+<script>
+/* Puente postMessage con el modal padre (mini sitio Medios Sociales) */
+(function(){
+  var slides = document.querySelectorAll('.slide');
+  function currentIndex(){ for(var i=0;i<slides.length;i++){ if(slides[i].classList.contains('active')) return i; } return 0; }
+  function notify(){ try{ if(window.parent!==window){ window.parent.postMessage({type:'slideChange',current:currentIndex()+1,total:slides.length},'*'); } }catch(e){} }
+  window.addEventListener('message', function(e){
+    var a = e.data && e.data.action;
+    if(a==='nextSlide' && typeof next==='function') next();
+    else if(a==='prevSlide' && typeof prev==='function') prev();
+    else if(a==='nextSlide' && typeof changeSlide==='function') changeSlide(1);
+    else if(a==='prevSlide' && typeof changeSlide==='function') changeSlide(-1);
+    setTimeout(notify, 30);
+  });
+  var obs = new MutationObserver(function(){ notify(); });
+  slides.forEach(function(s){ obs.observe(s, {attributes:true, attributeFilter:['class']}); });
+  document.addEventListener('keydown', function(){ setTimeout(notify, 30); });
+  setTimeout(notify, 50);
+})();
+</script>
+
+</body>
+</html>

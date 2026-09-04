@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ADA 1 — Fundamentos de los Medios Sociales</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Segoe UI',system-ui,-apple-system,sans-serif;background:#0f0f23;color:#e0e0e0;overflow:hidden;height:100vh}
+.slide{display:none;height:100vh;padding:40px 60px;flex-direction:column;justify-content:center;position:relative;overflow-y:auto}
+.slide.active{display:flex}
+.slide-counter{position:fixed;bottom:20px;right:30px;font-size:14px;color:#888;z-index:100}
+.nav{position:fixed;bottom:20px;left:50%;transform:translateX(-50%);display:flex;gap:10px;z-index:100}
+.nav button{background:#2a2a4a;border:2px solid #4a4a8a;color:#fff;padding:10px 24px;border-radius:8px;cursor:pointer;font-size:14px;transition:all .3s}
+.nav button:hover{background:#4a4a8a;border-color:#7a7aba}
+h1{font-size:2.8em;background:linear-gradient(135deg,#667eea,#764ba2);-webkit-background-clip:text;-webkit-text-fill-color:transparent;margin-bottom:20px;line-height:1.2}
+h2{font-size:2em;color:#667eea;margin-bottom:16px}
+h3{font-size:1.4em;color:#a78bfa;margin-bottom:12px}
+p,.desc{font-size:1.1em;line-height:1.7;color:#c0c0d0;margin-bottom:16px;max-width:900px}
+.subtitle{font-size:1.3em;color:#a0a0c0;margin-bottom:30px}
+.tag{display:inline-block;background:#2a2a4a;border:1px solid #4a4a8a;padding:4px 14px;border-radius:20px;font-size:.85em;color:#a78bfa;margin:4px}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:24px;margin:20px 0}
+.grid3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:20px;margin:20px 0}
+.card{background:#1a1a3a;border:1px solid #2a2a5a;border-radius:12px;padding:24px;transition:transform .3s}
+.card:hover{transform:translateY(-4px)}
+.card h3{margin-bottom:8px}
+.stat{font-size:2.5em;font-weight:700;background:linear-gradient(135deg,#667eea,#764ba2);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.stat-label{font-size:.9em;color:#888;margin-top:4px}
+.img-placeholder{background:#1a1a3a;border:2px dashed #4a4a8a;border-radius:12px;padding:30px;text-align:center;color:#666;font-style:italic;margin:16px 0}
+.reflection{background:linear-gradient(135deg,#1a1a3a,#2a1a4a);border-left:4px solid #a78bfa;padding:20px 24px;border-radius:0 12px 12px 0;margin:20px 0;font-style:italic}
+.platform-badge{display:inline-flex;align-items:center;gap:6px;background:#2a2a4a;padding:6px 14px;border-radius:20px;margin:4px;font-size:.9em}
+table{width:100%;border-collapse:collapse;margin:16px 0;font-size:.95em}
+th{background:#1a1a3a;color:#a78bfa;padding:12px 16px;text-align:left;border-bottom:2px solid #4a4a8a}
+td{padding:10px 16px;border-bottom:1px solid #2a2a4a;color:#c0c0d0}
+tr:hover td{background:#1a1a3a}
+.progress-bar{height:4px;background:#2a2a4a;border-radius:2px;margin:30px 0 10px}
+.progress-fill{height:100%;background:linear-gradient(90deg,#667eea,#764ba2);border-radius:2px;transition:width .5s}
+.bloom-tag{background:#1a3a2a;border:1px solid #2a5a3a;color:#6ee7b7;padding:4px 12px;border-radius:12px;font-size:.8em;display:inline-block;margin-bottom:16px}
+</style>
+</head>
+<body>
+
+<!-- Slide 1: Portada -->
+<div class="slide active" id="s1">
+<div class="bloom-tag">🧠 Bloom: Recordar → Comprender</div>
+<h1>Fundamentos de los Medios Sociales</h1>
+<p class="subtitle">ADA 1 — El ecosistema de plataformas, algoritmos e impacto sociocultural</p>
+<p>Curso: Medios Sociales | Preparatoria UADY — 5° Semestre<br>Sesiones 1-6 | Mérida, Yucatán | Septiembre 2026</p>
+<div style="margin-top:30px">
+<span class="tag">📱 Plataformas</span>
+<span class="tag">🤖 Algoritmos</span>
+<span class="tag">🎨 Formatos</span>
+<span class="tag">🌎 Impacto social</span>
+<span class="tag">🏷️ Identidad de marca</span>
+</div>
+<div class="img-placeholder">[IMAGEN: Collage minimalista con íconos de TikTok, Instagram, YouTube, LinkedIn, WhatsApp y Discord flotando sobre un mapa estilizado de la Península de Yucatán en tonos neón]</div>
+</div>
+
+<!-- Slide 2: El ecosistema en números -->
+<div class="slide" id="s2">
+<h2>📊 El ecosistema de redes sociales en 2026</h2>
+<p>Más de 5,000 millones de personas usan redes sociales en el mundo — el 62% de la población global.</p>
+<div class="grid3">
+<div class="card"><div class="stat">2,500M</div><div class="stat-label">Usuarios de YouTube</div><p style="font-size:.85em;margin-top:8px">2ª web más visitada del mundo. 0 menciones en el curso original.</p></div>
+<div class="card"><div class="stat">2,000M</div><div class="stat-label">Usuarios de Instagram</div><p style="font-size:.85em;margin-top:8px">Reels, Stories, Shopping. Red #1 para marcas.</p></div>
+<div class="card"><div class="stat">1,500M</div><div class="stat-label">Usuarios de TikTok</div><p style="font-size:.85em;margin-top:8px">El algoritmo más poderoso. 40% de Gen Z lo usa como buscador.</p></div>
+</div>
+<div class="grid3">
+<div class="card"><div class="stat">3,000M</div><div class="stat-label">Usuarios de Facebook</div><p style="font-size:.85em;margin-top:8px">La más usada en el mundo. Grupos activos en Mérida.</p></div>
+<div class="card"><div class="stat">1,000M</div><div class="stat-label">Usuarios de LinkedIn</div><p style="font-size:.85em;margin-top:8px">+23% crecimiento en jóvenes 18-24 en México (2025).</p></div>
+<div class="card"><div class="stat">94%</div><div class="stat-label">Mexicanos con WhatsApp</div><p style="font-size:.85em;margin-top:8px">Canal #1 de mensajería y ventas en Mérida.</p></div>
+</div>
+<p style="font-size:.8em;color:#666;margin-top:10px">Fuente: We Are Social & Meltwater, Digital 2026; AIMX 2025</p>
+</div>
+
+<!-- Slide 3: Plataformas comparadas -->
+<div class="slide" id="s3">
+<h2>🔍 Cada plataforma, un mundo diferente</h2>
+<table>
+<tr><th>Plataforma</th><th>Audiencia principal</th><th>Formato estrella</th><th>Uso para negocios</th></tr>
+<tr><td><span class="platform-badge">📸 Instagram</span></td><td>18-34 años</td><td>Reels, Carruseles, Stories</td><td>Identidad visual, shopping, comunidad</td></tr>
+<tr><td><span class="platform-badge">🎵 TikTok</span></td><td>16-24 años</td><td>Video vertical 15-180s</td><td>Viralidad, awareness, TikTok Shop</td></tr>
+<tr><td><span class="platform-badge">▶️ YouTube</span></td><td>Todas las edades</td><td>Video largo, Shorts, podcasts</td><td>SEO, educación, monetización</td></tr>
+<tr><td><span class="platform-badge">💼 LinkedIn</span></td><td>25-45, profesionales</td><td>Posts, artículos, newsletters</td><td>Networking, marca personal, B2B</td></tr>
+<tr><td><span class="platform-badge">💬 WhatsApp Business</span></td><td>Todas (México: 94%)</td><td>Chat, catálogo, status</td><td>Ventas directas, atención al cliente</td></tr>
+<tr><td><span class="platform-badge">📘 Facebook</span></td><td>25-55 años</td><td>Grupos, Marketplace, Lives</td><td>Comunidad local, anuncios, compraventa</td></tr>
+<tr><td><span class="platform-badge">🎮 Discord</span></td><td>16-30, comunidades</td><td>Servidores, canales, voz</td><td>Comunidades de nicho, soporte</td></tr>
+</table>
+<div class="reflection">💭 <strong>Pregunta de reflexión:</strong> Si tuvieras que promocionar una taquería en Mérida, ¿en qué 3 plataformas publicarías y por qué?</div>
+</div>
+
+<!-- Slide 4: Algoritmos -->
+<div class="slide" id="s4">
+<h2>🤖 ¿Cómo deciden los algoritmos qué ves?</h2>
+<p>Un algoritmo de red social analiza miles de señales en milisegundos para predecir qué contenido te hará interactuar.</p>
+<div class="grid3">
+<div class="card">
+<h3>TikTok</h3>
+<p>Evalúa cada video independientemente. Un creador con 0 seguidores puede ser viral.</p>
+<p><strong>Señales clave:</strong> Tiempo de visualización, compartidos, tasa de repetición</p>
+<div class="img-placeholder">[IMAGEN: Diagrama de flujo simplificado del algoritmo de TikTok: video → grupo pequeño → si retención alta → grupo más grande → viral]</div>
+</div>
+<div class="card">
+<h3>Instagram</h3>
+<p>Tiene 4 algoritmos diferentes: Feed, Stories, Reels y Explorar.</p>
+<p><strong>Señales clave:</strong> Relación con creador, interés, actualidad, popularidad</p>
+<div class="img-placeholder">[IMAGEN: Los 4 algoritmos de Instagram representados como 4 engranajes interconectados]</div>
+</div>
+<div class="card">
+<h3>YouTube</h3>
+<p>Prioriza retención (¿cuánto del video viste?) y tasa de clics en miniatura.</p>
+<p><strong>Señales clave:</strong> CTR de miniatura, retención de audiencia, satisfacción</p>
+<div class="img-placeholder">[IMAGEN: Embudo de YouTube: miniatura → clic → retención → recomendación]</div>
+</div>
+</div>
+<div class="reflection">💭 <strong>Pregunta:</strong> ¿Alguna vez sentiste que TikTok "te lee la mente"? Ahora sabes por qué: no lee tu mente, lee tu comportamiento.</div>
+</div>
+
+<!-- Slide 5: Burbujas de filtro -->
+<div class="slide" id="s5">
+<h2>⚠️ El lado oscuro: burbujas de filtro y economía de la atención</h2>
+<div class="grid2">
+<div class="card">
+<h3>🫧 Burbujas de filtro</h3>
+<p>Los algoritmos te muestran más de lo que ya te gusta, creando una "burbuja" donde solo ves contenido que confirma tus creencias.</p>
+<p><strong>Riesgo:</strong> Pierdes acceso a perspectivas diferentes. La polarización se amplifica.</p>
+<p><strong>Ejemplo:</strong> Si solo ves contenido de un partido político, el algoritmo te mostrará más contenido de ese partido, nunca del otro.</p>
+</div>
+<div class="card">
+<h3>⏰ Economía de la atención</h3>
+<p>Las plataformas compiten por tu tiempo porque su modelo de negocio depende de la publicidad.</p>
+<p><strong>Diseño adictivo:</strong> Scroll infinito, notificaciones constantes, autoplay de videos, métricas de validación (likes).</p>
+<div class="stat" style="font-size:1.8em;margin-top:12px">5+ hrs/día</div>
+<div class="stat-label">Promedio de uso en jóvenes 15-19 años en México (INEGI ENDUTIH 2024)</div>
+</div>
+</div>
+<div class="img-placeholder">[IMAGEN: Persona dentro de una burbuja transparente mirando un celular, mientras fuera de la burbuja hay un mundo diverso que no puede ver]</div>
+<div class="reflection">💭 <strong>Reflexión:</strong> ¿Cuántas horas al día pasas en redes? ¿Te has detenido a pensar si el contenido que ves representa la realidad completa?</div>
+</div>
+
+<!-- Slide 6: Formatos de contenido -->
+<div class="slide" id="s6">
+<h2>🎨 Formatos de contenido digital</h2>
+<p>Un mismo mensaje cambia de impacto según su formato. Cada uno activa procesos cognitivos diferentes.</p>
+<div class="grid2">
+<div class="card">
+<h3>📝 Texto</h3>
+<p>Accesible, indexable, permanente. Ideal para X, LinkedIn, blogs.</p>
+<p><strong>Fortaleza:</strong> Profundidad y reflexión.</p>
+<p><strong>Debilidad:</strong> Compite mal por la atención en plataformas visuales.</p>
+</div>
+<div class="card">
+<h3>📷 Imagen</h3>
+<p>Comunica en un instante. 650% más engagement que texto solo (HubSpot 2025).</p>
+<p><strong>Formatos:</strong> Infografías, carruseles, memes, fotos de producto.</p>
+<p><strong>Herramientas:</strong> Canva, Figma, Adobe Express.</p>
+</div>
+<div class="card">
+<h3>🎬 Video</h3>
+<p>Rey del contenido en 2026. 82% del tráfico de internet será video (Cisco).</p>
+<p><strong>Formatos:</strong> Reels, TikToks, Shorts, Lives, podcasts en video.</p>
+<p><strong>Regla de oro:</strong> Capta la atención en 3 segundos o se van.</p>
+</div>
+<div class="card">
+<h3>🎯 Interactivo</h3>
+<p>Transforma al espectador en participante. 2x más respuestas (Sprout Social 2025).</p>
+<p><strong>Formatos:</strong> Encuestas, quizzes, filtros AR, cajas de preguntas, Lives.</p>
+<p><strong>Poder:</strong> Genera datos sobre tu audiencia mientras entretiene.</p>
+</div>
+</div>
+</div>
+
+<!-- Slide 7: Contenido nativo -->
+<div class="slide" id="s7">
+<h2>📐 Contenido nativo: adaptar, no copiar</h2>
+<p>El contenido nativo es aquel que se crea específicamente para una plataforma, respetando sus formatos y cultura.</p>
+<div class="img-placeholder">[IMAGEN: Un mismo mensaje ("Nuevas hamacas artesanales disponibles") presentado en 4 formatos: carrusel de Instagram, TikTok vertical, post de LinkedIn, mensaje de WhatsApp Business]</div>
+<table>
+<tr><th>Plataforma</th><th>Formato óptimo</th><th>Ratio</th><th>Duración/Tamaño</th></tr>
+<tr><td>Instagram Feed</td><td>Cuadrado o 4:5</td><td>1:1 o 4:5</td><td>1080×1080 o 1080×1350 px</td></tr>
+<tr><td>Instagram Reel</td><td>Vertical</td><td>9:16</td><td>1080×1920 px, 15-90s</td></tr>
+<tr><td>TikTok</td><td>Vertical</td><td>9:16</td><td>1080×1920 px, 15-180s</td></tr>
+<tr><td>YouTube Shorts</td><td>Vertical</td><td>9:16</td><td>1080×1920 px, ≤60s</td></tr>
+<tr><td>LinkedIn</td><td>Horizontal</td><td>1.91:1</td><td>1200×627 px</td></tr>
+</table>
+<div class="reflection">💭 <strong>Actividad rápida:</strong> Piensa en un mensaje sobre el calor en Mérida. ¿Cómo lo adaptarías para un Reel de Instagram vs. un post de LinkedIn?</div>
+</div>
+
+<!-- Slide 8: Caso Mérida -->
+<div class="slide" id="s8">
+<h2>🌴 Caso Mérida: redes sociales en la vida yucateca</h2>
+<div class="grid2">
+<div class="card">
+<h3>📱 Hábitos digitales yucatecos</h3>
+<p>78% de los yucatecos de 16-64 años usan redes a diario (We Are Social 2026).</p>
+<p><strong>Top plataformas en Mérida:</strong></p>
+<p>1. WhatsApp (94%) — Mensajería + ventas</p>
+<p>2. Facebook (82%) — Grupos locales + Marketplace</p>
+<p>3. Instagram (65%) — Contenido visual + marcas</p>
+<p>4. TikTok (52%) — Entretenimiento + búsqueda</p>
+</div>
+<div class="card">
+<h3>🏪 Impacto económico</h3>
+<p>45% de nuevos emprendimientos en Mérida usan redes como principal canal (Canacintra 2025).</p>
+<p><strong>Ejemplos:</strong></p>
+<p>• Cochinita a domicilio por IG + WhatsApp</p>
+<p>• Hamacas artesanales vendidas a todo México</p>
+<p>• Turismo de cenotes viralizado en TikTok</p>
+<p>• Grupos de Facebook para compraventa local</p>
+</div>
+</div>
+<div class="img-placeholder">[IMAGEN: Mapa ilustrado de Mérida con íconos de redes sociales conectando puntos: mercado Lucas de Gálvez, Paseo Montejo, un cenote, una hamaca artesanal, una taquería]</div>
+<div class="reflection">💭 <strong>Pregunta:</strong> ¿Conoces algún negocio en tu colonia que venda principalmente por redes sociales? ¿Qué plataformas usa?</div>
+</div>
+
+<!-- Slide 9: Impacto sociocultural -->
+<div class="slide" id="s9">
+<h2>⚖️ Impacto sociocultural: lo bueno y lo preocupante</h2>
+<div class="grid2">
+<div class="card" style="border-color:#2a5a3a">
+<h3 style="color:#6ee7b7">✅ Impacto positivo</h3>
+<p>• Visibilización de la cultura maya y yucateca a nivel global</p>
+<p>• Emprendimiento accesible para jóvenes sin capital</p>
+<p>• Organización ciudadana (limpieza de cenotes, denuncias)</p>
+<p>• Acceso a educación gratuita (YouTube, Coursera)</p>
+<p>• Conexión entre comunidades de la Península</p>
+</div>
+<div class="card" style="border-color:#5a2a2a">
+<h3 style="color:#fca5a5">⚠️ Impacto preocupante</h3>
+<p>• Desinformación en WhatsApp (62% de jóvenes compartieron noticias falsas sin verificar — UADY 2024)</p>
+<p>• Comparación social y ansiedad por validación</p>
+<p>• Simplificación de tradiciones yucatecas para hacerlas "virales"</p>
+<p>• Adicción digital: 5+ hrs/día en jóvenes mexicanos</p>
+<p>• Polarización en periodos electorales</p>
+</div>
+</div>
+<div class="reflection">💭 <strong>Debate:</strong> ¿Las redes sociales fortalecen o debilitan la identidad cultural de Yucatán? Argumenta con un ejemplo de cada lado.</div>
+</div>
+
+<!-- Slide 10: Identidad de marca -->
+<div class="slide" id="s10">
+<h2>🏷️ Identidad de marca en redes sociales</h2>
+<p>La identidad de marca es el conjunto de elementos que hacen reconocible a una organización en cualquier plataforma.</p>
+<div class="grid3">
+<div class="card">
+<h3>🗣️ Voz de marca</h3>
+<p>La personalidad expresada a través del lenguaje.</p>
+<p><strong>Netflix MX:</strong> Irreverente, con humor</p>
+<p><strong>Starbucks MX:</strong> Cálida, inspiradora</p>
+<p><strong>Taquería local:</strong> Coloquial, yucateca</p>
+</div>
+<div class="card">
+<h3>🎨 Identidad visual</h3>
+<p>Colores, tipografía, estilo fotográfico.</p>
+<p>Reconocible incluso sin leer el nombre.</p>
+<p><strong>Tip:</strong> Elige 2-3 colores + 2 fuentes y repítelos en todo.</p>
+</div>
+<div class="card">
+<h3>💖 Valores y narrativa</h3>
+<p>La razón de ser que se refleja en cada publicación.</p>
+<p>Las marcas con historia conectan emocionalmente.</p>
+<p><strong>Ejemplo local:</strong> Artesanías con historia maya.</p>
+</div>
+</div>
+<div class="reflection">💭 <strong>Reflexión:</strong> Si tu grupo escolar fuera una marca en redes, ¿cuál sería su voz? ¿Formal, divertida, académica, rebelde?</div>
+</div>
+
+<!-- Slide 11: Adaptación de mensaje -->
+<div class="slide" id="s11">
+<h2>🔄 Mismo mensaje, diferente audiencia</h2>
+<p>Adaptar un mensaje no es cambiar el contenido; es cambiar la forma para conectar con cada público.</p>
+<div class="grid2">
+<div class="card" style="border-left:4px solid #667eea">
+<h3>🎯 Versión juvenil (Instagram/TikTok)</h3>
+<p style="font-size:1em;background:#0f0f2a;padding:16px;border-radius:8px;font-style:italic">"¿Sabías que en Mérida hace más calor que en el Sahara algunos días? 🌡️🔥 Pero tranqui, te traemos 5 tips para sobrevivir sin AC y sin contaminar. Dale save 💾 #MéridaCalor #EcoTips"</p>
+</div>
+<div class="card" style="border-left:4px solid #a78bfa">
+<h3>🏛️ Versión institucional (LinkedIn)</h3>
+<p style="font-size:1em;background:#0f0f2a;padding:16px;border-radius:8px;font-style:italic">"El fenómeno de isla de calor urbano en Mérida plantea retos significativos para la sustentabilidad. Compartimos 5 estrategias de mitigación basadas en evidencia que las organizaciones yucatecas pueden implementar de inmediato."</p>
+</div>
+</div>
+<p>El contenido es el mismo (calor en Mérida + soluciones). Lo que cambia: tono, vocabulario, formato, emojis, hashtags, llamado a la acción.</p>
+<div class="reflection">💭 <strong>Tu turno:</strong> Escribe el mismo mensaje sobre Hanal Pixán en dos versiones: una para TikTok y otra para un comunicado escolar.</div>
+</div>
+
+<!-- Slide 12: Tu marca personal digital -->
+<div class="slide" id="s12">
+<h2>👤 Tu marca personal ya existe</h2>
+<p>No necesitas un negocio para tener marca. Todo lo que publicas construye una imagen de quién eres.</p>
+<div class="grid2">
+<div class="card">
+<h3>70%</h3>
+<p>De los empleadores revisan las redes sociales de los candidatos antes de contratarlos (CareerBuilder 2024).</p>
+<p><strong>Pregunta clave:</strong> Si alguien busca tu nombre en Google, ¿qué encuentra?</p>
+</div>
+<div class="card">
+<h3>🛡️ Checklist de marca personal</h3>
+<p>☐ ¿Tu foto de perfil es reconocible y apropiada?</p>
+<p>☐ ¿Tu bio describe quién eres y qué te interesa?</p>
+<p>☐ ¿Tus publicaciones públicas te representan bien?</p>
+<p>☐ ¿Tienes un perfil básico en LinkedIn?</p>
+<p>☐ ¿Has buscado tu nombre en Google recientemente?</p>
+</div>
+</div>
+<div class="img-placeholder">[IMAGEN: Comparación lado a lado de un perfil de Instagram desordenado vs. uno coherente con identidad visual clara]</div>
+</div>
+
+<!-- Slide 13: Cierre y producto -->
+<div class="slide" id="s13">
+<h2>🎯 Producto integrador del ADA 1</h2>
+<p>Ahora tienes las bases para tu entregable. Aplica lo aprendido:</p>
+<div class="card" style="border-color:#667eea;margin:20px 0">
+<h3>📋 Tu tabla comparativa debe incluir:</h3>
+<p>1. <strong>Al menos 6 plataformas</strong> (IG, TikTok, YouTube, LinkedIn, WhatsApp Business, Facebook + 1 emergente)</p>
+<p>2. <strong>Audiencia principal</strong> de cada una (edad, intereses, contexto)</p>
+<p>3. <strong>Formato estrella</strong> de cada plataforma</p>
+<p>4. <strong>Cómo funciona su algoritmo</strong> (señales principales)</p>
+<p>5. <strong>Uso posible para un emprendimiento en Mérida</strong></p>
+<p>6. <strong>Adaptación de un mensaje</strong> en versión juvenil e institucional</p>
+</div>
+<div class="reflection">💭 <strong>Reflexión final:</strong> Las redes no son neutrales: tienen algoritmos, modelos de negocio e impactos sociales. Entenderlas es el primer paso para usarlas con estrategia y responsabilidad. ¿Estás listo para pasar de usuario a estratega?</div>
+<p style="margin-top:20px;font-size:.9em;color:#666">Fuentes: We Are Social 2026, AIMX 2025, HubSpot 2025, Hootsuite 2026, INEGI ENDUTIH 2024</p>
+</div>
+
+<div class="slide-counter"><span id="current">1</span> / <span id="total">13</span></div>
+<div class="nav">
+<button onclick="prev()">← Anterior</button>
+<button onclick="next()">Siguiente →</button>
+</div>
+
+<script>
+let c=0;const s=document.querySelectorAll('.slide');
+function show(i){s.forEach(x=>x.classList.remove('active'));s[i].classList.add('active');document.getElementById('current').textContent=i+1}
+function next(){if(c<s.length-1){c++;show(c)}}
+function prev(){if(c>0){c--;show(c)}}
+document.addEventListener('keydown',e=>{if(e.key==='ArrowRight'||e.key===' ')next();if(e.key==='ArrowLeft')prev()});
+document.getElementById('total').textContent=s.length;
+</script>
+
+<script>
+/* Puente postMessage con el modal padre (mini sitio Medios Sociales) */
+(function(){
+  var slides = document.querySelectorAll('.slide');
+  function currentIndex(){ for(var i=0;i<slides.length;i++){ if(slides[i].classList.contains('active')) return i; } return 0; }
+  function notify(){ try{ if(window.parent!==window){ window.parent.postMessage({type:'slideChange',current:currentIndex()+1,total:slides.length},'*'); } }catch(e){} }
+  window.addEventListener('message', function(e){
+    var a = e.data && e.data.action;
+    if(a==='nextSlide' && typeof next==='function') next();
+    else if(a==='prevSlide' && typeof prev==='function') prev();
+    else if(a==='nextSlide' && typeof changeSlide==='function') changeSlide(1);
+    else if(a==='prevSlide' && typeof changeSlide==='function') changeSlide(-1);
+    setTimeout(notify, 30);
+  });
+  var obs = new MutationObserver(function(){ notify(); });
+  slides.forEach(function(s){ obs.observe(s, {attributes:true, attributeFilter:['class']}); });
+  document.addEventListener('keydown', function(){ setTimeout(notify, 30); });
+  setTimeout(notify, 50);
+})();
+</script>
+
+</body>
+</html>
